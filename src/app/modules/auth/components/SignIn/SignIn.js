@@ -100,11 +100,11 @@ const SignIn = ({ toggle, isVisible }) => {
                 <div className={styles["signin-page-container"]}>
                     <section className={styles["signin-wrapper"]} >
 
-                        {/* <div className={styles["icon-close-wrapper"]}>
-                            <Link to='#' className={styles["icon-close"]} onClick={toggle}>
+                        <div className={styles["icon-close-wrapper"]}>
+                            <Link to='#' className={styles["icon-close"]} onClick={() => history.push("/core/home_page")}>
                                 <RiCloseFill />
                             </Link>
-                        </div> */}
+                        </div >
 
                         <div className={styles["logo-wrapper"]}>
                             <img src={brandLogo} className={styles["brand-logo"]} alt="logo of brand" />

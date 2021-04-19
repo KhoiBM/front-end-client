@@ -1,0 +1,54 @@
+import styled from 'styled-components';
+import { Link as LinkR } from "react-router-dom";
+import { Link as LinkS } from "react-scroll";
+
+export const ButtonR = styled(LinkR)`
+border-radius: 5px;
+/* background: ${({ primary }) => (primary ? '#01BF71' : '#010606')}; */
+background: ${({ primary }) => (primary ? 'var(--primary-color-main);' : '#010606')};
+white-space: nowrap;
+padding: ${({ big }) => (big ? '14px 48px' : '12px 30px')};
+color: ${({ dark }) => (dark ? '#010606' : '#fff')};
+font-size: ${({ fontBig }) => (fontBig ? '20px' : '16px')};
+outline: none;
+border: none;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+transition: all 0.2s ease-in-out;
+text-decoration:none;
+
+&:hover{
+    position: relative;
+    top: 0.5px;
+    transition: all 0.2s ease-in-out;
+    /* background: ${ ({ primary }) => (primary ? 'fff' : '#01BF71')}; */
+    background: ${ ({ primary }) => (primary ? 'fff' : 'var(--primary-color-main)')};
+}
+`
+
+export const ButtonS = styled(LinkS)`
+border-radius: 5px;
+/* background: ${({ primary }) => (primary ? '#01BF71' : '#010606')}; */
+background: ${({ primary }) => (primary ? 'var(--primary-color-main)' : '#010606')};
+white-space: nowrap;
+padding: ${({ big }) => (big ? '14px 48px' : '12px 30px')};
+color: ${({ dark }) => (dark ? '#010606' : '#fff')};
+font-size: ${({ fontBig }) => (fontBig ? '20px' : '16px')};
+outline: none;
+border: none;
+cursor: pointer;
+display: flex;
+justify-content: center;
+align-items: center;
+transition: all 0.2s ease-in-out;
+
+&:hover{
+    position: relative;
+    top: 0.5px;
+    transition: all 0.2s ease-in-out;
+    /* background: ${ ({ primary }) => (primary ? 'fff' : '#01BF71')}; */
+    background: ${ ({ primary }) => (primary ? 'fff' : 'var(--primary-color-main)')};
+}
+` 

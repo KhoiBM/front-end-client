@@ -11,6 +11,64 @@ export class OrderServices {
     //         }
     //     })
     // }
+
+    static createNewOrder = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+
+                }
+            }
+        })
+    }
+
+    static viewOrder = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+
+                }
+            }
+        })
+    }
+    static getOrderStatusToFilter = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+
+                }
+            }
+        })
+    }
+    static cancelOrder = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+
+                }
+            }
+        })
+    }
+    static confirmDemoProduct = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+
+                }
+            }
+        })
+    }
+
     static getOrderDetailList = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
         return Promise.resolve({

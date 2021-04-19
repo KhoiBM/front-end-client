@@ -1,27 +1,35 @@
 /* eslint-disable no-unused-vars */
 import { useRouteMatch, Switch, Router, Route, Redirect } from "react-router-dom";
 import React from 'react'
-import AdminPage from "./modules/admin/pages/ManageAccountPage";
-import ManagerPage from './modules/manager/pages/ManagerPage'
-import AdminModule from './modules/admin/AdminModule'
-import ManagerModule from './modules/manager/ManagerModule'
-import BusinessStaffModule from './modules/business_staff/BusinessStaffModule'
-import TechnicalStaffModule from './modules/technical_staff/TechnicalStaffModule'
 import ProfilePage from './pages/ProfilePage'
 import { NoMatch } from "src/app/components";
+import Homepage from "./pages/Homepage";
+import CartPage from "./pages/CartPage";
+import ProductListPage from "./pages/ProductListPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import PersonalizePage from "./pages/PersonalizePage";
+import CreateOrderPage from "./pages/CreateOrderPage";
+import TrackOrderPage from "./pages/TrackOrderPage";
+import SearchPage from "./pages/SearchPage";
+import CreateYourOwnPage from "./pages/CreateYourOwnPage";
 const CoreRoutes = () => {
     const { path } = useRouteMatch();
     return (
         <>
-            {/* <p>AuthRoutes</p> */}
+            {/* <p>CoreRoutes</p> */}
             <Switch>
+                <Route exact path={`${path}/`} render={() => <Redirect to="{`${path}/home_page`}" />} />
                 <Route path={`${path}/profile`} component={ProfilePage} />
+                <Route path={`${path}/home_page`} component={Homepage} />
+                <Route path={`${path}/cart_page`} component={CartPage} />
+                <Route path={`${path}/product_list_page`} component={ProductListPage} />
+                <Route path={`${path}/product_detail_page`} component={ProductDetailPage} />
+                <Route path={`${path}/create_your_own_page`} component={CreateYourOwnPage} />
+                <Route path={`${path}/personalize_page`} component={PersonalizePage} />
+                <Route path={`${path}/create_order_page`} component={CreateOrderPage} />
+                <Route path={`${path}/track_order_page`} component={TrackOrderPage} />
+                <Route path={`${path}/search_page`} component={SearchPage} />
 
-                <Route path={`${path}/admin`} component={AdminModule} />
-
-                <Route path={`${path}/manager`} component={ManagerModule} />
-                <Route path={`${path}/business_staff`} component={BusinessStaffModule} />
-                <Route path={`${path}/technical_staff`} component={TechnicalStaffModule} />
                 <Route component={NoMatch} />
             </Switch>
         </>
@@ -30,6 +38,3 @@ const CoreRoutes = () => {
 
 export default CoreRoutes
 
-
-
-{/* <Route path={`${path}/manager`} component={ManagerPage} /> */ }

@@ -1,6 +1,0 @@
-export * from './Table'
-export * from './Manage'
-export * from './AddForm'
-export * from './EditForm'
-export * from './StatisticAndChart'
-export * from './Extra'

@@ -105,7 +105,7 @@ const MainPersonalize = (props) => {
             pixelRatio: 2
         });
         console.log(uri);
-        
+
     };
 
 
@@ -116,7 +116,7 @@ const MainPersonalize = (props) => {
 
 
                 <div className={classes.toolbarContainer}>
-                    <ToolbarPersonalize stageRef={stageRef} handleExport={handleExport} />
+                    <ToolbarPersonalize stageRef={stageRef} handleExport={handleExport} handleUpload={handleUpload} />
                 </div>
 
                 <div className={classes.mainStageBarContainer}>

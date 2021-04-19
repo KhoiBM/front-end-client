@@ -6,8 +6,7 @@ import { AiOutlineEdit, AiOutlineDelete, AiOutlineCloudUpload, AiOutlineBlock } 
 import { ViewCartItemInformation } from '../ViewCartItemInformation';
 import { useFormat, useLoadPhotoList, useRefresh } from 'src/app/utils';
 import config from 'src/environments/config';
-import { AddDemoProductPhoto } from '../../modules/technical_staff/components/AddForm/AddDemoProductPhoto';
-import { Personalize } from '../../modules/technical_staff/components/Extra/Personalize';
+import { Personalize } from '../Personalize';
 
 const useStyles = makeStyles(theme => ({
     cartItemContainer: {
@@ -242,8 +241,6 @@ export const CartItem = (props) => {
             </Box>
 
             <ViewCartItemInformation cartItemDetailModal={cartItemDetailModal} setCartItemDetailModal={setCartItemDetailModal} />
-
-            <AddDemoProductPhoto addDemoPhotoModal={addDemoPhotoModal} setAddDemoPhotoModal={setAddDemoPhotoModal} />
 
             <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
 

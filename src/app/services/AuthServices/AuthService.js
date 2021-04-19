@@ -55,6 +55,7 @@ export class AuthService {
     }
 
     static signOut = () => {
+        // useHttpModule().get(config.useApiPath.api.auth.SignOut)
         localStorage.removeItem("pps-token")
         localStorage.removeItem("role")
     }
