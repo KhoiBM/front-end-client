@@ -9,6 +9,7 @@ justify-content: center;
 align-items: center;
 background: #010606;
 /* border: 1px solid red; */
+padding:68px;
 
 @media screen  and (max-width: 768px){
     height: 1100px;
@@ -21,8 +22,8 @@ background: #010606;
 
 export const CategoriesWrapper = styled.div`
 max-width: 1200px;
-margin: 0 auto;
-margin-bottom: 48px;
+margin: 48px auto;
+/* margin-bottom: 48px; */
 display: grid;
 grid-template-columns: 1fr 1fr 1fr;
 grid-template-rows:  minmax(100px,1fr) minmax(100px,1fr) minmax(100px,1fr);

@@ -27,7 +27,7 @@ export const ProductList = (props) => {
                                 pathname: `/core/product_detail_page`,
                                 // search: ``,
                                 state: {
-                                    recordDetail: {
+                                    data: {
                                         rawProductCode: record.rawProductCode,
                                         categoryCode: record.categoryCode,
                                         createdBy: record.createdBy
@@ -48,7 +48,6 @@ export const ProductList = (props) => {
                                     <br />
                                     <P>
                                         <Typography variant="body2" style={{ color: "#01bf71" }}>{`${useFormat().formatMoney(record.unitPrice)} đ`}</Typography>
-
                                     </P>
                                 </ProductCard>
                             </CardLinkR>

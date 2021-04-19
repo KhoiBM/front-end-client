@@ -9,6 +9,7 @@ justify-content: center;
 align-items: center;
 background: #010606;
 /* border: 1px solid red; */
+padding:68px;
 
 @media screen  and (max-width: 768px){
     height: 1100px;
@@ -21,8 +22,8 @@ background: #010606;
 
 export const ServicesWrapper = styled.div`
 max-width: 1200px;
-margin: 0 auto;
-margin-bottom: 48px;
+margin: 48px auto;
+/* margin-bottom: 48px; */
 /* display: grid; */
 /* grid-template-columns: 1fr 1fr 1fr; */
 /* grid-gap: 16px; */
@@ -58,6 +59,7 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 transition: all 0.2 ease-in-out;
 padding: 15px 10px;
 width:300px;
+/* border: 1px solid blue; */
 
 &:hover {
     transform: scale(1.02);

@@ -34,7 +34,7 @@ flex-wrap:wrap;
 padding: 0 50px;
 width:1100px;
 height:auto;
-min-height: 800px;
+/* min-height: 800px; */
 /* border: 1px solid blue; */
 
 @media screen and (max-width: 1000px){
@@ -55,7 +55,7 @@ border-radius: 10px;
 max-height: 340px;
 box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 transition: all 0.2 ease-in-out;
-padding: 15px 10px;
+padding: 25px 10px;
 width:300px;
 min-height:400px;
 

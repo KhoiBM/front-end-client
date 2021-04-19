@@ -5,11 +5,13 @@ import { useLoadPhotoList } from 'src/app/utils';
 import config from 'src/environments/config';
 const useStyles = makeStyles(theme => ({
     photoWrapper: {
-        width: "200px",
-        height: "200px",
+        width: "300px",
+        height: "250px",
         display: "flex",
         justifyContent: "center",
-        alignItem: "center"
+        alignItems: "center",
+        // border: "1px solid red",
+
     },
     cardPhoto: {
         objectFit: "contain",
@@ -17,6 +19,7 @@ const useStyles = makeStyles(theme => ({
         maxHeight: "80%",
         width: "auto",
         height: "auto",
+        // border: "1px solid red",
     }
 
 }))
@@ -33,7 +36,7 @@ export const ProductPhotoCard = (props) => {
 
     }, [recordForPhotoCard])
 
-    console.log("photoList:" + photoList)
+    // console.log("photoList:" + photoList)
 
     const loadInit = async () => {
         if (recordForPhotoCard && recordForPhotoCard != null) {

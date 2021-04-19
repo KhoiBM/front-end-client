@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FooterBar, Navbar } from '../components';
+import { FooterBar, Navbar, MainBar } from '../components';
 import config from 'src/environments/config';
 
 const CartPage = () => {
@@ -7,7 +7,9 @@ const CartPage = () => {
     return (
         <>
             {/* <p>CartPage</p> */}
+            <MainBar>
 
+            </MainBar>
         </>
     )
 }

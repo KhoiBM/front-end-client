@@ -1,10 +1,13 @@
 import React from 'react'
-import { Profile } from '../components'
+import { Profile, MainBar } from '../components'
 const ProfilePage = () => {
     return (
         <>
             {/* <p>ProfilePage</p> */}
-            <Profile />
+
+            <MainBar>
+                <Profile />
+            </MainBar>
         </>
     )
 }

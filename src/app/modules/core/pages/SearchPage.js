@@ -1,9 +1,14 @@
 import React from 'react'
+import { MainBar } from '../components'
 
 const SearchPage = () => {
     return (
         <>
-            <p>SearchPage</p>
+
+            <MainBar>
+                <p>SearchPage</p>
+            </MainBar>
+
         </>
     )
 }

@@ -32,13 +32,17 @@ const useStyles = makeStyles(theme => ({
     pageFormContainer: {
         width: "100%",
         height: "100%",
-        // background: "red",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 999,
+        zIndex: 0,
         position: "relative",
-        overflow: "scroll",
+        // overflow: "scroll",
+        // background: "red",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+
+
+
 
     },
     bg: {
@@ -51,11 +55,25 @@ const useStyles = makeStyles(theme => ({
     },
     pageForm: {
         width: "30rem",
-        padding: theme.spacing(3),
+        height: "auto",
         position: "relative",
         // background: "blue",
-        overflow: "scroll",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        background: "#fff",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: "15px 15px",
+        borderRadius: "10px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.2 ease -in -out",
 
+        '&:hover': {
+            transform: "scale(1.02)",
+            transition: "all 0.2 ease -in -out",
+            cursor: "pointer"
+        }
     },
     iconCloseWrapper: {
         position: "absolute",
@@ -118,9 +136,11 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         width: "100%",
         height: "100%",
+        zIndex: 1,
+        margin: "6rem auto",
         // background: "red",
-        zIndex: 999,
-        margin: "6rem auto"
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        padding: theme.spacing(6)
     }
 }))
 
@@ -146,7 +166,7 @@ export const Profile = () => {
 
 
     useEffect(async () => {
-        document.body.classList.add(classes.bg)
+        // document.body.classList.add(classes.bg)
         try {
             const response = await (await ProfileServices.view()).data
             if (response.result == config.useResultStatus.SUCCESS) {
@@ -201,7 +221,7 @@ export const Profile = () => {
             {/* <p>Profile</p> */}
             <div className={classes.profileContainer}>
                 <div className={classes.pageFormContainer}>
-                    <Paper elevation={5} className={classes.pageForm}>
+                    <Paper elevation={0} className={classes.pageForm}>
 
                         <div className={classes.iconCloseWrapper} onClick={() => { history.goBack() }}>
                             <div className={classes.iconClose}>

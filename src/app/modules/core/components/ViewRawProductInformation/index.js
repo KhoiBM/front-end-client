@@ -15,22 +15,33 @@ import { useFormat, useLoadPhotoList } from 'src/app/utils';
 const useStyles = makeStyles(theme => ({
     pageViewInfomationContainer: {
         width: "100%",
-        minHeight: "800px",
+        minHeight: "1100px",
         height: "auto",  //  làm mất goc paper ở dưới 
         // background: "red",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        position: "relative",
-        overflow: "scroll",
+        // position: "relative",
+        // overflow: "scroll",
+
 
     },
     pageViewInfomationWrapper: {
         width: "100%",
-        padding: theme.spacing(3),
+        // padding: theme.spacing(3),
         height: "auto",
-        minHeight: "800px",
+        minHeight: "1000px",
         // background: "blue",
+        // padding: "15px 15px",
+        borderRadius: "10px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.2 ease -in -out",
+
+        '&:hover': {
+            // transform: "scale(1.02)",
+            transition: "all 0.2 ease -in -out",
+            cursor: "pointer"
+        }
 
     },
     rootGrid: {
@@ -107,34 +118,53 @@ export const ViewRawProductInformation = (props) => {
 
     const classes = useStyles();
 
-    const { recordForViewInformation } = props
-    const bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
-    const folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
+    const { record } = props
+
+    const { rawProductCode, rawProductName, description, unitPrice, totalQuantity, size, color, categoryName, createdBy, createdAt, updatedAt } = record
+
     const { loadPhotoList, photoList, setPhotoList } = useLoadPhotoList()
 
 
 
     useEffect(() => {
-        if (recordForViewInformation && recordForViewInformation != null) {
-            const categoryCode = recordForViewInformation.categoryCode
-            const rawProductCode = recordForViewInformation.rawProductCode
-            const fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+        loadInit()
+    }, [record])
+
+    console.log("photoList:" + photoList)
+
+    const loadInit = async () => {
+
+        if (record && record != null) {
+            const { categoryCode, rawProductCode, createdBy } = record
+            console.log("categoryCode:" + categoryCode)
+            console.log("rawProductCode:" + rawProductCode)
+            console.log("createdBy:" + createdBy)
+            let bucketName = ""
+            let folder = ""
+            let fileKey = ''
+
+            switch (createdBy) {
+                case "Khách hàng":
+                    bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
+                    folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
+                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                    break;
+                case "Quản lý":
+                    bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+                    folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
+                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                    break;
+            }
+
             loadPhotoList(bucketName, fileKey)
             // console.log("loadPhotoList")
         }
-    }, [])
-
+    }
 
     return (
         <>
             <div className={classes.pageViewInfomationContainer}>
-                <Paper elevation={5} className={classes.pageViewInfomationWrapper}>
-
-                    <IconClose handleClose={props.handleClose} />
-
-                    <PageHeader>
-                        Xem thông tin chi tiết sản phẩm thô
-                    </PageHeader>
+                <Paper elevation={0} className={classes.pageViewInfomationWrapper}>
 
                     <Grid container spacing={4} className={classes.rootGrid}>
 
@@ -146,18 +176,18 @@ export const ViewRawProductInformation = (props) => {
                         <Grid item xs={6} sm={6} md={6} className={classes.gridItem2}>
                             <Grid container>
                                 <Grid item xs={12} sm={12} md={12} >
-                                    <Box className={classes.categoryContainer}>
-                                        <Typography variant={"subtitle1"} color={"textSecondary"}>Mã Code: {recordForViewInformation.rawProductCode}</Typography>
-                                    </Box>
+                                    {/* <Box className={classes.categoryContainer}>
+                                        <Typography variant={"subtitle1"} color={"textSecondary"}>Mã Code: {rawProductCode}</Typography>
+                                    </Box> */}
                                     <Box className={classes.titleContainer}>
-                                        <Typography variant={"h3"}>{recordForViewInformation.rawProductName}</Typography>
+                                        <Typography variant={"h3"}>{rawProductName}</Typography>
                                     </Box>
 
                                 </Grid >
 
                                 <Grid item xs={12} sm={12} md={12}>
                                     <Box className={classes.descriptionContainer}>
-                                        <Typography variant={"body1"}>{recordForViewInformation.description}</Typography>
+                                        <Typography variant={"body1"}>{description}</Typography>
                                     </Box>
 
                                 </Grid>
@@ -168,7 +198,7 @@ export const ViewRawProductInformation = (props) => {
                                             <Box >
                                                 <Typography variant={"h5"} color={"textSecondary"}>Giá</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"} >{useFormat().formatMoney(recordForViewInformation.unitPrice)} đ</Typography>
+                                                    <Typography variant={"body1"} >{useFormat().formatMoney(unitPrice)} đ</Typography>
                                                 </Box>
 
                                             </Box>
@@ -177,7 +207,7 @@ export const ViewRawProductInformation = (props) => {
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{recordForViewInformation.totalQuantity}</Typography>
+                                                    <Typography variant={"body1"}>{totalQuantity}</Typography>
                                                 </Box>
 
                                             </Box>
@@ -189,14 +219,15 @@ export const ViewRawProductInformation = (props) => {
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Kích thước</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{recordForViewInformation.size}</Typography>                                                </Box>
+                                                    <Typography variant={"body1"}>{size}</Typography>
+                                                </Box>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Màu sắc </Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <RiCheckboxBlankCircleFill style={{ color: `${recordForViewInformation.color}` }} />
+                                                    <RiCheckboxBlankCircleFill style={{ color: `${color}` }} />
 
                                                 </Box>
                                             </Box>
@@ -208,36 +239,39 @@ export const ViewRawProductInformation = (props) => {
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Thể loại:</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{recordForViewInformation.categoryName}</Typography>                                                </Box>
+                                                    <Typography variant={"body1"}>{categoryName}</Typography>
+                                                </Box>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
                                             <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Tạo bởi:</Typography>
+                                                {/* <Typography variant={"h5"} color={"textSecondary"}>Tạo bởi:</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{recordForViewInformation.createdBy}</Typography>                                                </Box>
+                                                    <Typography variant={"body1"}>{createdBy}</Typography>
+                                                </Box> */}
                                             </Box>
                                         </Grid>
 
                                     </Grid>
 
-                                    <Grid container>
+                                    {/* <Grid container>
                                         <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Ngày tạo:</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{recordForViewInformation.createdAt}</Typography>                                                </Box>
+                                                    <Typography variant={"body1"}>{createdAt}</Typography>
+                                                </Box>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Ngày sửa đổi:</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{recordForViewInformation.updatedAt}</Typography>
+                                                    <Typography variant={"body1"}>{updatedAt}</Typography>
                                                 </Box>
                                             </Box>
                                         </Grid>
-                                    </Grid>
+                                    </Grid> */}
 
                                 </Grid>
                             </Grid>

@@ -18,7 +18,7 @@ const CoreRoutes = () => {
         <>
             {/* <p>CoreRoutes</p> */}
             <Switch>
-                <Route exact path={`${path}/`} render={() => <Redirect to="{`${path}/home_page`}" />} />
+                <Route exact path={`${path}`} render={() => <Redirect to={`${path}/home_page`} />} />
                 <Route path={`${path}/profile`} component={ProfilePage} />
                 <Route path={`${path}/home_page`} component={Homepage} />
                 <Route path={`${path}/cart_page`} component={CartPage} />

@@ -9,6 +9,7 @@ import { NotificationBar } from '../NotificationBar';
 import { AccountMenu } from '../AccountMenu';
 import { ServicesMenu } from '../ServicesMenu';
 import { CategoriesMenu } from '../CategoriesMenu';
+import { ShoppingCartMenu } from '../ShoppingCartMenu';
 
 export function Navbar({ toggle }) {
 
@@ -41,7 +42,7 @@ export function Navbar({ toggle }) {
 
                     <NavbarContainer>
                         <NavLogo to='/core/home_page' onClick={toggleHome}>
-                            Hola Studio
+                            RIO Studio
                     </NavLogo>
 
 
@@ -69,6 +70,7 @@ export function Navbar({ toggle }) {
                             {
                                 token && token != null ?
                                     <>
+                                        <ShoppingCartMenu />
 
                                         <NotificationBar />
 

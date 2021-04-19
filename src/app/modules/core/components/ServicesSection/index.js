@@ -106,7 +106,11 @@ export const ServicesSection = () => {
                                 // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
                                 pathname: `/core/product_list_page`,
                                 // search: `serviceCode=${record.serviceCode}`,
-                                state: { serviceCode: record.serviceCode }
+                                state: {
+                                    data: {
+                                        serviceCode: record.serviceCode
+                                    }
+                                }
                             }
                             }
 

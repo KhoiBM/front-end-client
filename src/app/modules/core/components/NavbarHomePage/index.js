@@ -7,6 +7,7 @@ import { IconContext } from 'react-icons/lib';
 import { animateScroll as scroll } from 'react-scroll';
 import { NotificationBar } from '../NotificationBar';
 import { AccountMenu } from '../AccountMenu';
+import { ShoppingCartMenu } from '../ShoppingCartMenu';
 
 export function NavbarHomePage({ toggle }) {
 
@@ -39,7 +40,7 @@ export function NavbarHomePage({ toggle }) {
 
                     <NavbarContainer>
                         <NavLogo to='/core/home_page' onClick={toggleHome}>
-                            Hola Studio
+                            RIO Studio
                     </NavLogo>
 
 
@@ -77,6 +78,7 @@ export function NavbarHomePage({ toggle }) {
                             {
                                 token && token != null ?
                                     <>
+                                        <ShoppingCartMenu />
 
                                         <NotificationBar />
 
