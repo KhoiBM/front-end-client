@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import config from 'src/environments/config';
 import { ProductServices, CartServices } from 'src/app/services';
 import { RiShoppingCartLine } from 'react-icons/ri';
-
+import { animateScroll as scroll } from 'react-scroll';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -84,6 +84,9 @@ export const ShoppingCartMenu = () => {
 
     }
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
 
 
     return (
@@ -93,6 +96,7 @@ export const ShoppingCartMenu = () => {
                     onClick={
                         () => {
                             history.push('/core/cart_page')
+                            scrollToTop()
                         }
                     }
                 >

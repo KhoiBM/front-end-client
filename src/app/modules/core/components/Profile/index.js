@@ -19,11 +19,11 @@ const useStyles = makeStyles(theme => ({
     rootForm: {
         marginTop: theme.spacing(3),
         width: "100%",
-
+        height: "auto",
         // overflow: "scroll",
         // border: "1px solid red",
         '& .MuiFormControl-root': {
-            width: '200%',
+            width: '100%',
             height: "auto",
             marginBottom: theme.spacing(3),
             // border: "1px solid red",
@@ -216,6 +216,9 @@ export const Profile = () => {
         }
     }
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
     return (
         <>
             {/* <p>Profile</p> */}
@@ -223,7 +226,10 @@ export const Profile = () => {
                 <div className={classes.pageFormContainer}>
                     <Paper elevation={0} className={classes.pageForm}>
 
-                        <div className={classes.iconCloseWrapper} onClick={() => { history.goBack() }}>
+                        <div className={classes.iconCloseWrapper} onClick={() => {
+                            history.goBack()
+                            // scrollToTop()
+                        }}>
                             <div className={classes.iconClose}>
                                 <RiCloseFill />
                             </div>
@@ -236,7 +242,7 @@ export const Profile = () => {
 
                         <form noValidate onSubmit={handleSubmit} className={classes.rootForm}>
                             <Grid container>
-                                <Grid item xs={12} sm={12} md={6}>
+                                <Grid item xs={12} sm={12} md={12}>
                                     <TextField
                                         variant='outlined'
                                         label="Tên"

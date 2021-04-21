@@ -1,20 +1,23 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect } from 'react'
-import { ProductListContainer, CardLinkR, ProductCard, H2, P, Wrapper } from './ProductListElements'
+import { ProductListContainer, CardLinkR, TitleWrapper, ProductCard, H2, P, Wrapper } from './ProductListElements'
 import { Divider, Typography } from '@material-ui/core'
 import { useFormat } from 'src/app/utils'
 import { PaginationBar } from '../PaginationBar'
 import { ProductPhotoCard } from '../ProductPhotoCard'
-
+import { animateScroll as scroll } from 'react-scroll';
 
 export const ProductList = (props) => {
     const { records, page, setPage, totalPage } = props
 
     useEffect(() => {
         // console.log(records)
-        console.log("totalPage:" + totalPage)
-    }, [records])
+        // console.log("totalPage:" + totalPage)
+    }, [records, totalPage])
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
     return (
         <>
             <ProductListContainer>
@@ -35,6 +38,7 @@ export const ProductList = (props) => {
                                 }
                             }
                             }
+                                onClick={scrollToTop}
 
                             >
                                 <ProductCard>
@@ -43,7 +47,10 @@ export const ProductList = (props) => {
                                         categoryCode: record.categoryCode,
                                         createdBy: record.createdBy
                                     }} />
-                                    <H2>{record.rawProductName}</H2>
+                                    <TitleWrapper>
+                                        <H2>{record.rawProductName}</H2>
+                                    </TitleWrapper>
+
                                     <Divider />
                                     <br />
                                     <P>

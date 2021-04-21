@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme) => ({
     },
     content: {
         width: "100%",
-        // minHeight: "1500px",
+        minHeight: "1000px",
         height: "auto",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        // alignItems: "center",
         paddingTop: theme.spacing(10),
         paddingBottom: theme.spacing(10),
         paddingLeft: theme.spacing(5),

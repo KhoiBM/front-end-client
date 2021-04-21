@@ -24,6 +24,11 @@ export const useForm = (initialFValues, validOnChange = true) => {
             // console.log(Boolean(value))
             value = value == "female" ? true : false
         }
+        if (name == "isConfirm") {
+            // value = Boolean(value)
+            // console.log(Boolean(value))
+            value = value == "true" ? true : false
+        }
         if (name == "totalQuantityOfPrintedProduct") {
             if (Number(value) < 1) {
                 value = 1

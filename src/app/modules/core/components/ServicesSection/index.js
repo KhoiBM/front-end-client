@@ -6,7 +6,7 @@ import { ProductServices } from 'src/app/services'
 import { useFormat } from 'src/app/utils'
 import { Typography, Divider } from '@material-ui/core'
 import { ServicesIconContainer } from '../ServicesIconContainer'
-
+import { animateScroll as scroll } from 'react-scroll';
 export const ServicesSection = () => {
 
     const [records, setRecords] = useState([])
@@ -67,6 +67,10 @@ export const ServicesSection = () => {
         }
     }
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
+
     return (
         <ServicesSectionContainer id='services'>
             <ServicesH1>Dịch vụ của chúng tôi</ServicesH1>
@@ -84,8 +88,14 @@ export const ServicesSection = () => {
                             }
                             }
 
+
                             >
-                                <ServicesCard >
+                                <ServicesCard onClick={() => {
+
+                                    scrollToTop()
+
+
+                                }}>
                                     {/* <ServicesIcon src={Icon3} /> */}
                                     <ServicesIconContainer recordForServicesIcon={{ serviceCode: record.serviceCode }} />
                                     <ServicesH2>{record.serviceName}</ServicesH2>
@@ -105,7 +115,7 @@ export const ServicesSection = () => {
                             <ServicesCardLinkR key={index} to={{
                                 // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
                                 pathname: `/core/product_list_page`,
-                                // search: `serviceCode=${record.serviceCode}`,
+                                search: `serviceCode=${record.serviceCode}`,
                                 state: {
                                     data: {
                                         serviceCode: record.serviceCode
@@ -115,7 +125,9 @@ export const ServicesSection = () => {
                             }
 
                             >
-                                <ServicesCard >
+                                <ServicesCard onClick={() => {
+                                    scrollToTop()
+                                }}>
                                     {/* <ServicesIcon src={Icon3} /> */}
                                     <ServicesIconContainer recordForServicesIcon={{ serviceCode: record.serviceCode }} />
                                     <ServicesH2>{record.serviceName}</ServicesH2>

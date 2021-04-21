@@ -6,7 +6,7 @@ import { useFormat } from 'src/app/utils'
 import { Typography, Divider } from '@material-ui/core'
 import { ProductServices } from 'src/app/services'
 import { CategoriesIconContainer } from '../CategoriesIconContainer'
-
+import { animateScroll as scroll } from 'react-scroll';
 export const CategoriesSection = () => {
 
     const [records, setRecords] = useState([])
@@ -69,22 +69,34 @@ export const CategoriesSection = () => {
         }
     }
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
+
     return (
         <CategoriesSectionContainer id='categories'>
-            <CategoriesH1>Thể loại đa dạng</CategoriesH1>
+            <CategoriesH1>Thể loại</CategoriesH1>
             <CategoriesWrapper>
 
                 {records && records != null && records.length > 0 && records.map((record, index) =>
                     <CategoriesCardLinkR key={index} to={{
                         // pathname: `/core/product_list_page?categoryCode=${record.categoryCode}`,
                         pathname: `/core/product_list_page`,
-                        // search: `categoryCode=${record.categoryCode}`,
-                        state: { categoryCode: record.categoryCode }
+                        search: `categoryCode=${record.categoryCode}`,
+                        state: {
+                            data: {
+                                categoryCode: record.categoryCode
+                            }
+                        }
                     }
+
                     }
 
                     >
-                        <CategoriesCard >
+                        <CategoriesCard
+                            onClick={() => {
+                                scrollToTop()
+                            }}>
                             <CategoriesIconContainer recordForCategoriesIcon={{ categoryCode: record.categoryCode }} />
                             <CategoriesH2>{record.serviceName}</CategoriesH2>
                             <CategoriesP>{record.description}</CategoriesP>

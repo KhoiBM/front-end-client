@@ -7,7 +7,7 @@ import { IconClose } from 'src/app/components';
 import config from 'src/environments/config';
 import { useLoadPhotoList } from 'src/app/utils';
 import { PageHeader } from 'src/app/modules/core/components';
-import { ViewCart } from '../ViewCart';
+import { ViewCart, ViewCartOrder } from '../ViewCartOrder';
 import bgAuth from "src/app/assets/image/bg_auth.jpeg"
 
 const useStyles = makeStyles(theme => ({
@@ -202,7 +202,7 @@ export const ViewOrderInformation = (props) => {
                     <Grid container spacing={1} className={classes.rootGrid}>
 
                         <Grid item xs={9} sm={9} md={9} className={classes.gridItemViewCart}>
-                            <ViewCart recordForCart={recordForCart} setTotalOrderPrices={setTotalOrderPrices} handleRefreshViewOrderInformation={handleRefreshViewOrderInformation} />
+                            <ViewCartOrder recordForCart={recordForCart} setTotalOrderPrices={setTotalOrderPrices} handleRefreshViewOrderInformation={handleRefreshViewOrderInformation} />
                         </Grid>
 
                         <Grid item xs={3} sm={3} md={3} className={classes.gridItemContentOrder}>
@@ -235,19 +235,19 @@ export const ViewOrderInformation = (props) => {
                                         // required
                                         // disabled
                                         />
-                                        <TextField
+                                        {/* <TextField
                                             variant='outlined'
                                             label="Mã Code khách hàng"
                                             value={recordOrder.customerCode}
                                             name='customerID'
                                         // required
                                         // disabled
-                                        />
+                                        /> */}
                                         <TextField
                                             variant='outlined'
                                             label="Tên khách hàng"
                                             value={recordOrder.customerName}
-                                            name='customerID'
+                                            name='customerName'
                                         // required
                                         // disabled
                                         />
@@ -255,7 +255,7 @@ export const ViewOrderInformation = (props) => {
                                             variant='outlined'
                                             label="Số điện thoại"
                                             value={recordOrder.phone}
-                                            name='customerID'
+                                            name='phone'
                                         // required
                                         // disabled
                                         />
@@ -263,7 +263,7 @@ export const ViewOrderInformation = (props) => {
                                             variant='outlined'
                                             label="Địa chỉ"
                                             value={recordOrder.address}
-                                            name='shipAt'
+                                            name='address'
                                             // required
                                             // disabled
                                             multiline
@@ -293,7 +293,7 @@ disabled
                                         <TextField
                                             variant='outlined'
                                             label="Trạng thái thanh toán"
-                                            value={recordOrder.statusPayment ? "Đã thanh toán thành công" : "Chưa thanh toán"}
+                                            value={recordOrder.statusPayment ? "Đã thanh toán" : "Chưa thanh toán"}
                                             name='statusOrder'
                                         // required
                                         // disabled
@@ -312,14 +312,15 @@ disabled
                                             label="Ghi chú"
                                             value={recordOrder.note}
                                             name='note'
-                                        // required
-                                        // disabled
+                                            // required
+                                            // disabled
+                                            multiline
                                         />
                                         <TextField
                                             variant='outlined'
                                             label="Ngày tạo"
                                             value={recordOrder.createdAt}
-                                            name='note'
+                                            name='createdAt'
                                         // size="medium"
                                         // required
                                         // disabled
@@ -328,7 +329,7 @@ disabled
                                             variant='outlined'
                                             label="Ngày sửa đổi"
                                             value={recordOrder.updatedAt}
-                                            name='note'
+                                            name='updatedAt'
                                         // size="medium" 
                                         // required
                                         // disabled

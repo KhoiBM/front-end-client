@@ -66,7 +66,6 @@ const MainPersonalize = (props) => {
 
     const { recordForMainPersonalize, dragUrl, stageRef } = props
 
-
     const [recordForMainStageBar, setRecordForMainStageBar] = useState(null)
 
     const [recordForFooterBarPersonalize, setRecordForFooterBarPersonalize] = useState(null)

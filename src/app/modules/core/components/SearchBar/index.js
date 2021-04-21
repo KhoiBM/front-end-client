@@ -1,60 +1,87 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { TextField, makeStyles, InputAdornment, IconButton } from '@material-ui/core'
-import { useForm } from 'src/app/utils'
+import { useForm, useSearchHandle, useScrollToTop } from 'src/app/utils'
 import { MdSearch } from 'react-icons/md'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
     searchBarWrapper: {
+        width: "400px",
+        height: "100%",
         position: "relative",
         // background: "red"
+        // border: "1px solid red",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+
     },
-    searchBar: {
-        width: "30vmax"
+    searchBarTextField: {
+        width: "80%",
+        height: "auto",
+        // background: "blue",
+        color: "#fff",
+        '& .MuiInputBase-root': {
+            border: "1px solid #fff",
+            color: "#fff",
+            height: "40px",
+
+        },
+        '&:placeholder': {
+        }
+
     },
     iconSearchWrapper: {
         position: "absolute",
-        top: 4,
-        right: 9,
+        top: 17,
+        right: 40,
 
     }
 }))
 
-// const initialFValues = {
-//     keywords: '',
-// }
 
 export const SearchBar = (props) => {
     const classes = useStyles();
 
-    const { keywords, setKeywords, setSearchAction, clickSearch, setClickSearch, handleKeywordsChange } = props
+    const { scrollToTop } = useScrollToTop()
 
+    const history = useHistory()
+    // const { keywords, setKeywords, setSearchAction, clickSearch, setClickSearch, handleKeywordsChange } = props
+
+    const { keywords, setKeywords, clickSearch, setClickSearch, searchAction, setSearchAction, handleKeywordsChange } = useSearchHandle()
+
+    useEffect(() => {
+        // console.log("keywords: " + keywords)
+    }, [keywords])
 
     return (
         <>
             <div className={classes.searchBarWrapper}>
                 <TextField
                     variant='outlined'
-                    label="Tìm kiếm"
+                    // label="Tìm kiếm"
                     value={keywords}
                     name="keywords"
                     onChange={handleKeywordsChange}
-                    className={classes.searchBar}
+                    className={classes.searchBarTextField}
+                    placeholder="Tìm kiếm"
                 />
                 <IconButton className={classes.iconSearchWrapper} onClick={() => {
 
 
-                    if (!keywords || keywords == null || keywords == undefined || keywords.length < 0) {
-                        setSearchAction(false)
-
-                        setClickSearch((prev) => !prev)
-
-                    } else {
-                        setSearchAction(true)
-
-                        setClickSearch((prev) => !prev)
-
-                    }
+                    history.push(
+                        {
+                            pathname: `/core/search_page`,
+                            search: `keywords=${keywords}`,
+                            state: {
+                                data: {
+                                    keywords
+                                }
+                            }
+                        }
+                    )
+                    scrollToTop()
 
 
 

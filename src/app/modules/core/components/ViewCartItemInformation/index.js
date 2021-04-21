@@ -9,7 +9,7 @@ import { IconClose } from 'src/app/components';
 import config from 'src/environments/config';
 import { useLoadPhotoList, useRefresh, useFormat } from 'src/app/utils';
 import { PageHeader } from 'src/app/modules/core/components';
-import { ViewCart } from '../ViewCart';
+import { ViewCart } from '../ViewCartOrder';
 import { GirdCartItemPhotoList } from '../GirdCartItemPhotoList';
 
 const useStyles = makeStyles(theme => ({
@@ -194,7 +194,7 @@ export const ViewCartItemInformation = (props) => {
                     <IconClose handleClose={handleCloseModal} />
 
                     <Box className={classes.PageHeaderWrapper}>
-                        <PageHeader>Xem thông tin chi tiết mục trong đơn hàng</PageHeader>
+                        <PageHeader>Xem thông tin chi tiết mục trong giỏ hàng</PageHeader>
                     </Box>
 
                     <Grid container spacing={1} className={classes.rootGridCartItemDetail}>
@@ -292,7 +292,7 @@ export const ViewCartItemInformation = (props) => {
                                         // rows="10"
 
                                         />
-                                        <TextField
+                                        {/* <TextField
                                             variant='outlined'
                                             label="Ngày tạo"
                                             value={createdAt}
@@ -305,7 +305,7 @@ export const ViewCartItemInformation = (props) => {
                                             value={updatedAt}
                                             name='note'
 
-                                        />
+                                        /> */}
 
 
                                     </Box>

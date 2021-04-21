@@ -1,11 +1,11 @@
 import React from 'react'
-import { MainBar } from '../components'
+import { MainBar, CreateCustomersRawProduct } from '../components'
 
 const CreateYourOwnPage = () => {
     return (
         <>
             <MainBar>
-
+                <CreateCustomersRawProduct />
             </MainBar>
         </>
     )

@@ -30,7 +30,7 @@ export function NavbarHomePage({ toggle }) {
         };
     }, []);
 
-    const toggleHome = () => {
+    const scrollToTop = () => {
         scroll.scrollToTop();
     }
     return (
@@ -39,7 +39,7 @@ export function NavbarHomePage({ toggle }) {
                 <Nav scrollNav={scrollNav}>
 
                     <NavbarContainer>
-                        <NavLogo to='/core/home_page' onClick={toggleHome}>
+                        <NavLogo to='/core/home_page' onClick={scrollToTop}>
                             RIO Studio
                     </NavLogo>
 
@@ -50,7 +50,8 @@ export function NavbarHomePage({ toggle }) {
                                     smooth={true}
                                     duration={500} spy={true}
                                     exact={true}
-                                    offset={-80}>
+                                    offset={-80}
+                                >
                                     Dịch vụ
                                     </NavSLinks>
                             </NavItem>
@@ -60,7 +61,8 @@ export function NavbarHomePage({ toggle }) {
                                     smooth={true}
                                     duration={500} spy={true}
                                     exact={true}
-                                    offset={-80}>
+                                    offset={-80}
+                                >
                                     Thể loại
                                     </NavSLinks>
                             </NavItem>
@@ -71,6 +73,7 @@ export function NavbarHomePage({ toggle }) {
                                     duration={500} spy={true}
                                     exact={true}
                                     offset={-80}
+                                    onClick={scrollToTop}
                                 >
                                     Tất cả sản phẩm
                                 </NavRLinks>

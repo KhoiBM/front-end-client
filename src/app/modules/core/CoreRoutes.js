@@ -8,10 +8,10 @@ import CartPage from "./pages/CartPage";
 import ProductListPage from "./pages/ProductListPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import PersonalizePage from "./pages/PersonalizePage";
-import CreateOrderPage from "./pages/CreateOrderPage";
 import TrackOrderPage from "./pages/TrackOrderPage";
 import SearchPage from "./pages/SearchPage";
 import CreateYourOwnPage from "./pages/CreateYourOwnPage";
+import CreateOrderPage from "./modules/CreateOrder/pages/CreateOrderPage";
 const CoreRoutes = () => {
     const { path } = useRouteMatch();
     return (

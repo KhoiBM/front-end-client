@@ -8,6 +8,7 @@ import { toast } from 'react-toastify';
 import { AiOutlineProfile, AiOutlineLogout, AiOutlineFileSearch } from 'react-icons/ai';
 import { NavRLinks, NavSLinks } from './ServicesMenuElements'
 import config from 'src/environments/config';
+import { animateScroll as scroll } from 'react-scroll';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -62,6 +63,11 @@ export const ServicesMenu = () => {
     useEffect(() => {
         loadInit()
     }, [])
+
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
+
 
     const loadInit = async () => {
         try {
@@ -143,33 +149,39 @@ export const ServicesMenu = () => {
                 className={classes.menu}
             >
                 {records && records != null && records.length > 0 && records.map((record, index) =>
-                    <>
-                        <MenuItem
-                            key={index}
-                            onClick={() => {
-                                handleCloseMenu();
-                                history.push(
-                                    record.serviceName == "Tạo của riêng bạn"
-                                        ? {
-                                            pathname: `/core/create_your_own_page`,
-                                            // search: ``,
-                                            state: {}
-                                        } :
-                                        {
-                                            // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
-                                            pathname: `/core/product_list_page`,
-                                            // search: `serviceCode=${record.serviceCode}`,
-                                            state: { serviceCode: record.serviceCode }
+
+                    <MenuItem
+                        key={index}
+                        onClick={() => {
+                            handleCloseMenu();
+                            history.push(
+                                record.serviceName == "Tạo của riêng bạn"
+                                    ? {
+                                        pathname: `/core/create_your_own_page`,
+                                        // search: ``,
+                                        state: {}
+                                    } :
+                                    {
+                                        // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
+                                        pathname: `/core/product_list_page`,
+                                        search: `serviceCode=${record.serviceCode}`,
+                                        state: {
+                                            data: {
+                                                serviceCode: record.serviceCode
+                                            }
                                         }
-                                )
+                                    }
+                            )
+                            scrollToTop()
 
-                            }}><span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-                            </span>
-                            {record.serviceName}
+                        }}>
+                        <span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-                        </MenuItem>
-                    </>
+                        </span>
+                        {record.serviceName}
+
+                    </MenuItem>
 
 
                 )

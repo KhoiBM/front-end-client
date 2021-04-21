@@ -42,9 +42,9 @@ export const ProductPhotoCard = (props) => {
         if (recordForPhotoCard && recordForPhotoCard != null) {
 
             const { categoryCode, rawProductCode, createdBy } = recordForPhotoCard
-            console.log("categoryCode:" + categoryCode)
-            console.log("rawProductCode:" + rawProductCode)
-            console.log("createdBy:" + createdBy)
+            // console.log("categoryCode:" + categoryCode)
+            // console.log("rawProductCode:" + rawProductCode)
+            // console.log("createdBy:" + createdBy)
             let bucketName = ""
             let folder = ""
             let fileKey = ''

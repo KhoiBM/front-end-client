@@ -58,7 +58,8 @@ export const ConfirmDialog = (props) => {
                         })
 
                     }} className={classes.buttonCancel}>
-                        Huỷ
+                        {/* Huỷ */}
+                        Thoát
                     </Button>
 
                     <Button onClick={() => {

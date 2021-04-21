@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 import { AiOutlineProfile, AiOutlineLogout, AiOutlineFileSearch } from 'react-icons/ai';
 import { NavRLinks, NavSLinks, CategoriesCardLinkR } from './CategoriesMenuElements'
 import config from 'src/environments/config';
+import { animateScroll as scroll } from 'react-scroll';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +65,7 @@ export const CategoriesMenu = () => {
         loadInit()
     }, [])
 
+
     const loadInit = async () => {
         try {
 
@@ -116,6 +118,10 @@ export const CategoriesMenu = () => {
         }
     }
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
+
 
     return (
         <>
@@ -144,30 +150,34 @@ export const CategoriesMenu = () => {
                 className={classes.menu}
             >
                 {records && records != null && records.length > 0 && records.map((record, index) =>
-                    <>
-                        <CategoriesCardLinkR to={{
-                            // pathname: `/core/product_list_page?categoryCode=${record.categoryCode}`,
-                            pathname: `/core/product_list_page`,
-                            // search: `categoryCode=${record.categoryCode}`,
-                            state: { categoryCode: record.categoryCode }
-                        }
-                        }>
-                            <MenuItem
-                                key={index}
-                                onClick={() => {
-                                    handleCloseMenu();
-                                }}>
-                                <span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
 
-                                </span>
-                                {record.categoryName}
+                    <MenuItem
+                        key={index}
 
-                            </MenuItem>
-                        </CategoriesCardLinkR>
+                        onClick={() => {
+                            handleCloseMenu();
+                            history.push(
+                                {
+                                    // pathname: `/core/product_list_page?categoryCode=${record.categoryCode}`,
+                                    pathname: `/core/product_list_page`,
+                                    search: `categoryCode=${record.categoryCode}`,
+                                    state: {
+                                        data: {
+                                            categoryCode: record.categoryCode
+                                        }
+                                    }
+                                }
+                            )
+                            scrollToTop()
+                        }}
 
-                    </>
+                    >
+                        <span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
 
+                        </span>
+                        {record.categoryName}
 
+                    </MenuItem>
                 )
                 }
 

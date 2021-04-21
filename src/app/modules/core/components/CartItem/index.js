@@ -68,10 +68,6 @@ const useStyles = makeStyles(theme => ({
 
 export const CartItem = (props) => {
 
-    const role = localStorage.getItem("role");
-    const useRoleName = config.useRoleName;
-
-
     const classes = useStyles();
 
 
@@ -81,14 +77,11 @@ export const CartItem = (props) => {
 
     const [cartItemDetailModal, setCartItemDetailModal] = useState({ isOpen: false })
 
-    const [addDemoPhotoModal, setAddDemoPhotoModal] = useState({ isOpen: false })
-
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
-    const [personalizeModal, setPersonalizeModal] = useState({ isOpen: false })
+    // const [personalizeModal, setPersonalizeModal] = useState({ isOpen: false })
 
     const { loadPhotoList, photoList, setPhotoList } = useLoadPhotoList()
-
 
     useEffect(() => {
         loadInit()
@@ -130,8 +123,7 @@ export const CartItem = (props) => {
 
     const handleCloseModal = () => {
         setCartItemDetailModal({ isOpen: false })
-        setAddDemoPhotoModal({ isOpen: false })
-        setPersonalizeModal({ isOpen: false })
+        // setPersonalizeModal({ isOpen: false })
         handleRefresh()
     }
 
@@ -189,28 +181,8 @@ export const CartItem = (props) => {
 
                         </ Tooltip>
 
-
-                        {
-                            // role == useRoleName.technicalStaff &&
-                            <Tooltip TransitionComponent={Zoom} placement="top" title="Tải lên ảnh mẫu sản phẩm">
-
-                                <Button onClick={(event) => {
-                                    event.stopPropagation()
-                                    const data = {
-                                        orderCode: orderCode,
-                                        orderDetailCode: orderDetailCode
-                                    }
-                                    setAddDemoPhotoModal({ isOpen: true, recordForDemoPhoto: data, handleCloseModal })
-
-                                }
-                                }>
-                                    <AiOutlineCloudUpload />
-                                </Button>
-
-                            </Tooltip>
-                        }
-                        {
-                            // role == useRoleName.technicalStaff &&
+                        {/* {
+                     
                             <Tooltip TransitionComponent={Zoom} placement="top" title="Cá nhân hoá">
 
                                 <Button onClick={(event) => {
@@ -233,16 +205,15 @@ export const CartItem = (props) => {
                                 </Button>
 
                             </Tooltip>
-                        }
+                        } */}
 
                     </Grid>
                 </Grid>
-
             </Box>
 
             <ViewCartItemInformation cartItemDetailModal={cartItemDetailModal} setCartItemDetailModal={setCartItemDetailModal} />
 
-            <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
+            {/* <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} /> */}
 
         </>
     )

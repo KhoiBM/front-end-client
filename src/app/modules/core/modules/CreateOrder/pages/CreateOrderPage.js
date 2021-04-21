@@ -1,5 +1,6 @@
 import React from 'react'
-import { Navbar, FooterBar, MainBar } from '../components'
+import { MainBar } from 'src/app/modules/core/components'
+import { CreateOrderFormContainer } from '../components'
 
 
 const CreateOrderPage = () => {
@@ -7,7 +8,7 @@ const CreateOrderPage = () => {
         <>
             {/* <p>CreateOrderPage</p> */}
             <MainBar>
-
+                <CreateOrderFormContainer />
             </MainBar>
         </>
     )

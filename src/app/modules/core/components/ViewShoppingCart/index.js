@@ -1,14 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, Typography, Container, Box, Card, Divider } from '@material-ui/core'
-import config from 'src/environments/config';
-import { toast } from 'react-toastify';
-import { PhotoServices, OrderServices } from 'src/app/services';
-import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
-import { IconClose } from 'src/app/components';
-import { PageHeader } from 'src/app/modules/core/components';
-import { useLoadPhotoList, useFormat } from 'src/app/utils';
+import React, { useState, useEffect } from 'react'
+import { makeStyles, Typography, Grid, Box, Card } from '@material-ui/core';
 import { CartItem } from '../CartItem';
+import { ShoppingCartItem } from '../ShoppingCartItem';
 
 const useStyles = makeStyles(theme => ({
     cartContainer: {
@@ -61,7 +55,7 @@ const useStyles = makeStyles(theme => ({
         position: "sticky",
         // top: -16,
         top: 0,
-        zIndex: 999,
+        zIndex: 0,
         backgroundColor: "#FAFAFA",
         // backgroundColor: theme.palette.secondary.main,
         // background: "var(--tertiary-color-main)",
@@ -103,54 +97,26 @@ const useStyles = makeStyles(theme => ({
         }
     }
 }))
-export const ViewCart = (props) => {
 
+export const ViewShoppingCart = (props) => {
     const classes = useStyles();
 
-    const { recordForCart, setTotalOrderPrices, handleRefreshViewOrderInformation } = props
+    const { recordForCart, handleRefreshShoppingCart } = props
 
     const [orderDetailList, setOrderDetailList] = useState([])
 
-
     useEffect(() => {
         if (recordForCart && recordForCart != null) {
-            loadInit()
+            loadInit(recordForCart)
         }
     }, [recordForCart])
 
-    const loadInit = async () => {
+    const loadInit = async (recordForCart) => {
         console.log("loadInit")
-        try {
-            const response = await (await OrderServices.getOrderDetailList({ orderID: recordForCart.orderID })).data
-            // console.log("response: " + JSON.stringify(response))
-            if (response && response != null) {
-                if (response.result == config.useResultStatus.SUCCESS) {
-                    const records = response.info.records
-                    // console.log("records:" + JSON.stringify(records))
-
-                    const analyzeObject = records.reduce((acc, curr) => {
-                        const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
-                        const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
-                        return { totalOrderPrices }
-                    }, { totalOrderPrices: 0 })
-
-                    setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
-                    handleRefreshViewOrderInformation()
-                    // console.log("totalOrderPrices: " + `${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
-
-                    setOrderDetailList(records && records != null ? records : [])
-                } else {
-                    toast.error(config.useMessage.resultFailure)
-                }
-            } else {
-                throw new Error("Response is null or undefined")
-            }
-
-        } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
-        }
+        setOrderDetailList(recordForCart && recordForCart != null && recordForCart.length > 0 ? recordForCart : [])
 
     }
+
 
     return (
         <>
@@ -197,11 +163,12 @@ export const ViewCart = (props) => {
                                     <Typography variant={"body1"}>Thao tác</Typography>
                                 </Grid>
                             </Grid>
+
                         </Card>
 
-                        {orderDetailList && orderDetailList != null &&
+                        {orderDetailList && orderDetailList != null && orderDetailList.length > 0 &&
                             orderDetailList.map((val, index) => (
-                                <CartItem key={index} recordForCartItem={val} />
+                                <ShoppingCartItem key={index} recordForCartItem={val} />
                             ))
                         }
                     </Grid>
@@ -210,5 +177,3 @@ export const ViewCart = (props) => {
         </>
     )
 }
-
-

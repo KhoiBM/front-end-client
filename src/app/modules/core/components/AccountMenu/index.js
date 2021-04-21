@@ -6,6 +6,7 @@ import { makeStyles, IconButton, Tooltip, Zoom, Menu, MenuItem } from '@material
 import { AuthService } from 'src/app/services';
 import { toast } from 'react-toastify';
 import { AiOutlineProfile, AiOutlineLogout, AiOutlineFileSearch } from 'react-icons/ai';
+import { animateScroll as scroll } from 'react-scroll';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -54,6 +55,9 @@ export const AccountMenu = () => {
 
     }, [])
 
+    const scrollToTop = () => {
+        scroll.scrollToTop();
+    }
 
     return (
         <>
@@ -86,6 +90,7 @@ export const AccountMenu = () => {
                     <MenuItem onClick={() => {
                         handleCloseMenuAccount();
                         history.push('/core/profile')
+                        scrollToTop()
                     }}><span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineProfile /></span>
     Hồ sơ của tôi
     </MenuItem>
@@ -93,6 +98,7 @@ export const AccountMenu = () => {
                     <MenuItem onClick={() => {
                         handleCloseMenuAccount();
                         history.push('/core/track_order_page')
+                        scrollToTop()
                     }}><span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineFileSearch /></span>
    Theo dõi đơn hàng
     </MenuItem>
@@ -102,6 +108,7 @@ export const AccountMenu = () => {
                         AuthService.signOut()
                         toast.success("Đăng xuất thành công")
                         history.push('/auth/signin')
+                        scrollToTop()
                     }}>
                         <span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineLogout />
                         </span>Đăng xuất

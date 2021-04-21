@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
-import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, Typography, Container, Box } from '@material-ui/core'
+import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, Typography, Container, Box, Button } from '@material-ui/core'
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
 import { PhotoServices } from 'src/app/services';
@@ -10,7 +10,8 @@ import { IconClose } from 'src/app/components';
 import photoDemo from 'src/app/assets/image/demoPhoto.jpeg'
 import photoDemo2 from 'src/app/assets/image/demoPhoto2.jpg'
 import photoDemo3 from 'src/app/assets/image/demoPhoto3.jpg'
-import { useFormat, useLoadPhotoList } from 'src/app/utils';
+import { useFormat, useLoadPhotoList, useRefresh } from 'src/app/utils';
+import { Personalize } from '../Personalize';
 
 const useStyles = makeStyles(theme => ({
     pageViewInfomationContainer: {
@@ -110,9 +111,49 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         fontWeight: "500",
         fontSize: "1.25rem"
+    },
+    gridItemButtonContainer: {
+        width: "100%",
+        height: "auto",
+        // border: "1px solid red",
+    },
+    buttonWrapper: {
+        marginTop: theme.spacing(3),
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        borderRadius: "10px",
+        display: "flex",
+        // justifyContent: "center",
+
+    },
+    buttonPersonalize: {
+        width: "200px",
+        height: "50px",
+
+    },
+    buttonAdd: {
+        width: "300px",
+        height: "50px",
+        bordeRadius: "5px",
+        background: "#010606",
+        whitespace: "nowrap",
+        padding: '14px 48px',
+        color: "#fff",
+        outline: "none",
+        border: "none",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        transition: "all 0.2s ease-in-out",
+
+        "&:hover": {
+            position: "relative",
+            top: "0.5px",
+            transition: "all 0.2s ease-in-out",
+            background: "var(--primary-color-main)",
+        }
     }
 }))
-// const [rawProductPhotoList, setRawProductPhotoList] = useState([])
 
 export const ViewRawProductInformation = (props) => {
 
@@ -120,46 +161,72 @@ export const ViewRawProductInformation = (props) => {
 
     const { record } = props
 
-    const { rawProductCode, rawProductName, description, unitPrice, totalQuantity, size, color, categoryName, createdBy, createdAt, updatedAt } = record
+    const [recordRawProduct, setRecordRawProduct] = useState({})
+
+    const { rawProductCode, rawProductName, description, unitPrice, totalQuantity, size, color, categoryCode, categoryName, createdBy, createdAt, updatedAt } = recordRawProduct
 
     const { loadPhotoList, photoList, setPhotoList } = useLoadPhotoList()
 
+    const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
+    const [personalizeModal, setPersonalizeModal] = useState({ isOpen: false })
 
     useEffect(() => {
-        loadInit()
-    }, [record])
-
-    console.log("photoList:" + photoList)
-
-    const loadInit = async () => {
-
         if (record && record != null) {
-            const { categoryCode, rawProductCode, createdBy } = record
-            console.log("categoryCode:" + categoryCode)
-            console.log("rawProductCode:" + rawProductCode)
-            console.log("createdBy:" + createdBy)
-            let bucketName = ""
-            let folder = ""
-            let fileKey = ''
-
-            switch (createdBy) {
-                case "Khách hàng":
-                    bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
-                    folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
-                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
-                    break;
-                case "Quản lý":
-                    bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
-                    folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
-                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
-                    break;
-            }
-
-            loadPhotoList(bucketName, fileKey)
-            // console.log("loadPhotoList")
+            loadInit(record)
         }
+    }, [record, refresh])
+
+    // console.log("photoList:" + photoList)
+
+    const loadInit = async (record) => {
+        loadPhotoInit(record)
+        loadDataInit(record)
+
     }
+
+    const loadDataInit = async (record) => {
+        setRecordRawProduct(record)
+    }
+
+    const loadPhotoInit = async (record) => {
+        const { rawProductCode, categoryCode, createdBy } = record
+
+        console.log("categoryCode:" + categoryCode)
+        console.log("rawProductCode:" + rawProductCode)
+        console.log("createdBy:" + createdBy)
+
+        let bucketName = ""
+        let folder = ""
+        let fileKey = ''
+
+        switch (createdBy) {
+            case "Khách hàng":
+                bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
+                folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
+                fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                break;
+            case "Quản lý":
+                bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+                folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
+                fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                break;
+        }
+
+        // loadPhotoList(bucketName, fileKey)
+        // console.log("loadPhotoList")
+
+    }
+
+    const addCartItem = async (data) => {
+
+    }
+
+    const handleCloseModal = () => {
+        setPersonalizeModal({ isOpen: false })
+        handleRefresh()
+    }
+
 
     return (
         <>
@@ -194,7 +261,7 @@ export const ViewRawProductInformation = (props) => {
 
                                 <Grid item xs={12} sm={12} md={12}>
                                     <Grid container>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box >
                                                 <Typography variant={"h5"} color={"textSecondary"}>Giá</Typography>
                                                 <Box className={classes.contentWrapper}>
@@ -203,7 +270,7 @@ export const ViewRawProductInformation = (props) => {
 
                                             </Box>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
                                                 <Box className={classes.contentWrapper}>
@@ -215,7 +282,7 @@ export const ViewRawProductInformation = (props) => {
                                     </Grid>
 
                                     <Grid container>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Kích thước</Typography>
                                                 <Box className={classes.contentWrapper}>
@@ -223,7 +290,7 @@ export const ViewRawProductInformation = (props) => {
                                                 </Box>
                                             </Box>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Màu sắc </Typography>
                                                 <Box className={classes.contentWrapper}>
@@ -235,7 +302,7 @@ export const ViewRawProductInformation = (props) => {
                                     </Grid>
 
                                     <Grid container>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Thể loại:</Typography>
                                                 <Box className={classes.contentWrapper}>
@@ -243,84 +310,52 @@ export const ViewRawProductInformation = (props) => {
                                                 </Box>
                                             </Box>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box>
-                                                {/* <Typography variant={"h5"} color={"textSecondary"}>Tạo bởi:</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{createdBy}</Typography>
-                                                </Box> */}
                                             </Box>
                                         </Grid>
 
                                     </Grid>
 
-                                    {/* <Grid container>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Ngày tạo:</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{createdAt}</Typography>
-                                                </Box>
-                                            </Box>
+                                    <Grid container>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemButtonContainer}>
+                                            <div className={classes.buttonWrapper}>
+                                                <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonPersonalize} onClick={(event) => {
+                                                    event.stopPropagation()
+                                                    const data = {
+                                                        categoryCode,
+                                                        rawProductCode,
+                                                        createdBy
+                                                    }
+                                                    setPersonalizeModal({
+                                                        isOpen: true,
+                                                        recordForPersonalize: data,
+                                                        handleCloseModal
+                                                    })
+                                                }}>Cá nhân hoá</Button>
+                                            </div>
                                         </Grid>
-                                        <Grid item xs={6} sm={6} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Ngày sửa đổi:</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{updatedAt}</Typography>
-                                                </Box>
-                                            </Box>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemButtonContainer}>
+
+                                            <div className={classes.buttonWrapper}>
+
+                                                <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonAdd} onClick={addCartItem}>Thêm vào giỏ hàng</Button>
+                                            </div>
+
                                         </Grid>
-                                    </Grid> */}
+
+                                    </Grid>
 
                                 </Grid>
                             </Grid>
                         </Grid>
 
                     </Grid>
-
-
                 </Paper>
-            </div>
+            </div >
+            <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
+
 
         </>
     )
 }
-
-
-
-// const [photoList, setPhotoList] = useState([
-//     {
-//         photoID: 1,
-//         rawProductID: 1,
-//         orderDetailID: "",
-//         printedProductID: "",
-//         photoTypeID: 1,
-//         photoTypeName: "Ảnh của sản phẩm",
-//         photoLink: photoDemo,
-//         createdAt: "03-03-2021",
-//         updatedAt: "03-03-2021",
-//     }, {
-//         photoID: 1,
-//         rawProductID: 1,
-//         orderDetailID: "",
-//         printedProductID: "",
-//         photoTypeID: 1,
-//         photoTypeName: "Ảnh của sản phẩm",
-//         photoLink: photoDemo2,
-//         createdAt: "03-03-2021",
-//         updatedAt: "03-03-2021",
-//     },
-//     {
-//         photoID: 1,
-//         rawProductID: 1,
-//         orderDetailID: "",
-//         printedProductID: "",
-//         photoTypeID: 1,
-//         photoTypeName: "Ảnh của sản phẩm",
-//         photoLink: photoDemo3,
-//         createdAt: "03-03-2021",
-//         updatedAt: "03-03-2021",
-//     }
-// ])
-//   {/* <Typography variant={"body1"}>{}</Typography> */}

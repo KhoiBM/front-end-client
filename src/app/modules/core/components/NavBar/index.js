@@ -10,6 +10,7 @@ import { AccountMenu } from '../AccountMenu';
 import { ServicesMenu } from '../ServicesMenu';
 import { CategoriesMenu } from '../CategoriesMenu';
 import { ShoppingCartMenu } from '../ShoppingCartMenu';
+import { SearchBar } from '../SearchBar';
 
 export function Navbar({ toggle }) {
 
@@ -32,7 +33,7 @@ export function Navbar({ toggle }) {
         };
     }, []);
 
-    const toggleHome = () => {
+    const scrollToTop = () => {
         scroll.scrollToTop();
     }
     return (
@@ -41,12 +42,18 @@ export function Navbar({ toggle }) {
                 <Nav scrollNav={scrollNav}>
 
                     <NavbarContainer>
-                        <NavLogo to='/core/home_page' onClick={toggleHome}>
+                        <NavLogo to='/core/home_page' onClick={scrollToTop}>
                             RIO Studio
                     </NavLogo>
 
 
                         <NavMenu>
+                            <NavItem>
+
+                                <SearchBar />
+
+                            </NavItem>
+
                             <NavItem>
 
                                 <ServicesMenu />
@@ -63,6 +70,7 @@ export function Navbar({ toggle }) {
                                     duration={500} spy={true}
                                     exact={true}
                                     offset={-80}
+                                    onClick={scrollToTop}
                                 >
                                     Tất cả sản phẩm
                                 </NavRLinks>

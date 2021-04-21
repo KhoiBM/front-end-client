@@ -6,26 +6,39 @@ const useStyles = makeStyles(theme => ({
 
     pageFormContainer: {
         width: "100%",
-        minHeight: "800px",
-        height: "auto",  //  làm mất goc paper ở dưới 
-        // background: "red",
+        height: "100%",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        zIndex: 999,
+        zIndex: 0,
         position: "relative",
-        overflow: "scroll",
+        // background: "red",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
 
 
     },
     pageForm: {
-        // width: "25rem",
+
         width: "50rem",
-        padding: theme.spacing(3),
-        position: "relative",
         height: "auto",
-        minHeight: "300px",
+        position: "relative",
         // background: "blue",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        background: "#fff",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        padding: "15px 15px",
+        borderRadius: "10px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.2 ease -in -out",
+
+        '&:hover': {
+            // transform: "scale(1.02)",
+            transition: "all 0.2 ease -in -out",
+            cursor: "pointer"
+        }
     },
 
 
@@ -33,14 +46,14 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         width: "100%",
         height: "auto",
+        // overflow: "scroll",
         // border: "1px solid red",
         '& .MuiFormControl-root': {
-            width: '200%',
+            width: '100%',
             height: "auto",
             marginBottom: theme.spacing(3),
             // border: "1px solid red",
-        },
-
+        }
     },
     rootGridContainer: {
         marginBottom: theme.spacing(2)
@@ -77,8 +90,9 @@ const useStyles = makeStyles(theme => ({
 
 
     buttonWrapper: {
+        marginTop: theme.spacing(2),
         // border: "1px solid red",
-        width: '99.5%',
+        width: '99%',
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "center",
