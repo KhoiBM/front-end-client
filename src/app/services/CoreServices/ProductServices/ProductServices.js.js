@@ -70,9 +70,21 @@ export class ProductServices {
                                 // updatedAt: "02-02-2020"
                             },
                             {
-                                categoryID: "1",
+                                categoryID: "2",
                                 categoryCode: "categoryCode",
-                                categoryName: "abc",
+                                categoryName: "abc2",
+                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                                serviceID: 6,
+                                serviceCode: "serviceCode",
+                                serviceName: "abc6",
+                                // isActive: true,
+                                // createdAt: "02-02-2020",
+                                // updatedAt: "02-02-2020"
+                            },
+                            {
+                                categoryID: "3",
+                                categoryCode: "categoryCode",
+                                categoryName: "abc3",
                                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                                 serviceID: 6,
                                 serviceCode: "serviceCode",
@@ -94,20 +106,9 @@ export class ProductServices {
                                 // updatedAt: "02-02-2020"
                             },
                             {
-                                categoryID: "1",
+                                categoryID: "2",
                                 categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            }, {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
+                                categoryName: "abc2",
                                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                                 serviceID: 6,
                                 serviceCode: "serviceCode",
@@ -117,9 +118,9 @@ export class ProductServices {
                                 // updatedAt: "02-02-2020"
                             },
                             {
-                                categoryID: "1",
+                                categoryID: "3",
                                 categoryCode: "categoryCode",
-                                categoryName: "abc",
+                                categoryName: "abc3",
                                 description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                                 serviceID: 6,
                                 serviceCode: "serviceCode",
@@ -128,6 +129,7 @@ export class ProductServices {
                                 // createdAt: "02-02-2020",
                                 // updatedAt: "02-02-2020"
                             }
+
 
                         ]
                 }
@@ -163,8 +165,8 @@ export class ProductServices {
                             },
                             {
                                 rawProductID: 1,
-                                rawProductCode: "productcode",
-                                rawProductName: "Áo thun trắng",
+                                rawProductCode: "productcode2",
+                                rawProductName: "Áo thun trắngproductcode2",
                                 unitPrice: 100000,
                                 totalQuantity: 10,
                                 size: "M",
@@ -330,7 +332,7 @@ export class ProductServices {
                             {
                                 rawProductID: 1,
                                 rawProductCode: "productcode",
-                                rawProductName: "Áo thun trắng view Raw ProductByCategory", unitPrice: 100000,
+                                rawProductName: "Áo thun trắng view Raw Product By Category ", unitPrice: 100000,
                                 totalQuantity: 10,
                                 size: "M",
                                 color: "#4cbb3d",
@@ -657,7 +659,6 @@ export class ProductServices {
                                 createdBy: "Quản lý",
                                 createdAt: "03-03-2021",
                                 updatedAt: "03-03-2021"
-
                             },
                             {
                                 rawProductID: 1,
@@ -809,7 +810,7 @@ export class ProductServices {
                     record: {
                         rawProductID: 1,
                         rawProductCode: "productcode",
-                        rawProductName: "Áo thun trắng",
+                        rawProductName: "Áo thun trắngproductcode",
                         unitPrice: 100000,
                         totalQuantity: 10,
                         size: "M",
@@ -818,7 +819,11 @@ export class ProductServices {
                         categoryID: "1",
                         categoryCode: "categoryCode",
                         categoryName: "Áo",
-                        createdBy: "Khách hàng",
+                        serviceCode: 1,
+                        serviceName: "abc",
+                        servicePrice: 1000000,
+                        // createdBy: "Khách hàng",
+                        createdBy: "Quản lý",
                         createdAt: "03-03-2021",
                         updatedAt: "03-03-2021"
 
@@ -842,23 +847,52 @@ export class ProductServices {
         })
     }
 
-    static createCustomersRawProduct = (data) => {
-        console.log("data: " + JSON.stringify(data))
-        console.log("uploadFiles:" + JSON.stringify(data.uploadFiles))
-        console.log(data.uploadFiles)
+    static createCustomersRawProductByLocal = (data) => {
+        try {
+            console.log("data: " + JSON.stringify(data))
+            console.log("uploadFiles:" + JSON.stringify(data.customersRawProductPhotoList))
+            console.log(data.customersRawProductPhotoList)
 
-        localStorage.setItem("CustomersRawProduct", JSON.stringify(data))
+            localStorage.setItem("customersRawProduct", JSON.stringify(data))
 
+            return Promise.resolve({
+                data: {
+                    result: config.useResultStatus.SUCCESS,
+                    info: {
+                        record: {
+
+                        }
+                    }
+                }
+            })
+        } catch (err) {
+            return Promise.resolve({
+                data: {
+                    result: config.useResultStatus.FAILURE,
+                    info: {
+                        record: {
+
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    static createCustomersRawProductByServer = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
         return Promise.resolve({
             data: {
                 result: config.useResultStatus.SUCCESS,
                 info: {
                     record: {
-
+                        categoryCode: "categoryCode",
+                        rawProductCode: "rawProductCode",
                     }
                 }
             }
         })
+
     }
 
     static getOptionToFilter = (data) => {
@@ -878,6 +912,19 @@ export class ProductServices {
                         },
 
                     ]
+                }
+            }
+        })
+    }
+    static getServicePriceCreateYourOwn = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+                    record: {
+                        servicePrice: 200000
+                    }
                 }
             }
         })

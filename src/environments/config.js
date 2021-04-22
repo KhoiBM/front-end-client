@@ -65,7 +65,9 @@ const useMessage = {
     fetchApiFailure: "Có lỗi xảy ra khi gọi api",
     resultFailure: `Có lỗi xảy ra bên server`,
     uploadPhotoFailure: "Có lỗi xảy ra khi tải ảnh lên server",
-    uploadFilePlease: "Vui lòng tải lên ảnh của sản phẩm"
+    uploadFilePlease: "Vui lòng tải lên ảnh của sản phẩm",
+    localStorageFailure: "Có lỗi xảy ra khi thao tác với local storage",
+    createOrderFailure: "Đặt hàng thất bại"
 }
 
 const useConfigAWS = {

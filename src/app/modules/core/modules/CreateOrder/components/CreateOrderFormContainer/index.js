@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Paper, makeStyles, Box, TextField, Grid, Button } from '@material-ui/core'
 import { PageHeader } from 'src/app/modules/core/components';
-import { useForm } from 'src/app/utils';
+import { useForm, useRefresh, useUploadPhoto } from 'src/app/utils';
 import { toast } from 'react-toastify';
 import config from 'src/environments/config';
-import { OrderServices } from 'src/app/services';
+import { OrderServices, CartServices, ProductServices } from 'src/app/services';
+import { CreateCustomersRawProduct } from '../../../Product';
+import { VscCaseSensitive } from 'react-icons/vsc';
 const useStyles = makeStyles(theme => ({
     mainContainer: {
         width: "100%",
@@ -126,13 +128,59 @@ const initialFValues = {
     customerName: "",
     phone: "",
     address: "",
-    note: ""
+    note: "",
 }
 
 export const CreateOrderFormContainer = (props) => {
     const classes = useStyles();
 
     const { formData, setFormData, handleInputChange, helperValid = null, validation, handleChangeColor } = useForm(initialFValues)
+
+    const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
+
+    const [shoppingCart, setShoppingCart] = useState([])
+
+    const { uploadPhoto } = useUploadPhoto()
+
+
+    useEffect(() => {
+        loadInit()
+        console.log("CreateOrderFormContainer")
+    }, [refresh])
+
+
+    const loadInit = async () => {
+        console.log("loadInit")
+        try {
+            const response = await (await CartServices.viewShoppingCart()).data
+            // console.log("response: " + JSON.stringify(response))
+
+            if (response && response != null) {
+                if (response.result == config.useResultStatus.SUCCESS) {
+
+                    const records = response.info.records
+                    console.log("recordsShoppingCart(:" + JSON.stringify(records))
+
+
+                    setShoppingCart(records && records != null ? records : [])
+
+                } else {
+                    toast.error(config.useMessage.resultFailure)
+                }
+            } else {
+                throw new Error("Response is null or undefined")
+            }
+
+        } catch (err) {
+            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+        }
+
+    }
+
+
+
+
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -142,15 +190,104 @@ export const CreateOrderFormContainer = (props) => {
         if (enableSubmit) {
             const data = {
                 ...formData,
-                shoppingCart: []
+                shoppingCart
             }
-            createOrder(data)
+            console.log("datacreateOrder: " + JSON.stringify(data))
+            try {
+                const flag = createCustomersRawProduct(shoppingCart)
+                if (flag) {
+                    createOrder(data)
+                } else {
+                    throw new Error("Tạo sản phẩm của khách hàng thất bại")
+                }
+
+
+            } catch (e) {
+                toast.error(config.useMessage.createOrderFailure);
+            }
+
+
 
 
         } else {
             toast.error(config.useMessage.invalidData);
         }
     }
+
+
+    const createCustomersRawProduct = async (shoppingCart) => {
+        shoppingCart.forEach(async (cartItem, index) => {
+            console.log("cartItem: " + JSON.stringify(cartItem))
+            const { rawProductCode, rawProductName, size, color, description, categoryID, createdBy, customersRawProductPhotoList } = cartItem
+
+            if (createdBy == "Khách hàng") {
+
+                const data = {
+                    rawProductCode,
+                    rawProductName,
+                    size,
+                    color,
+                    description,
+                    categoryID: "",
+                    createdBy: "Khách hàng"
+                }
+                console.log("dataAddcartItem:" + data)
+
+                await addCustomersRawProduct(data, customersRawProductPhotoList)
+            }
+
+        })
+        return true
+    }
+
+    const addCustomersRawProduct = async (data, customersRawProductPhotoList) => {
+        try {
+            const response = await (await ProductServices.createCustomersRawProduct(data)).data
+            // console.log("response: " + JSON.stringify(response))
+
+            if (response && response != null) {
+                if (response.result == config.useResultStatus.SUCCESS) {
+                    const bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
+                    const folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
+
+                    const record = response.info.record
+
+                    const categoryCode = record.categoryCode
+                    const rawProductCode = record.rawProductCode
+                    // const rawProductCode = data.rawProductCode
+
+                    const uploadInfo = {
+                        bucketName,
+                        prefix: `${folder}/${categoryCode}/${rawProductCode}`,
+                    }
+                    const prefix = `${folder}/${categoryCode}/${rawProductCode}`
+                    console.log("prefix:" + prefix)
+
+
+                    uploadPhoto(uploadInfo, customersRawProductPhotoList)
+
+
+                } else {
+                    toast.error(config.useMessage.resultFailure)
+                    throw new Error(config.useMessage.resultFailure)
+
+                }
+            } else {
+                throw new Error("Response is null or undefined")
+
+            }
+
+        } catch (err) {
+
+            toast.error(`${config.useMessage.fetchApiFailure} + ${err} `)
+            // throw err
+            return false
+
+        }
+        return true
+
+    }
+
 
     const createOrder = async (data) => {
         try {
@@ -163,10 +300,14 @@ export const CreateOrderFormContainer = (props) => {
 
                     // const record = response.info.record
 
-                    toast.success("Tạo thành công");
+                    toast.success("Đặt hàng thành công");
+
+                    // await CartServices.cleanCart()
+                    localStorage.set("pps-shoppingCart", "")
 
                 } else {
                     toast.error(config.useMessage.resultFailure)
+                    throw new Error(config.useMessage.resultFailure)
                 }
             } else {
                 throw new Error("Response is null or undefined")
@@ -174,6 +315,7 @@ export const CreateOrderFormContainer = (props) => {
 
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            throw err
         }
     }
 
