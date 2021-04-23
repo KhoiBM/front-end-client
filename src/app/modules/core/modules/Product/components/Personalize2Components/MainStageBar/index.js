@@ -6,6 +6,12 @@ import { StageKonvaContainer } from '../StageKonvaContainer';
 import { VscOpenPreview } from 'react-icons/vsc'
 import { PreviewDesignedPhoto } from '../PreviewDesignedPhoto';
 import { useRefresh } from 'src/app/utils';
+import { AiOutlinePlusSquare, AiOutlineClose } from 'react-icons/ai';
+
+import { v4 as uuidv4 } from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
+
+
 const useStyles = makeStyles(theme => ({
     rootGridContainer: {
         width: "100%",
@@ -18,11 +24,13 @@ const useStyles = makeStyles(theme => ({
         borderRight: "1px solid rgba(0, 0, 0, 0.23)",
         display: 'flex',
         justifyContent: "center !important",
+        flexDirection: "column",
         alignItems: "center",
         position: "relative",
         width: "100%",
         height: "auto",
         // background: "red",
+        padding: theme.spacing(2),
     },
     gridItemPreview: {
         width: "100%",
@@ -30,7 +38,8 @@ const useStyles = makeStyles(theme => ({
         minHeight: "70vh",
         maxHeight: "70vh",
         // background: "red",
-        overflow: "scroll"
+        overflow: "scroll",
+        padding: theme.spacing(2)
 
     },
     photoPreview: {
@@ -39,21 +48,45 @@ const useStyles = makeStyles(theme => ({
         maxHeight: "80%",
         width: 'auto',
         height: 'auto',
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
 
     },
     previewCardWrapper: {
-        width: "100%",
+        overflow: "scroll !important",
+        width: "100% !important",
         height: "auto",
         maxHeight: "12vh !important",
-        borderTop: "1px solid rgb(0,0,0,0.23)",
+        display: "flex",
+        justifyContent: "center !important",
+        alignItems: "center !important",
+        border: "1px solid rgba(0, 0, 0, 0.23)",
+        marginBottom: theme.spacing(2),
+        position: "relative",
     },
-    buttonPreview: {
+    buttonShowPreview: {
         position: "absolute",
-        right: theme.spacing(2),
-        bottom: theme.spacing(2),
+        right: theme.spacing(3),
+        bottom: theme.spacing(3),
+        zIndex: 5
+    },
+    buttonCreatePreviewPhoto: {
+        position: "absolute",
+        right: theme.spacing(3),
+        top: theme.spacing(3),
+        zIndex: 5
+    },
+    deleteIcon: {
+        color: "red"
+    },
+    deleteIconWrapper: {
+        position: "absolute",
+        right: theme.spacing(1),
+        top: theme.spacing(0.5),
+        zIndex: 5
     }
 
 }))
+
 export const MainStageBar = (props) => {
     const classes = useStyles();
 
@@ -63,39 +96,40 @@ export const MainStageBar = (props) => {
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
-    // const [photoPreviews, setPhotoPreviews] = useState([]);
-    const [photoPreview, setPhotoPreview] = useState([]);
+    const [photoPreviews, setPhotoPreviews] = useState([]);
 
-    // useEffect(() => {
-    //     console.log("photoPreviews: ")
-    //     console.log(photoPreviews)
-    // }, [bgPhoto, stageRef, photoPreviews])
+    // const [photoPreview, setPhotoPreview] = useState([]);
+
+    useEffect(() => {
+        console.log("photoPreviews: ")
+        console.log(photoPreviews)
+    }, [bgPhoto, stageRef, photoPreviews])
 
 
     useEffect(() => {
-        console.log("photoPreview: ")
-        console.log(photoPreview)
-    }, [bgPhoto, stageRef, photoPreview])
+    }, [bgPhoto, stageRef])
 
 
 
-    // const handlePreview = () => {
-    //     const image = stageRef.current.toImage({
-    //         callback(img) {
-    //             // console.log(img);
+    const handleCreatePreviewPhoto = () => {
+        const image = stageRef.current.toImage({
+            callback(img) {
+                // console.log(img);
 
-    //             setPhotoPreviews(photoPreviews.concat(img))
-    //         },
-    //         quality: 1,
-    //         pixelRatio: 2
-    //     });
-    // };
+                setPhotoPreviews(photoPreviews.concat({
+                    id: uuidv4(),
+                    photoPreview: img
+                }))
+            },
+            quality: 1,
+            pixelRatio: 2
+        });
+    };
 
     const handlePreview = () => {
         const image = stageRef.current.toImage({
             async callback(img) {
                 // console.log(img);
-                await setPhotoPreview(img)
                 setPreviewDesignedPhotoModal({
                     isOpen: true,
                     photoPreview: img,
@@ -118,27 +152,49 @@ export const MainStageBar = (props) => {
             <Grid container className={classes.rootGridContainer}>
 
                 <Grid item xs={10} sm={10} md={10} className={classes.gridItemStage}>
+
+                    <Tooltip TransitionComponent={Zoom} placement="left" title={"Tạo ảnh xem trước thiết kế"} >
+                        <Button size="small" className={classes.buttonCreatePreviewPhoto} onClick={handleCreatePreviewPhoto}>
+                            <AiOutlinePlusSquare style={{ fontSize: "30px" }} /> Tạo ảnh xem trước thiết kế
+                        </Button>
+                    </Tooltip>
+
                     <StageKonvaContainer bgPhoto={bgPhoto} dragUrl={dragUrl} stageRef={stageRef} />
-                    <br />
+
                     <Tooltip TransitionComponent={Zoom} placement="left" title={"Xem trước"} >
-                        <Button size="small" className={classes.buttonPreview} onClick={handlePreview}>
-                            <VscOpenPreview />
+                        <Button size="small" className={classes.buttonShowPreview} onClick={handlePreview}>
+                            <VscOpenPreview style={{ fontSize: "30px" }} />
                         </Button>
                     </Tooltip>
 
 
                 </Grid>
 
-                {/* <Grid item xs={2} sm={2} md={2} className={classes.gridItemPreview}>
-                    {imagePreviews && imagePreviews != null && imagePreviews.length > 0 &&
-                        imagePreviews.map((imagePreview, index) => (
-                            <Box key={index} className={classes.previewCardWrapper}>
-                                <img src={imagePreview.src} className={classes.photoPreview} />
+                <Grid item xs={2} sm={2} md={2} className={classes.gridItemPreview}>
+                    {photoPreviews && photoPreviews != null && photoPreviews.length > 0 &&
+                        photoPreviews.map((photo, index) => (
+                            <Box key={index} className={classes.previewCardWrapper} >
+                                <Box className={classes.deleteIconWrapper}  >
+                                    <AiOutlineClose className={classes.deleteIcon} onClick={(e) => {
+                                        e.stopPropagation()
+                                        setPhotoPreviews(photoPreviews.filter((val) => val.id != photo.id))
+                                    }} />
+                                </Box>
+
+
+                                <img src={photo.photoPreview.src} className={classes.photoPreview} onClick={(e) => {
+                                    e.stopPropagation()
+                                    setPreviewDesignedPhotoModal({
+                                        isOpen: true,
+                                        photoPreview: photo.photoPreview,
+                                        handleCloseModal
+                                    })
+                                }} />
                             </Box>
 
                         ))
                     }
-                </Grid> */}
+                </Grid>
 
             </Grid>
             {<PreviewDesignedPhoto previewDesignedPhotoModal={previewDesignedPhotoModal} setPreviewDesignedPhotoModal={setPreviewDesignedPhotoModal} />}

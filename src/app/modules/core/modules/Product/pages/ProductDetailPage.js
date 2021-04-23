@@ -20,11 +20,12 @@ const ProductDetailPage = () => {
     }, [])
 
     console.log("record: " + JSON.stringify(record))
+
     const loadInit = async (data) => {
         console.log("dataloadInit: " + JSON.stringify(data))
         try {
 
-            const response = await (await ProductServices.viewRawProductDetail({ rawProductCode: data.rawProductCode })).data
+            const response = await (await ProductServices.viewRawProductDetail({ rawProductID: data.rawProductID })).data
 
             // console.log("response: " + JSON.stringify(response))
 

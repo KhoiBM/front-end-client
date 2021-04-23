@@ -27,16 +27,11 @@ const SignUp = ({ toggle, isVisible }) => {
     const dispatch = useDispatch();
     const history = useHistory();
 
+    const { response } = useSelector((state) => state.auth)
+
     const { formData, setFormData, handleInputChange, helperValid = null, validation } = useForm(initialFValues)
 
-
-
-    const { response } = useSelector((state) => state.auth)
     const [isFirst, setIsFirst] = useState(true)
-
-    const regexPassword = config.useRegex.regexPassword
-    const regexEmail = config.useRegex.regexEmail
-
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 

@@ -110,7 +110,7 @@ export const ViewShoppingCart = (props) => {
             console.log("shoppingCart: " + JSON.stringify(shoppingCart))
 
         }
-    }, [shoppingCart])
+    }, [shoppingCart, handleRefreshShoppingCart])
 
     const loadInit = async (shoppingCart) => {
         console.log("loadInit")

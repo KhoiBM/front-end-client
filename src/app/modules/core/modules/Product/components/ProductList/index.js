@@ -31,6 +31,7 @@ export const ProductList = (props) => {
                                 // search: ``,
                                 state: {
                                     data: {
+                                        rawProductID: record.rawProductID,
                                         rawProductCode: record.rawProductCode,
                                         categoryCode: record.categoryCode,
                                         createdBy: record.createdBy

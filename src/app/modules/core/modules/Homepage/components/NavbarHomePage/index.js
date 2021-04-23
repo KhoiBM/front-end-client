@@ -38,7 +38,7 @@ export function NavbarHomePage({ toggle }) {
 
                     <NavbarContainer>
                         <NavLogo to='/core/home_page' onClick={scrollToTop}>
-                            RIO Studio
+                            IRO Studio
                     </NavLogo>
 
 

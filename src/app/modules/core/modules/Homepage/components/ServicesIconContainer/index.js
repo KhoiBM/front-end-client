@@ -26,12 +26,12 @@ export const ServicesIconContainer = (props) => {
 
             bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
             folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["SERVICE"]
-            fileKey = `${folder}/${serviceCode}/thumbnail`
+            // fileKey = `${folder}/${serviceCode}/thumbnail`
+            fileKey = `${folder}/${serviceCode}/`
 
             loadPhotoList(bucketName, fileKey)
-
-
             // console.log("recordForServicesIcon: " + JSON.stringify(recordForServicesIcon))
+
         }
 
     }

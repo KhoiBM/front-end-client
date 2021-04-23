@@ -10,6 +10,8 @@ import { IconClose } from 'src/app/components';
 import { useFormat, useLoadPhotoList, useRefresh, useScrollToTop } from 'src/app/utils';
 import { useHistory } from 'react-router-dom';
 import { Personalize2 } from '../Personalize2Components';
+import { useDispatch } from 'react-redux';
+import { useShoppingCartAction } from 'src/app/stores/actions';
 
 const useStyles = makeStyles(theme => ({
     pageViewInfomationContainer: {
@@ -155,6 +157,8 @@ const useStyles = makeStyles(theme => ({
 
 export const ViewRawProductInformation = (props) => {
 
+    const dispatch = useDispatch();
+
     const history = useHistory()
 
     const { scrollToTop } = useScrollToTop()
@@ -165,7 +169,7 @@ export const ViewRawProductInformation = (props) => {
 
     const [recordRawProduct, setRecordRawProduct] = useState({})
 
-    const { rawProductCode, rawProductName, description, unitPrice, totalQuantity, size, color, categoryID, categoryCode, categoryName, serviceCode,
+    const { rawProductID, rawProductCode, rawProductName, description, unitPrice, totalQuantity, size, color, categoryID, categoryCode, categoryName, serviceCode,
         serviceName, servicePrice, createdBy, createdAt, updatedAt } = recordRawProduct
 
     const { loadPhotoList, photoList, setPhotoList } = useLoadPhotoList()
@@ -222,53 +226,34 @@ export const ViewRawProductInformation = (props) => {
     }
 
     const addCartItem = async () => {
+
         if (totalQuantity >= 1) {
             try {
-                const response = await (await CartServices.addCartItem({
-                    rawProductCode,
-                    rawProductName,
-                    description,
-                    unitPrice,
-                    size,
-                    color,
-                    categoryID,
-                    categoryCode,
-                    categoryName,
-                    createdBy,
+                const dataToAdd = {
+                    ...recordRawProduct,
                     quantity: 1,
-                    servicePrice
-
-                })).data
-
-                console.log("rawProductCode: " + rawProductCode)
-
-                console.log("categoryCode: " + categoryCode)
-
-                // console.log("response: " + JSON.stringify(response))
-                if (response && response != null) {
-                    if (response.result == config.useResultStatus.SUCCESS) {
-
-                        history.push("/core/cart_page")
-                        toast.success("Thêm vào giỏ hàng thành công")
-                        scrollToTop()
-
-
-                    } else {
-                        toast.error(config.useMessage.resultFailure)
-                    }
-                } else {
-                    throw new Error("Response is null or undefined")
+                    servicePrice,
+                    customerRawProductUploadFiles: [],
+                    createdPreviewPhotoList: []
                 }
 
+                dispatch(useShoppingCartAction().addCartItemSuccess(dataToAdd))
+
+
+                // history.push("/core/cart_page")
+                toast.success("Thêm vào giỏ hàng thành công")
+                scrollToTop()
+
+
                 console.log("addCartItem")
-                console.log("rawProductCode: " + rawProductCode)
+                console.log("dataToAdd: " + dataToAdd)
+                // console.log("categoryCode: " + categoryCode)
+                // console.log("rawProductCode: " + rawProductCode)
 
             } catch (err) {
-                toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+                toast.error("Thất bại")
             }
         }
-
-
     }
 
     const handleCloseModal = () => {
@@ -379,6 +364,7 @@ export const ViewRawProductInformation = (props) => {
                                                     setPersonalizeModal({
                                                         isOpen: true,
                                                         recordForPersonalize: data,
+                                                        setRecordRawProduct,
                                                         handleCloseModal
                                                     })
                                                 }}>Cá nhân hoá</Button>

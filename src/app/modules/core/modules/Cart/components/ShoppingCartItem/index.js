@@ -9,6 +9,8 @@ import { toast } from 'react-toastify';
 import { CartServices } from 'src/app/services';
 import { useRefresh, useLoadPhotoList, useFormat } from 'src/app/utils';
 import { ConfirmDialog } from 'src/app/modules/core/components';
+import { useDispatch } from 'react-redux';
+import { useShoppingCartAction } from 'src/app/stores/actions';
 
 const useStyles = makeStyles(theme => ({
     cartItemContainer: {
@@ -70,6 +72,7 @@ const useStyles = makeStyles(theme => ({
 
 export const ShoppingCartItem = (props) => {
 
+    const dispatch = useDispatch();
 
     const classes = useStyles();
 
@@ -147,31 +150,25 @@ export const ShoppingCartItem = (props) => {
             ...confirmDialog,
             isOpen: false
         })
-
         try {
-            const response = await (await CartServices.deleteCartItem({ rawProductCode })).data
-            // console.log("response: " + JSON.stringify(response))
-            if (response && response != null) {
-                if (response.result == config.useResultStatus.SUCCESS) {
 
-                    toast.success("Xoá thành công")
+            dispatch(useShoppingCartAction().deleteCartItemSuccess({ rawProductCode }))
 
-                    handleRefresh()
-                    handleRefreshShoppingCart()
+            toast.success("Xoá thành công")
 
-                } else {
-                    toast.error(config.useMessage.resultFailure)
-                }
-            } else {
-                throw new Error("Response is null or undefined")
-            }
+            handleRefresh()
+            handleRefreshShoppingCart()
 
             console.log("onDeleteCartItem")
             console.log("rawProductCode: " + rawProductCode)
 
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            toast.error("Xoá thất bại")
         }
+
+
+
+
     }
 
 

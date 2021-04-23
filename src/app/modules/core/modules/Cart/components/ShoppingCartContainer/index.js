@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { TextField, Grid, makeStyles, Paper, Box, Typography, Button } from '@material-ui/core'
+import { TextField, Grid, makeStyles, Paper, Box, Typography, Button, Container } from '@material-ui/core'
 import { useRefresh, useFormat } from 'src/app/utils';
 import { toast } from 'react-toastify';
 import config from 'src/environments/config';
@@ -8,6 +8,8 @@ import { ViewShoppingCart } from '../ViewShoppingCart';
 import { CartServices } from 'src/app/services';
 import { animateScroll as scroll } from 'react-scroll';
 import { useHistory } from 'react-router-dom';
+import { RiShoppingCartLine } from 'react-icons/ri';
+import { useStore, useDispatch, useSelector } from 'react-redux';
 const useStyles = makeStyles(theme => ({
     mainContainer: {
         width: "100%",
@@ -32,34 +34,6 @@ const useStyles = makeStyles(theme => ({
             cursor: "pointer"
         }
     },
-    // buttonWrapper: {
-    //     marginTop: theme.spacing(2),
-    //     // border: "1px solid red",
-    //     width: '99.5%',
-    //     display: "flex",
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     // marginRight: theme.spacing(1),
-    // },
-    // button: {
-    //     width: "98%",
-    //     height: "auto",
-    //     minHeight: "80px",
-    //     cursor: "pointer",
-    //     // marginTop: theme.spacing(2),
-    //     color: "#fff",
-    //     '&:hover': {
-    //         backgroundColor: theme.palette.primary.main,
-    //         // backgroundColor: "var(--secondary-color-main)",
-    //         boxShadow: "rgb(0 0 0 / 10 %) 0px 0.3rem 1rem",
-    //         transform: "scale(1.015)",
-
-    //     },
-    //     '&:focus': {
-    //         // outline: "1px dashed var(--primary-color-dark)",
-    //         outlineOffset: "4px",
-    //     }
-    // }
     rootGrid: {
         // marginTop: theme.spacing(3),
         width: "100%",
@@ -173,10 +147,31 @@ const useStyles = makeStyles(theme => ({
             transition: "all 0.2s ease-in-out",
             background: "var(--primary-color-main)",
         }
+    },
+    gridItemEmpty: {
+        width: "100%",
+        height: "auto",
+        minHeight: "100px",
+        // border: "1px solid red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
+    },
+    emptyContainer: {
+        width: "600px",
+        height: "auto",
+        minHeight: "500px",
+        // border: "1px solid red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        color: theme.palette.grey[500]
     }
 }))
 
-// localStorage.setItem("pps-shoppingCart", JSON.stringify([
+// localStorage.setItem("pps-shoppingCart", JSON.stringify(
+// [
 //     {
 //         rawProductCode: "productcode",
 //         rawProductName: "Lorem ipsum dolor sit amet",
@@ -203,9 +198,12 @@ const useStyles = makeStyles(theme => ({
 //         quantity: 2,
 //         note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
 //     },
-// ]))
+// ]
+// ))
 
 export const ShoppingCartContainer = (props) => {
+
+
 
     const classes = useStyles();
 
@@ -215,126 +213,164 @@ export const ShoppingCartContainer = (props) => {
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
+    const store = useStore();
+
+    const dispatch = useDispatch();
+
+    const shoppingCartState = useSelector((state) => state.shoppingCartState)
+
     const [shoppingCart, setShoppingCart] = useState([])
 
     useEffect(() => {
+
         loadInit()
         console.log("refreshShoppingCartContainer")
-    }, [refresh])
 
-    useEffect(() => {
-
-
-    }, [totalOrderPrices])
-
+    }, [refresh, shoppingCart, shoppingCartState, dispatch]) 
 
     const loadInit = async () => {
         console.log("loadInit")
-        try {
-            const response = await (await CartServices.viewShoppingCart()).data
-            // console.log("response: " + JSON.stringify(response))
 
-            if (response && response != null) {
-                if (response.result == config.useResultStatus.SUCCESS) {
+        if (shoppingCartState.shoppingCart && shoppingCartState.shoppingCart != null && Object.keys(shoppingCartState.shoppingCart).length > 0) {
 
-                    const records = response.info.records
-                    // console.log("records:" + JSON.stringify(records))
+            const analyzeObject = shoppingCartState.shoppingCart.reduce((acc, curr) => {
+                const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
+                const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
+                return { totalOrderPrices }
+            }, { totalOrderPrices: 0 })
 
-                    const analyzeObject = records.reduce((acc, curr) => {
-                        const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
-                        const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
-                        return { totalOrderPrices }
-                    }, { totalOrderPrices: 0 })
+            setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
 
-                    setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
+            setShoppingCart(shoppingCartState.shoppingCart)
 
-                    setShoppingCart(records && records != null ? records : [])
-
-                } else {
-                    toast.error(config.useMessage.resultFailure)
-                }
-            } else {
-                throw new Error("Response is null or undefined")
-            }
-
-        } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
 
     }
-
-
-
-
-
 
     const scrollToTop = () => {
         scroll.scrollToTop();
     }
 
-
-
     return (
         <>
             <Paper elevation={0} className={classes.mainContainer}>
-                <Grid container spacing={0} className={classes.rootGrid}>
+                {shoppingCart && shoppingCart != null && shoppingCart.length > 0 ?
+                    <Grid container spacing={0} className={classes.rootGrid}>
 
-                    <Grid item xs={10} sm={10} md={10} className={classes.gridItemViewCart}>
-                        <ViewShoppingCart
-                            shoppingCart={shoppingCart}
-                            handleRefreshShoppingCart={handleRefresh}
-                        />
-                    </Grid>
+                        <Grid item xs={10} sm={10} md={10} className={classes.gridItemViewCart}>
+                            <ViewShoppingCart
+                                shoppingCart={shoppingCart}
+                                handleRefreshShoppingCart={handleRefresh}
+                            />
+                        </Grid>
 
-                    <Grid item xs={2} sm={2} md={2} className={classes.gridItemAction}>
+                        <Grid item xs={2} sm={2} md={2} className={classes.gridItemAction}>
 
-                        <Grid container>
-                            <Grid item xs={12} sm={12} md={12} className={classes.gridItemTotalPrice}>
-                                <Paper elevation={0} className={classes.totalPriceContainer}>
-                                    <div className={classes.totalPriceWrapper}>
+                            <Grid container>
+                                <Grid item xs={12} sm={12} md={12} className={classes.gridItemTotalPrice}>
+                                    <Paper elevation={0} className={classes.totalPriceContainer}>
+                                        <div className={classes.totalPriceWrapper}>
 
-                                        <Box>
-                                            <Typography variant={"h6"}>Tổng giá trị đơn hàng</Typography>
-                                        </Box>
+                                            <Box>
+                                                <Typography variant={"h6"}>Tổng giá trị đơn hàng</Typography>
+                                            </Box>
 
-                                        <Box>
-                                            {totalOrderPrices && totalOrderPrices != null &&
-                                                <Typography variant={"body1"}>{totalOrderPrices}</Typography>
-                                            }
-                                        </Box>
+                                            <Box>
+                                                {totalOrderPrices && totalOrderPrices != null &&
+                                                    <Typography variant={"body1"}>{totalOrderPrices}</Typography>
+                                                }
+                                            </Box>
 
-                                    </div>
-                                </Paper>
-                            </Grid>
+                                        </div>
+                                    </Paper>
+                                </Grid>
 
-                            <Grid item xs={12} sm={12} md={12} >
-                                <div className={classes.buttonWrapper}>
-                                    <Button type="submit" variant="outlined" color="primary" size="large" className={classes.button} onClick={() => {
-                                        history.push(
-                                            {
-                                                pathname: `/core/create_order_page`,
-                                                search: ``,
-                                                state: {
-                                                    data: {
-                                                        shoppingCart: shoppingCart
+                                <Grid item xs={12} sm={12} md={12} >
+                                    <div className={classes.buttonWrapper}>
+                                        <Button type="submit" variant="outlined" color="primary" size="large" className={classes.button} onClick={() => {
+                                            history.push(
+                                                {
+                                                    pathname: `/core/create_order_page`,
+                                                    search: ``,
+                                                    state: {
+                                                        data: {
+                                                            shoppingCart: shoppingCart
+                                                        }
                                                     }
                                                 }
-                                            }
-                                        )
-                                        scrollToTop()
+                                            )
+                                            scrollToTop()
 
-                                    }}>Tạo đơn hàng</Button>
-                                </div>
+                                        }}>Tạo đơn hàng</Button>
+                                    </div>
+
+                                </Grid>
 
                             </Grid>
 
                         </Grid>
 
                     </Grid>
+                    :
+                    <>
+                        <Grid container spacing={0} className={classes.rootGrid}>
 
-                </Grid>
+                            <Grid item xs={12} sm={12} md={12} className={classes.gridItemEmpty}>
+                                <Container className={classes.emptyContainer}>
+                                    <Box>
+                                        <RiShoppingCartLine style={{ fontSize: "20rem" }} />
+                                    </Box>
+                                    <Box>
+                                        <Typography variant={"h5"}>Không có gì trong giỏ hàng</Typography>
+                                    </Box>
+                                </Container>
+                            </Grid>
+
+                        </Grid>
+
+                    </>
+
+                }
+
             </Paper>
 
         </>
     )
 }
+
+
+
+// const loadInit = async () => {
+//     console.log("loadInit")
+//     try {
+//         const response = await (await CartServices.viewShoppingCart()).data
+//         // console.log("response: " + JSON.stringify(response))
+
+//         if (response && response != null) {
+//             if (response.result == config.useResultStatus.SUCCESS) {
+
+//                 const records = response.info.records
+//                 // console.log("records:" + JSON.stringify(records))
+
+//                 const analyzeObject = records.reduce((acc, curr) => {
+//                     const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
+//                     const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
+//                     return { totalOrderPrices }
+//                 }, { totalOrderPrices: 0 })
+
+//                 setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
+
+//                 setShoppingCart(records && records != null ? records : [])
+
+//             } else {
+//                 toast.error(config.useMessage.resultFailure)
+//             }
+//         } else {
+//             throw new Error("Response is null or undefined")
+//         }
+
+//     } catch (err) {
+//         toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+//     }
+
+// }

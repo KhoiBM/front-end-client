@@ -6,127 +6,120 @@ export class CartServices {
 
     static viewShoppingCart = () => {
 
-        const shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
-        console.log("shoppingCart: ")
-        console.table(shoppingCart)
+        // const shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
+        // console.log("shoppingCart: ")
+        // console.table(shoppingCart)
 
 
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    records: shoppingCart && shoppingCart != null && shoppingCart.length > 0 ? shoppingCart : []
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             records: shoppingCart && shoppingCart != null && shoppingCart.length > 0 ? shoppingCart : []
 
-                }
-            }
-        })
+        //         }
+        //     }
+        // })
 
     }
 
     static addCartItem = (data) => {
-        try {
-            let shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
 
-            if (shoppingCart && shoppingCart != null ) {
 
-            } else {
-                localStorage.setItem("pps-shoppingCart", JSON.stringify([]))
-                shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
+        // console.log("dataaddCartItem:" + JSON.stringify(data))
 
-            }
-            const indexExistInShoppingCart = shoppingCart.findIndex((cartItem, index) => cartItem.rawProductCode == data.rawProductCode)
+        // let shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
 
-            console.log("indexExistInShoppingCart:" + indexExistInShoppingCart)
+        // console.log("shoppingCart:" + JSON.stringify(shoppingCart))
 
-            let newShoppingCart = []
-            if (indexExistInShoppingCart != -1) {
+        // if (shoppingCart && shoppingCart != null) {
 
-                newShoppingCart = shoppingCart.map((cartItem, index) => cartItem.rawProductCode == data.rawProductCode ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)
+        // } else {
+        //     localStorage.setItem("pps-shoppingCart", JSON.stringify([]))
+        //     shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
 
-            } else {
-                newShoppingCart = shoppingCart.concat(data)
-            }
+        // }
+        // const indexExistInShoppingCart = shoppingCart.findIndex((cartItem, index) => cartItem.rawProductCode == data.rawProductCode)
 
-            localStorage.setItem("pps-shoppingCart", JSON.stringify(newShoppingCart))
+        // console.log("indexExistInShoppingCart:" + indexExistInShoppingCart)
 
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.SUCCESS,
-                    info: {
+        // let newShoppingCart = []
+        // if (indexExistInShoppingCart != -1) {
 
-                    }
-                }
-            })
+        //     newShoppingCart = shoppingCart.map((cartItem, index) => cartItem.rawProductCode == data.rawProductCode ? { ...cartItem, quantity: cartItem.quantity + 1 } : cartItem)
 
-        } catch (e) {
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.FAILURE,
-                    info: {
+        // } else {
+        //     newShoppingCart = shoppingCart.concat(data)
+        // }
 
-                    }
-                }
-            })
-        }
+        // localStorage.setItem("pps-shoppingCart", JSON.stringify(newShoppingCart))
+
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+
+        //         }
+        //     }
+        // })
 
     }
 
-    static editCartItem = (data) => {
+
+    static editCartItemQuantity = (data) => {
 
     }
 
     static deleteCartItem = (data) => {
 
-        try {
-            const shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
+        // try {
+        //     const shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
 
-            const filterCart = shoppingCart.filter((cartItem, index) => cartItem.rawProductCode != data.rawProductCode)
+        //     const filterCart = shoppingCart.filter((cartItem, index) => cartItem.rawProductCode != data.rawProductCode)
 
-            localStorage.setItem("pps-shoppingCart", JSON.stringify(filterCart))
+        //     localStorage.setItem("pps-shoppingCart", JSON.stringify(filterCart))
 
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.SUCCESS,
-                    info: {
+        //     return Promise.resolve({
+        //         data: {
+        //             result: config.useResultStatus.SUCCESS,
+        //             info: {
 
-                    }
-                }
-            })
-        } catch (e) {
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.FAILURE,
-                    info: {
+        //             }
+        //         }
+        //     })
+        // } catch (e) {
+        //     return Promise.resolve({
+        //         data: {
+        //             result: config.useResultStatus.FAILURE,
+        //             info: {
 
-                    }
-                }
-            })
-        }
+        //             }
+        //         }
+        //     })
+        // }
 
 
     }
 
-
     static cleanCart = () => {
-        localStorage.removeItem("pps-shoppingCart")
+        // localStorage.setItem("pps-shoppingCart", "")
     }
 
     static countCartItem = (data) => {
 
-        const shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
+        // const shoppingCart = JSON.parse(localStorage.getItem("pps-shoppingCart"))
 
-        // console.log("shoppingCart: ")
-        // console.table(shoppingCart)
+        // // console.log("shoppingCart: ")
+        // // console.table(shoppingCart)
 
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    count: shoppingCart && shoppingCart != null && shoppingCart.length > 0 ? shoppingCart.length : 0
-                }
-            }
-        })
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             count: shoppingCart && shoppingCart != null && shoppingCart.length > 0 ? shoppingCart.length : 0
+        //         }
+        //     }
+        // })
     }
-
 
 }

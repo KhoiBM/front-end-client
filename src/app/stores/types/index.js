@@ -1,4 +1,6 @@
 export * from './AUTH_TYPE'
+export * from './SHOPPINGCART_TYPE'
+export * from './LOADING_TYPE'
 
 
 
