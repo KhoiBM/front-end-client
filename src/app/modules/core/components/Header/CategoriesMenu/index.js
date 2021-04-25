@@ -83,7 +83,7 @@ export const CategoriesMenu = () => {
 
                 } else {
 
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
 
                 }
             } else {
@@ -94,7 +94,7 @@ export const CategoriesMenu = () => {
 
         } catch (err) {
 
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
 

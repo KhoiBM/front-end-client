@@ -34,7 +34,7 @@ export const CategoriesSection = () => {
 
                 } else {
 
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
 
                 }
             } else {
@@ -45,7 +45,7 @@ export const CategoriesSection = () => {
 
         } catch (err) {
 
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
 

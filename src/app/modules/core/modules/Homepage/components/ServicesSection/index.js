@@ -32,7 +32,7 @@ export const ServicesSection = () => {
 
                 } else {
 
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
 
                 }
             } else {
@@ -43,7 +43,7 @@ export const ServicesSection = () => {
 
         } catch (err) {
 
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
 

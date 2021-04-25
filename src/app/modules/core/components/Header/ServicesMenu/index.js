@@ -86,7 +86,7 @@ export const ServicesMenu = () => {
 
                 } else {
 
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
 
                 }
             } else {
@@ -97,7 +97,7 @@ export const ServicesMenu = () => {
 
         } catch (err) {
 
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
 
