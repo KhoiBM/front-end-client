@@ -205,7 +205,7 @@ export const ViewOrderInformation = (props) => {
 
     return (
         <>
-            {/* isOpen */}
+
 
             <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} TransitionComponent={Transition}>
 
