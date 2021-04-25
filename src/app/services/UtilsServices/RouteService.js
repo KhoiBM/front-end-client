@@ -27,4 +27,13 @@ export class RouteService {
         }
     }
 
+    static push = (data) => {
+
+        this.history.push(data)
+
+    }
+
+
+
+
 }

@@ -4,12 +4,17 @@ import config from 'src/environments/config'
 import { useLoadPhotoList, useTab } from 'src/app/utils'
 import { makeStyles, Divider } from '@material-ui/core'
 import { GridPhotoList } from 'src/app/modules/core/components'
+import { Loader } from 'src/app/components'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const useStyles = makeStyles(theme => ({
 
 }))
 
 export const GirdCartItemPhotoList = (props) => {
+
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
 
     const classes = useStyles()
 
@@ -28,6 +33,7 @@ export const GirdCartItemPhotoList = (props) => {
 
 
     const loadInit = async () => {
+        showLoader()
         if (recordForGridCartItemPhotoList && recordForGridCartItemPhotoList != null) {
             // console.table(recordForGridCartItemPhotoList)
             const { orderCode, orderDetailCode, categoryCode, rawProductCode } = recordForGridCartItemPhotoList
@@ -68,7 +74,7 @@ export const GirdCartItemPhotoList = (props) => {
                 case 3:
                     bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
                     folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["ORDER"]
-                    fileKey = `${folder}/${orderCode}/${orderDetailCode}/Demo/`
+                    fileKey = `${folder}/${orderCode}/${orderDetailCode}/Demo1/`
                     break;
             }
             loadPhotoList(bucketName, fileKey)
@@ -76,6 +82,7 @@ export const GirdCartItemPhotoList = (props) => {
 
             // console.log("recordForCartItem: " + JSON.stringify(recordForCartItem))
         }
+        hideLoader()
 
     }
 
@@ -91,6 +98,7 @@ export const GirdCartItemPhotoList = (props) => {
 
     return (
         <>
+            {<Loader loading={loading} />}
 
             <TabBar tabArr={[
                 {

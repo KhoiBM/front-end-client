@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, Typography, Grid, Box, Card } from '@material-ui/core';
 import { ShoppingCartItem } from '../ShoppingCartItem';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     cartContainer: {
@@ -98,6 +100,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const ViewShoppingCart = (props) => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const classes = useStyles();
 
     const { shoppingCart, handleRefreshShoppingCart } = props
@@ -121,6 +125,7 @@ export const ViewShoppingCart = (props) => {
 
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
             <div className={classes.cartContainer}>
                 <Grid container spacing={0} className={classes.rootGrid}>
                     <Grid item xs={12} sm={12} md={12} className={classes.gridItemCount}>

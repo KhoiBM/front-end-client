@@ -15,6 +15,8 @@ import parse from 'date-fns/parse'
 import bgAuth from "src/app/assets/image/bg_auth.jpeg"
 import { useForm } from 'src/app/utils'
 import { PageHeader } from 'src/app/modules/core/components'
+import { Loader } from 'src/app/components'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const useStyles = makeStyles(theme => ({
     rootForm: {
@@ -158,6 +160,8 @@ const initialFValues = {
 }
 
 export const Profile = () => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const history = useHistory()
     const classes = useStyles()
 
@@ -168,6 +172,7 @@ export const Profile = () => {
 
     useEffect(async () => {
         // document.body.classList.add(classes.bg)
+        showLoader()
         try {
             const response = await (await ProfileServices.view()).data
             if (response.result == config.useResultStatus.SUCCESS) {
@@ -181,11 +186,12 @@ export const Profile = () => {
                 setDobSelected(formatDob)
 
             } else {
-                toast.error(config.useMessage.resultFailure)
+                // toast.error(config.useMessage.resultFailure)
             }
         } catch (err) {
-            toast.error(config.useMessage.fetchApiFailure)
+            // toast.error(config.useMessage.fetchApiFailure)
         }
+        hideLoader()
     }, [])
 
     const handleSubmit = async (event) => {
@@ -197,6 +203,7 @@ export const Profile = () => {
         // const enableSubmit = true
         // gender: formData.gender == "male" ? false : true,
         if (enableSubmit) {
+            showLoader()
             try {
                 const data = {
                     ...formData,
@@ -210,8 +217,9 @@ export const Profile = () => {
                     toast.error(config.useMessage.resultFailure)
                 }
             } catch (err) {
-                toast.error(config.useMessage.fetchApiFailure)
+                // toast.error(config.useMessage.fetchApiFailure)
             }
+            hideLoader()
         } else {
             toast.error(config.useMessage.invalidData);
         }
@@ -223,6 +231,7 @@ export const Profile = () => {
     return (
         <>
             {/* <p>Profile</p> */}
+            {<Loader loading={loading} />}
             <div className={classes.profileContainer}>
                 <div className={classes.pageFormContainer}>
                     <Paper elevation={0} className={classes.pageForm}>

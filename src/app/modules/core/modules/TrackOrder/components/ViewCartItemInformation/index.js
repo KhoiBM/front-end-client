@@ -11,6 +11,7 @@ import { useLoadPhotoList, useRefresh, useFormat } from 'src/app/utils';
 import { PageHeader } from 'src/app/modules/core/components';
 import { ViewCart } from '../ViewCartOrder';
 import { GirdCartItemPhotoList } from '../GirdCartItemPhotoList';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
 
@@ -136,6 +137,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export const ViewCartItemInformation = (props) => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
 
     const classes = useStyles();
 

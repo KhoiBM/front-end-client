@@ -5,41 +5,43 @@ import { Stage } from 'react-konva';
 import { StageKonvaContainer } from '../StageKonvaContainer';
 import { VscOpenPreview } from 'react-icons/vsc'
 import { PreviewDesignedPhoto } from '../PreviewDesignedPhoto';
-import { useRefresh } from 'src/app/utils';
-import { AiOutlinePlusSquare, AiOutlineClose } from 'react-icons/ai';
+import { useRefresh, useUploadPhoto } from 'src/app/utils';
+import { AiOutlinePlusSquare, AiOutlineClose, AiOutlineDelete } from 'react-icons/ai';
 
 import { v4 as uuidv4 } from 'uuid';
 import { v5 as uuidv5 } from 'uuid';
+import { toast } from 'react-toastify';
+import config from 'src/environments/config';
 
 
 const useStyles = makeStyles(theme => ({
     rootGridContainer: {
         width: "100%",
-        height: "auto",
-        minHeight: "70vh",
+        height: "100%",
+        // minHeight: "70vh",
         // background: "red",
-        borderTop: "1px solid rgb(0,0,0,0.23)",
+        // borderTop: "1px solid rgb(0,0,0,0.23)",
+
     },
     gridItemStage: {
-        borderRight: "1px solid rgba(0, 0, 0, 0.23)",
+        // borderRight: "1px solid rgba(0, 0, 0, 0.23)",
         display: 'flex',
         justifyContent: "center !important",
         flexDirection: "column",
         alignItems: "center",
         position: "relative",
-        width: "100%",
         height: "auto",
-        // background: "red",
         padding: theme.spacing(2),
+        width: "100%",
+        borderRight: "1px solid #f7f3e9",
     },
     gridItemPreview: {
         width: "100%",
         height: "auto",
-        minHeight: "70vh",
-        maxHeight: "70vh",
-        // background: "red",
+        background: "#fff",
         overflow: "scroll",
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        backgroundColor: "var(--tertiary-color-main)",
 
     },
     photoPreview: {
@@ -62,21 +64,24 @@ const useStyles = makeStyles(theme => ({
         border: "1px solid rgba(0, 0, 0, 0.23)",
         marginBottom: theme.spacing(2),
         position: "relative",
+        backgroundColor: "#fff"
     },
     buttonShowPreview: {
         position: "absolute",
         right: theme.spacing(3),
         bottom: theme.spacing(3),
-        zIndex: 5
+        zIndex: 5,
+        color: "#fff"
     },
     buttonCreatePreviewPhoto: {
         position: "absolute",
         right: theme.spacing(3),
         top: theme.spacing(3),
-        zIndex: 5
+        zIndex: 5,
+        color: "#fff"
     },
     deleteIcon: {
-        color: "red"
+        color: "#fb3640"
     },
     deleteIconWrapper: {
         position: "absolute",
@@ -100,6 +105,13 @@ export const MainStageBar = (props) => {
 
     // const [photoPreview, setPhotoPreview] = useState([]);
 
+    const [isPressCreatePreviewPhoto, setIsPressCreatePreviewPhoto] = useState(false);
+
+    const [seletedPhotoID, setSeletedPhotoID] = useState(0);
+
+
+
+
     useEffect(() => {
         console.log("photoPreviews: ")
         console.log(photoPreviews)
@@ -107,29 +119,41 @@ export const MainStageBar = (props) => {
 
 
     useEffect(() => {
-    }, [bgPhoto, stageRef])
+    }, [bgPhoto, stageRef, seletedPhotoID])
 
 
 
     const handleCreatePreviewPhoto = () => {
-        const image = stageRef.current.toImage({
-            callback(img) {
-                // console.log(img);
+        setIsPressCreatePreviewPhoto(prev => !prev)
 
-                setPhotoPreviews(photoPreviews.concat({
-                    id: uuidv4(),
-                    photoPreview: img
-                }))
-            },
-            quality: 1,
-            pixelRatio: 2
-        });
+        // if (seletedPhotoID == null) {
+        if (photoPreviews.length < 5) {
+            const image = stageRef.current.toImage({
+                callback(img) {
+                    // console.log("toImage");
+                    // console.log(img);
+
+                    setPhotoPreviews(photoPreviews.concat({
+                        id: uuidv4(),
+                        img: img
+                    }))
+                },
+                quality: 1,
+                pixelRatio: 2
+            });
+        } else {
+            toast.info("Bạn chỉ có thể tạo tối đa 5 ảnh xem trước")
+        }
+        // }
+
+
     };
 
     const handlePreview = () => {
         const image = stageRef.current.toImage({
             async callback(img) {
-                // console.log(img);
+                console.log(img);
+
                 setPreviewDesignedPhotoModal({
                     isOpen: true,
                     photoPreview: img,
@@ -151,15 +175,15 @@ export const MainStageBar = (props) => {
         <>
             <Grid container className={classes.rootGridContainer}>
 
-                <Grid item xs={10} sm={10} md={10} className={classes.gridItemStage}>
+                <Grid item xs={12} sm={12} md={10} className={classes.gridItemStage}>
 
-                    <Tooltip TransitionComponent={Zoom} placement="left" title={"Tạo ảnh xem trước thiết kế"} >
+                    <Tooltip TransitionComponent={Zoom} placement="left" title={" Tạo ảnh thiết kế"} >
                         <Button size="small" className={classes.buttonCreatePreviewPhoto} onClick={handleCreatePreviewPhoto}>
-                            <AiOutlinePlusSquare style={{ fontSize: "30px" }} /> Tạo ảnh xem trước thiết kế
+                            <AiOutlinePlusSquare style={{ fontSize: "30px" }} />
                         </Button>
                     </Tooltip>
 
-                    <StageKonvaContainer bgPhoto={bgPhoto} dragUrl={dragUrl} stageRef={stageRef} />
+                    <StageKonvaContainer bgPhoto={bgPhoto} dragUrl={dragUrl} stageRef={stageRef} isPressCreatePreviewPhoto={isPressCreatePreviewPhoto} setSeletedPhotoID={setSeletedPhotoID} />
 
                     <Tooltip TransitionComponent={Zoom} placement="left" title={"Xem trước"} >
                         <Button size="small" className={classes.buttonShowPreview} onClick={handlePreview}>
@@ -170,29 +194,44 @@ export const MainStageBar = (props) => {
 
                 </Grid>
 
-                <Grid item xs={2} sm={2} md={2} className={classes.gridItemPreview}>
-                    {photoPreviews && photoPreviews != null && photoPreviews.length > 0 &&
-                        photoPreviews.map((photo, index) => (
-                            <Box key={index} className={classes.previewCardWrapper} >
-                                <Box className={classes.deleteIconWrapper}  >
-                                    <AiOutlineClose className={classes.deleteIcon} onClick={(e) => {
-                                        e.stopPropagation()
-                                        setPhotoPreviews(photoPreviews.filter((val) => val.id != photo.id))
-                                    }} />
-                                </Box>
+                <Grid item xs={12} sm={12} md={2} className={classes.gridItemPreview}>
+                    {
+                        (() => {
+                            const reversePhotoPreviews = [...photoPreviews].reverse()
+                            return (
+                                reversePhotoPreviews && reversePhotoPreviews != null && reversePhotoPreviews.length > 0 &&
+                                reversePhotoPreviews.map((photo, index) => (
+                                    <Box key={index} className={classes.previewCardWrapper} >
+                                        <Tooltip TransitionComponent={Zoom} placement="left" title={"Xoá ảnh thiết kế"} >
+                                            <Box className={classes.deleteIconWrapper}  >
+                                                <AiOutlineDelete className={classes.deleteIcon} onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    setPhotoPreviews(photoPreviews.filter((val) => val.id != photo.id))
+                                                }} />
 
+                                            </Box>
+                                        </Tooltip>
+                                        <img
+                                            src={photo.img.src}
+                                            className={classes.photoPreview}
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                setPreviewDesignedPhotoModal({
+                                                    isOpen: true,
+                                                    photoPreview: photo.img,
+                                                    handleCloseModal
+                                                })
 
-                                <img src={photo.photoPreview.src} className={classes.photoPreview} onClick={(e) => {
-                                    e.stopPropagation()
-                                    setPreviewDesignedPhotoModal({
-                                        isOpen: true,
-                                        photoPreview: photo.photoPreview,
-                                        handleCloseModal
-                                    })
-                                }} />
-                            </Box>
+                                            }}
+                                            crossOrigin="Anonymous"
+                                        />
+                                    </Box>
 
-                        ))
+                                ))
+                            )
+
+                        })()
+
                     }
                 </Grid>
 

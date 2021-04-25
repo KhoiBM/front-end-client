@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react'
 import { ProductServices } from 'src/app/services'
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
-import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle } from 'src/app/utils';
+import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle, useLoadingEffect } from 'src/app/utils';
 import { makeStyles, Paper } from '@material-ui/core';
 import { ProductList, FilterRawProductBar } from '../components';
 import { MainBar } from '../../../components';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     mainContainer: {
@@ -21,6 +23,15 @@ const useStyles = makeStyles(theme => ({
         transition: "all 0.2 ease -in -out",
         // border: "1px solid red",
         paddingTop: theme.spacing(5),
+        // backgroundColor: "#f7f3e9 !important",
+        // backgroundColor: " var(--primary-color-main) !important",
+        // backgroundColor: " var(--secondary-color-main) !important",
+        // backgroundColor: " var( --tertiary-color-main) !important",
+        // backgroundColor: "#f7f3e9  !important",
+        backgroundColor: "rgba(249, 250, 251, var(--bg-opacity))  !important",
+        // backgroundColor: "#fcecdd !important",
+        // backgroundColor: "#f8f5f1 !important",
+
 
         '&:hover': {
             // transform: "scale(1.02)",
@@ -53,7 +64,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
+
 const ProductListPage = () => {
+
+    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
+
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
 
     const classes = useStyles();
 
@@ -72,15 +89,41 @@ const ProductListPage = () => {
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
+    let fetchApi = ProductServices.getOptionToFilterAllRawProduct()
 
+    let mapToFilter = []
 
+    if (serviceCode && serviceCode != null) {
 
-    const fetchApi = ProductServices.getOptionToFilter()
+        fetchApi = ProductServices.getOptionToFilterRawProductOfService()
 
-    const mapToFilter = (records) => {
-        // console.log("mapToFilter")
-        return records.map((val) => ({ ID: val.code, name: val.name }));
+        mapToFilter = (records) => {
+            // console.log("mapToFilter")
+            return records.map((val) => ({ ID: val.categoryCode, name: val.categoryName }));
+        }
+
+    } else if (categoryCode && categoryCode != null) {
+
+        fetchApi = ProductServices.getOptionToFilterRawProductOfCategory()
+
+        mapToFilter = (records) => {
+            // console.log("mapToFilter")
+            return records.map((val) => ({ ID: val.code, name: val.name }));
+        }
+
+    } else {
+
+        fetchApi = ProductServices.getOptionToFilterAllRawProduct()
+
+        mapToFilter = (records) => {
+            // console.log("mapToFilter")
+            return records.map((val) => ({ ID: val.code, name: val.name }));
+        }
+
     }
+
+
+
     const { recordsSelect, setRecordsSelect, filterList, setFilterList, action, setAction, clickFilter, setClickFilter } = useFilterRawProductHandle(
         {
             fetchApi,
@@ -117,6 +160,7 @@ const ProductListPage = () => {
 
 
     const loadInit = async () => {
+        // showLoader()
         try {
 
 
@@ -159,6 +203,7 @@ const ProductListPage = () => {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
+        // hideLoader()
 
     }
 
@@ -188,6 +233,8 @@ const ProductListPage = () => {
         <>
             {/* <p>ProductListPage</p>
              */}
+            {/* {< Loader loading={loading} />} */}
+
             <MainBar>
 
                 <Paper elevation={0} className={classes.mainContainer}>

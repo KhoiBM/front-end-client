@@ -35,7 +35,7 @@ export const useLoadPhotoList = (props) => {
                     })
 
                     // console.trace("photoList:")
-                    console.table(photoList)
+                    // console.table(photoList)
 
                     setPhotoList(photoList)
                     // toast.success("Thành công")

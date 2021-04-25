@@ -67,8 +67,8 @@ export const FilterRawProductBar = (props) => {
     const handleFilterChange = (event) => {
         setClickFilter((prev) => !prev)
         setAction("filter")
-        setFilterSelectList(event.target.value.length > 0 ? event.target.value : []);
-        setFilterList(event.target.value.length > 0 ? event.target.value : recordsSelect && recordsSelect != null && recordsSelect.length > 0 ? recordsSelect.map((val) => (val.ID)) : []);
+        setFilterSelectList(event.target.value);
+        setFilterList(event.target.value);
 
     }
 

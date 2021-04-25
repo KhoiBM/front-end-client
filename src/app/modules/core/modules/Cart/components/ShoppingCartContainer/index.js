@@ -10,6 +10,8 @@ import { animateScroll as scroll } from 'react-scroll';
 import { useHistory } from 'react-router-dom';
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { useStore, useDispatch, useSelector } from 'react-redux';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 const useStyles = makeStyles(theme => ({
     mainContainer: {
         width: "100%",
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
         transition: "all 0.2 ease -in -out",
         // border: "1px solid red",
-        // paddingTop: theme.spacing(5),
+        paddingTop: theme.spacing(5),
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -33,6 +35,8 @@ const useStyles = makeStyles(theme => ({
             transition: "all 0.2 ease -in -out",
             cursor: "pointer"
         }
+
+
     },
     rootGrid: {
         // marginTop: theme.spacing(3),
@@ -203,6 +207,7 @@ const useStyles = makeStyles(theme => ({
 
 export const ShoppingCartContainer = (props) => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
 
     const classes = useStyles();
@@ -217,23 +222,23 @@ export const ShoppingCartContainer = (props) => {
 
     const dispatch = useDispatch();
 
-    const shoppingCartState = useSelector((state) => state.shoppingCartState)
+    const { shoppingCart } = useSelector((state) => state.shoppingCartState)
 
-    const [shoppingCart, setShoppingCart] = useState([])
+    const [shoppingCartRecords, setShoppingCartRecords] = useState([])
 
     useEffect(() => {
 
         loadInit()
         console.log("refreshShoppingCartContainer")
 
-    }, [refresh, shoppingCart, shoppingCartState, dispatch]) 
+    }, [refresh, shoppingCart])
 
     const loadInit = async () => {
         console.log("loadInit")
 
-        if (shoppingCartState.shoppingCart && shoppingCartState.shoppingCart != null && Object.keys(shoppingCartState.shoppingCart).length > 0) {
+        if (shoppingCart && shoppingCart != null && Object.keys(shoppingCart).length > 0) {
 
-            const analyzeObject = shoppingCartState.shoppingCart.reduce((acc, curr) => {
+            const analyzeObject = shoppingCart.reduce((acc, curr) => {
                 const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
                 const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
                 return { totalOrderPrices }
@@ -241,7 +246,7 @@ export const ShoppingCartContainer = (props) => {
 
             setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
 
-            setShoppingCart(shoppingCartState.shoppingCart)
+            setShoppingCartRecords(shoppingCart)
 
         }
 
@@ -253,6 +258,8 @@ export const ShoppingCartContainer = (props) => {
 
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
+
             <Paper elevation={0} className={classes.mainContainer}>
                 {shoppingCart && shoppingCart != null && shoppingCart.length > 0 ?
                     <Grid container spacing={0} className={classes.rootGrid}>

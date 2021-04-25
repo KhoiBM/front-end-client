@@ -22,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
         minHeight: "100px",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "#fff !important",
+        borderRadius: "4px"
 
     },
     rootListPreview: {

@@ -3,12 +3,13 @@ import React, { useState, useEffect } from 'react'
 import { ProductServices } from 'src/app/services'
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
-import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle } from 'src/app/utils';
+import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle, useLoadingEffect } from 'src/app/utils';
 import { set } from 'date-fns';
 import { makeStyles, Paper } from '@material-ui/core';
-import { NotFound } from 'src/app/components';
+import { NotFound, Loader } from 'src/app/components';
 import { MainBar } from '../../../components';
 import { ProductList, FilterRawProductBar } from '../components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     mainContainer: {
@@ -58,6 +59,10 @@ const useStyles = makeStyles(theme => ({
 
 const SearchPage = () => {
 
+    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+
     const classes = useStyles();
 
     const { data: dataToGet } = useGetStateLocation()
@@ -73,28 +78,6 @@ const SearchPage = () => {
     const [totalPage, setTotalPage] = useState(0);
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
-
-
-
-
-    const fetchApi = ProductServices.getOptionToFilter()
-
-    const mapToFilter = (records) => {
-        // console.log("mapToFilter")
-        return records.map((val) => ({ ID: val.code, name: val.name }));
-    }
-    const { recordsSelect, setRecordsSelect, filterList = [], setFilterList, action, setAction, clickFilter, setClickFilter } = useFilterRawProductHandle(
-        {
-            fetchApi,
-            mapToFilter
-        }
-    )
-
-
-
-
-
-
 
 
     useEffect(() => {
@@ -114,6 +97,7 @@ const SearchPage = () => {
 
 
     const loadInit = async () => {
+        showLoader()
         try {
 
 
@@ -121,7 +105,7 @@ const SearchPage = () => {
             let response = null
 
             if (keywords && keywords != null) {
-                response = await (await ProductServices.searchRawProduct({ keywords, filterBy: filterList, page: page, limit: limit })).data
+                response = await (await ProductServices.searchRawProduct({ keywords, filterBy: [], page: page, limit: limit })).data
 
             }
             // console.log("response: " + JSON.stringify(response))
@@ -150,6 +134,7 @@ const SearchPage = () => {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
+        hideLoader()
 
     }
 
@@ -177,20 +162,14 @@ const SearchPage = () => {
 
     return (
         <>
-            {/* <p>ProductListPage</p>
-             */}
+            {/* {<Loader loading={loading} />} */}
+
             <MainBar>
 
                 <Paper elevation={0} className={classes.mainContainer}>
                     <>
                         {records && records != null && records.length > 0 ?
                             <>
-                                <div className={classes.actionContainer}>
-                                    <div className={classes.actionWrapper}>
-                                        {/* <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} /> */}
-                                    </div>
-                                </div>
-
 
                                 <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
 

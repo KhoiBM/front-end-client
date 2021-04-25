@@ -2,8 +2,9 @@ import styled from 'styled-components';
 
 export const Container = styled.div`
 padding: 80px 60px;
-background: radial-gradient(circle,rgba(92,39,251,1) 0%, rgba(112,71,247,1) 100%);
+/* background: radial-gradient(circle,rgba(92,39,251,1) 0%, rgba(112,71,247,1) 100%); */
 /* background: radial-gradient(circle,var(--primary-color-main) 0%, var(--secondary-color-main) 100%); */
+background: radial-gradient(circle,var(--secondary-color-main) 0%, var(--secondary-color-main) 100%);
 `
 export const Wrapper = styled.div`
 display:flex;
@@ -41,7 +42,9 @@ margin-bottom: 20px;
 font-size: 18px;
 text-decoration: none;
 &:hover {
-    color: #ff9c00;
+    /* color: #ff9c00; */
+    /* color: #000; */
+    color: var(--primary-color-main) ;
     transition: 200ms ease-in
 }`
 export const Title = styled.p`

@@ -1,19 +1,34 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from 'react'
 import { makeStyles } from '@material-ui/core';
-import { Layer, Stage, Image } from 'react-konva';
+import { Layer, Stage, Image as ImageKonva, Transformer, Group } from 'react-konva';
 import useImage from 'use-image';
+import { v4 as uuidv4 } from 'uuid';
+import { v5 as uuidv5 } from 'uuid';
+import deleteIcon from 'src/app/assets/image/cancel.png'
 const useStyles = makeStyles(theme => ({
+    dropStageZone: {
+
+        width: "902px !important",
+        height: "602px !important",
+        border: "1px solid rgba(0, 0, 0, 0.23)",
+        display: 'flex',
+        justifyContent: "center !important",
+        alignItems: "center !important",
+        position: 'relative'
+    },
     stageContainer: {
-        // width: "30rem",
-        width: "100% !important",
-        height: "auto",
-        minHeight: "100% !important",
+        position: "absolute",
+        top: 0,
+        right: 0,
+        width: "100%",
+        height: "100% !important",
         display: 'flex',
         justifyContent: "center !important",
         alignItems: "center !important",
         // background: "red",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
+        backgroundColor: "#fff !important",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
         // backgroundImage: ({ bgPhoto }) => (`url("${bgPhoto && bgPhoto != null ? bgPhoto : ''}")`)
         "& .konvajs-content": {
             // display: 'flex',
@@ -21,6 +36,14 @@ const useStyles = makeStyles(theme => ({
             // alignItems: "center !important",
         }
 
+    },
+    layerContainer: {
+        width: "90% !important",
+        height: "90% !important",
+        display: 'flex',
+        justifyContent: "center !important",
+        alignItems: "center !important",
+        border: "1px solid blue",
     },
     cardMedia: {
         objectFit: "contain",
@@ -33,19 +56,44 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const URLImage = ({ image }) => {
+const URLImage = ({
+    image,
+    isSelected,
+    onSelect,
+    selectShape,
+    onDelete,
+    onDragEnd,
+    onChange
+}) => {
+
+    console.log("isSelected:" + JSON.stringify(isSelected))
+
+    const shapeRef = useRef();
+    const shapeDeleteRef = useRef();
+    const trRef = useRef();
+
     const [img] = useImage(`${image.src}`);
 
-    const [scaledImage, setScaledImage] = useState({ ...img })
-    console.log("image:" + JSON.stringify(image))
-    console.log("scaledImage:" + JSON.stringify(scaledImage))
+    const [deleteImage] = useImage(deleteIcon);
+
+    const [scaledImage, setScaledImage] = useState({ ...image })
+
+    const [isDragging, setIsDragging] = useState(false);
+
+
+    console.log("img:")
+    console.log(img)
+    console.log("image:")
+    console.log(image)
+    console.log("scaledImage:")
+    console.log(scaledImage)
     useEffect(() => {
         if (img && img != null) {
             console.table(JSON.stringify(img))
-            console.log("width:" + JSON.stringify(img.width))
-            console.log("height:" + JSON.stringify(img.height))
+            // console.log("width:" + JSON.stringify(img.width))
+            // console.log("height:" + JSON.stringify(img.height))
             const data = getScaledImageCoordinates(700, 600, img.width, img.height)
-            console.log("data: " + JSON.stringify(data))
+            // console.log("data: " + JSON.stringify(data))
             setScaledImage(prev => ({
                 ...prev,
                 ...data
@@ -53,6 +101,16 @@ const URLImage = ({ image }) => {
         }
 
     }, [img])
+
+    useEffect(() => {
+        if (isSelected) {
+            // we need to attach transformer manually
+            trRef.current.nodes([shapeRef.current]);
+            trRef.current.getLayer().batchDraw();
+
+        }
+    }, [isSelected]);
+
 
     function getScaledImageCoordinates(
         containerWidth,
@@ -67,48 +125,166 @@ const URLImage = ({ image }) => {
     }
 
     return (
-        <Image
-            image={img}
-            x={image.x - 130}
-            y={image.y - 60}
+        <>
 
-            strokeWidth={2}
-            // stroke={"red"}
+            {
+                isSelected &&
+                <ImageKonva
+                    ref={shapeDeleteRef}
+                    onTouchStart={onDelete}
+                    onClick={(e) => {
+                        setScaledImage(prev => ({
+                            ...prev,
+                            isDragging: false,
+                            newWidth: 0,
+                            newHeight: 0
+                        }));
+                        selectShape(null)
+                        onDelete()
 
-            width={scaledImage ? scaledImage.newWidth : 0}
-            height={scaledImage ? scaledImage.newHeight : 0}
+                    }}
+                    image={deleteImage}
 
-            // width={scaledImage ? scaledImage.width : 0}
-            // height={scaledImage ? scaledImage.height : 0}
+                    width={10}
+                    height={10}
 
-            offsetX={scaledImage ? -(scaledImage.newWidth / 2) : 0}
-            offsetY={scaledImage ? -(scaledImage.newHeight / 10) : 0}
+                    offsetX={-200}
+                    offsetY={45}
 
-            draggable
+                    x={scaledImage.x - 130}
+                    y={scaledImage.y - 60}
 
-            onDragStart={(e) => {
-                setScaledImage(prev => ({
-                    ...prev,
-                    isDragging: true
-                }));
-            }}
-            onDragEnd={e => {
-                setScaledImage(prev => ({
-                    ...prev,
-                    isDragging: false,
-                    x: e.target.x(),
-                    y: e.target.y()
-                }));
-            }}
+                    strokeWidth={2}
 
-        />
+                />
+            }
+
+            <ImageKonva
+
+                onClick={onSelect}
+                onTap={onSelect}
+
+                ref={shapeRef}
+
+                image={img}
+
+                x={scaledImage.x - 130}
+                y={scaledImage.y - 60}
+
+                strokeWidth={2}
+                // stroke={"red"}
+
+
+                width={scaledImage ? scaledImage.newWidth : 0}
+                height={scaledImage ? scaledImage.newHeight : 0}
+
+                // width={scaledImage ? scaledImage.width : 0}
+                // height={scaledImage ? scaledImage.height : 0}
+
+                offsetX={scaledImage ? -(scaledImage.newWidth / 2) : 0}
+                offsetY={scaledImage ? -(scaledImage.newHeight / 10) : 0}
+
+                draggable
+
+                onDragStart={(e) => {
+                    setScaledImage(prev => ({
+                        ...prev,
+                        isDragging: true
+                    }));
+                    onChange({
+                        ...scaledImage,
+                        isDragging: true
+                    })
+                }}
+                onDragEnd={e => {
+                    setScaledImage(prev => ({
+                        ...prev,
+                        isDragging: false,
+                        x: e.target.x() + 130,
+                        y: e.target.y() + 60
+                    }));
+                    onChange({
+                        ...scaledImage,
+                        isDragging: false,
+                        x: e.target.x() + 130,
+                        y: e.target.y() + 60
+                    })
+
+                }}
+
+                onTransformEnd={(e) => {
+                    // transformer is changing scale of the node
+                    // and NOT its width or height
+                    // but in the store we have only width and height
+                    // to match the data better we will reset scale on transform end
+                    const node = shapeRef.current;
+                    const scaleX = node.scaleX();
+                    const scaleY = node.scaleY();
+
+                    // we will reset it back
+                    node.scaleX(1);
+                    node.scaleY(1);
+
+                    setScaledImage(prev => ({
+                        ...prev,
+                        x: node.x() + 130,
+                        y: node.y() + 60,
+                        // set minimal value
+                        newWidth: Math.max(5, node.width() * scaleX),
+                        newHeight: Math.max(node.height() * scaleY),
+                    }));
+
+
+                }}
+
+                onMouseEnter={e => {
+                    // style stage container:
+                    const container = e.target.getStage().container();
+                    // container.style.cursor = "pointer";
+                    container.style.cursor = "move";
+                    // container.style.cursor = "crosshair";
+                }}
+                onMouseLeave={e => {
+                    const container = e.target.getStage().container();
+                    container.style.cursor = "default";
+                }}
+
+            />
+
+
+
+            {
+                isSelected && (
+                    <Transformer
+                        ref={trRef}
+                        borderStroke="#a7c5eb"
+                        borderStrokeWidth="2"
+                        // borderEnabled={true}
+                        anchorStroke="#a7c5eb"
+                        anchorStrokeWidth="2"
+                        anchorSize="10"
+                        anchorCornerRadius="1"
+                        keepRatio={true}
+                        // centeredScaling={true}
+                        boundBoxFunc={(oldBox, newBox) => {
+                            // limit resize
+                            if (newBox.width < 5 || newBox.height < 5) {
+                                return oldBox;
+                            }
+                            return newBox;
+                        }}
+                    />
+                )
+            }
+        </>
     );
 };
 
 const URLBGImage = ({ image }) => {
-    const [img] = useImage(`${image.src}`);
+    const [img] = useImage(`${image.src}?cacheblock=true`);
     const [scaledImage, setScaledImage] = useState({})
-
+    console.log("img:")
+    console.log(img)
     useEffect(() => {
         if (img && img != null) {
             console.table(JSON.stringify(img))
@@ -132,7 +308,7 @@ const URLBGImage = ({ image }) => {
         return { newWidth, newHeight }
     }
     return (
-        <Image
+        <ImageKonva
             image={img}
             x={image.x}
             y={image.y}
@@ -146,8 +322,8 @@ const URLBGImage = ({ image }) => {
             // width={scaledImage ? scaledImage.width : 0}
             // height={scaledImage ? scaledImage.height : 0}
 
-            offsetX={scaledImage ? -(scaledImage.newWidth / 1) : 0}
-            offsetY={scaledImage ? -(scaledImage.newHeight / 10) : 0}
+            offsetX={scaledImage ? -(scaledImage.newWidth / 1.2) : 0}
+            offsetY={scaledImage ? -(scaledImage.newHeight / 15) : 0}
 
         />
     );
@@ -157,30 +333,59 @@ const URLBGImage = ({ image }) => {
 export const StageKonvaContainer = (props) => {
 
 
-    const { bgPhoto, dragUrl, stageRef } = props
-
-    const [imgBg] = useImage(`${bgPhoto}`);
+    const { bgPhoto, dragUrl, stageRef, isPressCreatePreviewPhoto, setSeletedPhotoID } = props
 
     const stageWidth = "1000"
     const stageHeight = "1000"
 
     const classes = useStyles({ bgPhoto });
 
-
-
     const [images, setImages] = useState([]);
 
     const [selectedId, selectShape] = useState(null);
 
+    const [bgStage, setBgStage] = useState(null)
 
+    console.log("bgStage")
+    console.log(bgStage)
     useEffect(() => {
-        console.log("bgPhoto: " + bgPhoto)
+
+        if (bgPhoto && bgPhoto != null) {
+            console.log("bgPhoto: " + bgPhoto)
+
+
+            let imgBg = new Image()
+            imgBg.crossOrigin = "Anonymous"
+            imgBg.src = bgPhoto
+            imgBg.id = uuidv4()
+
+            console.log("imgBg: ")
+            console.log(imgBg)
+            setBgStage(imgBg)
+
+        }
+
+
+
     }, [bgPhoto])
+    useEffect(() => {
+
+        selectShape(null)
+
+    }, [isPressCreatePreviewPhoto])
 
     useEffect(() => {
-        console.log("images:" + JSON.stringify(images))
+
     }, [dragUrl, images])
 
+    useEffect(() => {
+
+        setSeletedPhotoID(selectedId)
+
+    }, [selectedId])
+
+    console.log("images:" + JSON.stringify(images))
+    console.log("selectedId:" + JSON.stringify(selectedId))
 
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
@@ -189,7 +394,6 @@ export const StageKonvaContainer = (props) => {
             selectShape(null);
         }
     };
-
 
 
     return (
@@ -206,29 +410,49 @@ export const StageKonvaContainer = (props) => {
                         images.concat([
                             {
                                 ...stageRef.current.getPointerPosition(),
-                                src: dragUrl.current
+                                src: dragUrl.current,
+                                id: uuidv4()
                             }
                         ])
                     );
                     dragUrl.current = ""
                 }}
                 onDragOver={(e) => e.preventDefault()}
+                className={classes.dropStageZone}
             >
 
 
                 <Stage
                     className={classes.stageContainer}
                     ref={stageRef}
-                    width={stageWidth * 1.1} height={stageHeight * 0.6}
+                    width={stageWidth * 0.9} height={stageHeight * 0.6}
                     onMouseDown={checkDeselect}
                     onTouchStart={checkDeselect}
+
                 >
-                    <Layer >
-                        {imgBg && imgBg != null &&
-                            <URLBGImage image={imgBg} />
+                    <Layer className={classes.layerContainer}>
+                        {bgStage && bgStage != null &&
+                            <URLBGImage image={bgStage}
+                            />
                         }
-                        {images.map((image, index) => {
-                            return <URLImage image={image} key={index} />;
+                        {images && images != null && images.map((image, index) => {
+                            return <URLImage image={image} key={index}
+                                isSelected={image.id === selectedId}
+                                onSelect={() => {
+                                    selectShape(image.id);
+                                }}
+                                selectShape={selectShape}
+                                onDelete={() => {
+                                    const newImages = [...images];
+                                    images.splice(index, 1);
+                                    setImages(newImages);
+                                }}
+                                onChange={(newAttrs) => {
+                                    const newImages = images.slice();
+                                    newImages[index] = newAttrs;
+                                    setImages(newImages);
+                                }}
+                            />;
                         })}
 
                     </Layer>
@@ -241,7 +465,46 @@ export const StageKonvaContainer = (props) => {
     )
 }
 
+{/* <Group
+    draggable
 
+    strokeWidth={2}
+    stroke={"blue"}
+
+    x={image.x}
+    y={image.y}
+
+    width={scaledImage ? scaledImage.newWidth + 50 : 0}
+    height={scaledImage ? scaledImage.newHeight + 50 : 0}
+
+    onDragStart={(e) => {
+        // setIsDragging(true)
+        // const container = e.target.getStage().container();
+        // // container.style.cursor = "pointer";
+        // container.style.border = "1px solid red";
+    }
+    }
+
+    onDragEnd={(e) => {
+
+        // setIsDragging(false);
+
+        // setScaledImage(prev => ({
+        //     ...prev,
+        //     isDragging: false,
+        //     x: e.target.x() + 130,
+        //     y: e.target.y() + 60
+        // }));
+
+        // onChange({
+        //     ...scaledImage,
+        //     isDragging: false,
+        //     x: e.target.x() + 130,
+        //     y: e.target.y() + 60
+        // })
+
+    }}
+> */}
 
 
 

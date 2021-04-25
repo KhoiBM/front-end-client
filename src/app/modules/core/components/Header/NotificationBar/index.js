@@ -212,14 +212,14 @@ export const NotificationBar = () => {
                 if (response.result == config.useResultStatus.SUCCESS) {
                     // toast.success("Thành công")
                 } else {
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
                 }
             } else {
-                throw new Error("Response is null or undefined")
+                // throw new Error("Response is null or undefined")
             }
 
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
 
     }

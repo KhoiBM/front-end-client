@@ -98,6 +98,7 @@ display:flex;
 justify-content: center;
 align-items: center;
 position:relative
+/* color:var(--secondary-color-main); */
 `
 
 export const H2 = styled.p`
@@ -109,8 +110,7 @@ font-size: 1.25rem;
 display:flex;
 justify-content: center;
 align-items: center;
-position:absolute,
-white-space:nowrap;
+/* white-space:nowrap; */
 `
 
 export const P = styled.p`

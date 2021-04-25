@@ -8,78 +8,84 @@ import { Image, Stage, Layer } from 'react-konva'
 import { PageHeader } from '../../../../../components/Utils'
 import { DropZoneUploadBar } from '../DropZoneUploadBar'
 import MainPersonalize from '../MainPersonalize'
+import { IconClose } from 'src/app/components'
 
 const useStyles = makeStyles(theme => ({
     iconCloseWrapper: {
         position: "absolute",
-        right: theme.spacing(3),
+        right: theme.spacing(0),
         top: theme.spacing(0.6),
-    },
-    iconClose: {
-        color: "var(--primary-color-main)",
-        // color: "var(--secondary-color-main)",
-        transform: "scale(2)",
-        transition: " all 0.3s ease 0s",
-        '&:hover': {
-            color: "var(--primary-color-dark)",
-            // color: "var(--secondary-color-main)",
-        },
-        '&:focus': {
-            // outline: "1px dashed var(--primary-color-dark)",
-            outlineOffset: "4px",
-            // transform: "scale(5)",
+        "&:hover": {
+            color: "#fff"
         }
     },
     dialog: {
         whiteSpace: "nowrap",
-        overflow: "hidden !important"
+        overflow: "hidden !important",
+        // backgroundColor: "#f7f3e9 !important",
+        // backgroundColor: "var(--tertiary-color-main)",
+        // backgroundColor: "var(--secondary-color-main)",
+        background: "var(--tertiary-color-main)",
     },
     dialogTitle: {
-        height: "20px",
-        // background: "red",
-        display: "flex",
-        alignItems: "center",
-        position: "relative"
+        maxHeight: "0px",
+        // position: "relative",
+        // display: "flex",
+        // justifyContent: "center",
+        // alignItems: "center",
+        // border: "1px solid red",
+        display: "none"
+
     },
     dialogContent: {
-        background: "#fff",
         overflow: "hidden !important",
         width: "100%",
         height: "auto",
+        // border: "1px solid red",
+        padding: 0
+
     },
     dialogAction: {
 
     },
     rootForm: {
         width: "100%",
-        height: "auto",
+        height: "100%",
         // background: "red",
         // border: "1px solid red"
     },
     rootGridContainer: {
         width: "100%",
-        height: "auto",
+        height: "100%",
         // background: "blue",
-        // border: "1px solid blue"
+        // border: "1px solid blue",
         minHeight: "95vh",
         overflow: "scroll !important",
     },
     gridItemUpload: {
         width: "100%",
-        height: "auto",
+        height: "100%",
         // background: "orange",
         display: "flex",
         justifyContent: "center",
-        border: "1px solid rgb(0,0,0,0.23)",
+        // border: "1px solid rgb(0,0,0,0.23)",
         overflow: "scroll !important",
-        paddingTop: theme.spacing(2)
+        paddingTop: theme.spacing(2),
+        background: "var(--tertiary-color-main)",
+        // borderRight: "1px solid #f7f3e9",
+        borderTop: "1px solid #f7f3e9",
+        borderBottom: "1px solid #f7f3e9",
+        borderRight: "1px solid #f7f3e9",
+        borderLeft: "1px solid #f7f3e9",
+
+
     },
     gridItemMain: {
         width: "100%",
-        height: "auto",
-        borderTop: "1px solid rgb(0,0,0,0.23)",
-        borderRight: "1px solid rgb(0,0,0,0.23)",
-        borderBottom: "1px solid rgb(0,0,0,0.23)",
+        height: "100%",
+        // borderTop: "1px solid rgb(0,0,0,0.23)",
+        // borderRight: "1px solid rgb(0,0,0,0.23)",
+        // borderBottom: "1px solid rgb(0,0,0,0.23)",
         // background: "red",
         overflow: "hidden !important",
     }
@@ -127,14 +133,12 @@ export const Personalize2 = (props) => {
             <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>
-                    <div className={classes.iconCloseWrapper}>
-                        <div className={classes.iconClose} onClick={handleCloseModal}>
-                            <RiCloseFill />
-                        </div>
-                    </div>
-                    <PageHeader>
+                    {/* <div className={classes.iconCloseWrapper}>
+                        <IconClose handleClose={handleCloseModal} />
+                    </div> */}
+                    {/* <PageHeader>
                         Cá nhân hoá
-                    </PageHeader>
+                    </PageHeader> */}
                 </DialogTitle>
 
                 <DialogContent className={classes.dialogContent}>
@@ -151,6 +155,7 @@ export const Personalize2 = (props) => {
                                     recordForMainPersonalize={recordToUse}
                                     dragUrl={dragUrl}
                                     stageRef={stageRef}
+                                    handleCloseModal={handleCloseModal}
                                 />
                             </Grid>
                         </Grid>

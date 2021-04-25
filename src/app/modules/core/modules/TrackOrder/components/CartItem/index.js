@@ -7,6 +7,8 @@ import { ViewCartItemInformation } from '../ViewCartItemInformation';
 import { useFormat, useLoadPhotoList, useRefresh } from 'src/app/utils';
 import config from 'src/environments/config';
 import { Personalize } from 'src/app/modules/core/components';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     cartItemContainer: {
@@ -68,6 +70,9 @@ const useStyles = makeStyles(theme => ({
 
 export const CartItem = (props) => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+
     const classes = useStyles();
 
 
@@ -88,7 +93,9 @@ export const CartItem = (props) => {
     }, [recordForCartItem])
 
     const loadInit = async () => {
+
         if (recordForCartItem && recordForCartItem != null) {
+            showLoader()
             let bucketName = ""
             let folder = ""
             let categoryCode = recordForCartItem.categoryCode
@@ -110,6 +117,7 @@ export const CartItem = (props) => {
             loadPhotoList(bucketName, fileKey)
 
             // console.log("recordForCartItem: " + JSON.stringify(recordForCartItem))
+            hideLoader()
         }
 
     }
@@ -130,6 +138,8 @@ export const CartItem = (props) => {
 
     return (
         <>
+            {<Loader loading={loading} />}
+
             <Box className={classes.cartItemContainer}>
                 <Grid container className={classes.rootCartItemGrid}>
                     <Grid item xs={2} sm={2} md={2} className={classes.cardItemPhotoDemoGridContainer}>

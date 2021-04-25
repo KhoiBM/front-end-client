@@ -4,6 +4,8 @@ import { Grid, makeStyles } from '@material-ui/core'
 import { ToolbarPersonalize } from '../ToolbarPersonalize2';
 import { MainStageBar } from '../MainStageBar';
 import { FooterBarPersonalize } from '../FooterBarPersonalize';
+import { useDownLoadURI, useUploadPhoto } from 'src/app/utils';
+import config from 'src/environments/config';
 
 const useStyles = makeStyles(theme => ({
     rootGridContainer: {
@@ -18,54 +20,60 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "space-between",
 
+        borderRight: "1px solid #f7f3e9",
+
 
     },
     toolbarContainer: {
         width: "100%",
-        height: "auto",
-        minHeight: "7vh",
+        height: "10vh",
         // background: "blue",
+        borderTop: "1px solid #f7f3e9",
+        borderBottom: "1px solid #f7f3e9",
 
     },
     mainStageBarContainer: {
         width: "100%",
-        height: "auto",
-        minHeight: "70vh",
+        height: "75vh",
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center",
+        // minHeight: "70vh",
         // background: "red",
         // borderTop: "1px solid rgb(0,0,0,0.23)",
-        borderBottom: "1px solid rgb(0,0,0,0.23)",
+        borderTop: "1px solid #f7f3e9",
+        borderRight: "1px solid #f7f3e9",
+
     },
     footerBarContainer: {
         width: "100%",
-        height: "auto",
-        minHeight: "15vh",
-        maxHeight: "15vh",
+        height: "15vh",
         // display: 'flex',
         // justifyContent: "center",
         // alignItems: "center",
         // background: "orange",
         // border: "1px solid red",
         // padding: theme.spacing(1)
+        // backgroundColor: "#f7f3e9 !important",
+        // borderTop: "1px solid #f7f3e9",
+        borderTop: "1px solid #f7f3e9",
+        borderBottom: "1px solid #f7f3e9",
 
 
     }
 }))
 
-function downloadURI(uri, name) {
-    var link = document.createElement('a');
-    link.download = name;
-    link.href = uri;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 
 const MainPersonalize = (props) => {
 
+    const { uploadPhoto } = useUploadPhoto()
+
+
     const classes = useStyles();
 
-    const { recordForMainPersonalize, dragUrl, stageRef } = props
+    const { recordForMainPersonalize, dragUrl, stageRef, handleCloseModal } = props
 
+    const { downloadURI } = useDownLoadURI()
 
     const [recordForMainStageBar, setRecordForMainStageBar] = useState(null)
 
@@ -99,12 +107,32 @@ const MainPersonalize = (props) => {
 
         downloadURI(uri, 'design.png');
     };
+
     const handleUpload = () => {
         const uri = stageRef.current.toDataURL({
             quality: 1,
             pixelRatio: 2
         });
         console.log(uri);
+
+        // const bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+        // const folder = "TestUploadFile"
+
+        // console.log(`${folder}`)
+
+        // const uploadInfo = {
+        //     bucketName,
+        //     prefix: `${folder}`,
+        // }
+
+        // const uploadFiles = [img]
+
+        // if (uploadFiles.length > 0) {
+        //     uploadPhoto(uploadInfo, uploadFiles)
+        // } else {
+        //     toast.success("Không có tệp để tải lên")
+        // }
+
 
     };
 
@@ -114,13 +142,19 @@ const MainPersonalize = (props) => {
             <div className={classes.mainPersonalizeContainer}>
 
                 <div className={classes.toolbarContainer}>
-                    <ToolbarPersonalize stageRef={stageRef} handleExport={handleExport} handleUpload={handleUpload} />
+                    <ToolbarPersonalize stageRef={stageRef}
+                        // handleExport={handleExport}
+                        handleUpload={handleUpload}
+                        handleCloseModal={handleCloseModal}
+                    />
                 </div>
 
                 <div className={classes.mainStageBarContainer}>
                     {
-                        recordForMainStageBar && recordForMainStageBar != null &&
-                        <MainStageBar
+                        recordForMainStageBar && recordForMainStageBar != null
+                        && bgPhoto && bgPhoto != null
+                        &&
+                        < MainStageBar
                             recordForMainStageBar={recordForMainStageBar}
                             bgPhoto={bgPhoto}
                             dragUrl={dragUrl}

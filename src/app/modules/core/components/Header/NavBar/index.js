@@ -11,7 +11,27 @@ import { AccountMenu } from '../AccountMenu';
 import { CategoriesMenu } from '../CategoriesMenu';
 import { ServicesMenu } from '../ServicesMenu';
 import { SearchBar } from '../SearchBar';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    activeNavLink: {
+        fontWeight: "bold",
+        fontSize: "5rem !important",
+        color: "#000 !important",
+    },
+    linkItemText: {
+        whiteSpace: "wrap",
+        height: "50px",
+        // border: "1px solid red",
+        display: "flex !important",
+        alignItems: "center",
+        flexWrap: "wrap"
+
+    }
+}))
 export function Navbar({ toggle }) {
+
+    const classes = useStyles();
 
     const token = localStorage.getItem("pps-token");
 
@@ -64,12 +84,29 @@ export function Navbar({ toggle }) {
                             </NavItem>
 
                             <NavItem>
-                                <NavRLinks to='/core/product_list_page'
+                                <NavRLinks to={
+                                    {
+                                        pathname: `/navigation`,
+                                        search: ``,
+                                        state: {
+                                            data: {
+                                                locationObject: {
+                                                    pathname: `/core/product_list_page`,
+                                                    search: ``,
+                                                    state: {
+                                                        data: {}
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                     smooth={true}
                                     duration={500} spy={true}
                                     exact={true}
                                     offset={-80}
                                     onClick={scrollToTop}
+                                    activeClassName={classes.activeNavLink}
                                 >
                                     Tất cả sản phẩm
                                 </NavRLinks>

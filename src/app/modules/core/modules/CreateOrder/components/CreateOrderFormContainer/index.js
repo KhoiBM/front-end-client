@@ -7,6 +7,7 @@ import config from 'src/environments/config';
 import { OrderServices, CartServices, ProductServices } from 'src/app/services';
 import { CreateCustomersRawProduct } from '../../../Product';
 import { VscCaseSensitive } from 'react-icons/vsc';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 const useStyles = makeStyles(theme => ({
     mainContainer: {
         width: "100%",
@@ -132,6 +133,9 @@ const initialFValues = {
 }
 
 export const CreateOrderFormContainer = (props) => {
+
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const classes = useStyles();
 
     const { formData, setFormData, handleInputChange, helperValid = null, validation, handleChangeColor } = useForm(initialFValues)
@@ -151,29 +155,6 @@ export const CreateOrderFormContainer = (props) => {
 
     const loadInit = async () => {
         console.log("loadInit")
-        try {
-            const response = await (await CartServices.viewShoppingCart()).data
-            // console.log("response: " + JSON.stringify(response))
-
-            if (response && response != null) {
-                if (response.result == config.useResultStatus.SUCCESS) {
-
-                    const records = response.info.records
-                    console.log("recordsShoppingCart(:" + JSON.stringify(records))
-
-
-                    setShoppingCart(records && records != null ? records : [])
-
-                } else {
-                    toast.error(config.useMessage.resultFailure)
-                }
-            } else {
-                throw new Error("Response is null or undefined")
-            }
-
-        } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
-        }
 
     }
 
@@ -188,6 +169,7 @@ export const CreateOrderFormContainer = (props) => {
         const enableSubmit = validation(formData)
 
         if (enableSubmit) {
+            showLoader()
             const data = {
                 ...formData,
                 shoppingCart
@@ -205,7 +187,7 @@ export const CreateOrderFormContainer = (props) => {
             } catch (e) {
                 toast.error(config.useMessage.createOrderFailure);
             }
-
+            hideLoader()
 
 
 
@@ -322,6 +304,7 @@ export const CreateOrderFormContainer = (props) => {
 
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
             <Paper elevation={0} className={classes.mainContainer}>
 
                 <Grid container className={classes.rootGrid}>

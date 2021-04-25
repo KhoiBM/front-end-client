@@ -9,6 +9,7 @@ import { IconClose } from 'src/app/components';
 import { PageHeader } from 'src/app/modules/core/components';
 import { useLoadPhotoList, useFormat } from 'src/app/utils';
 import { CartItem } from '../CartItem';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     cartContainer: {
@@ -105,11 +106,15 @@ const useStyles = makeStyles(theme => ({
 }))
 export const ViewCartOrder = (props) => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+
     const classes = useStyles();
 
     const { recordForCart, setTotalOrderPrices, handleRefreshViewOrderInformation } = props
 
     const [orderDetailList, setOrderDetailList] = useState([])
+
 
 
     useEffect(() => {
@@ -120,6 +125,7 @@ export const ViewCartOrder = (props) => {
 
     const loadInit = async () => {
         console.log("loadInit")
+        showLoader()
         try {
             const response = await (await OrderServices.getOrderDetailList({ orderID: recordForCart.orderID })).data
             // console.log("response: " + JSON.stringify(response))
@@ -149,6 +155,7 @@ export const ViewCartOrder = (props) => {
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
+        hideLoader()
 
     }
 

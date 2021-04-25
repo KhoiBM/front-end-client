@@ -71,7 +71,23 @@ export function NavbarHomePage({ toggle }) {
                             </NavItem>
 
                             <NavItem>
-                                <NavRLinks to='/core/product_list_page'
+                                <NavRLinks to={
+                                    {
+                                        pathname: `/navigation`,
+                                        search: ``,
+                                        state: {
+                                            data: {
+                                                locationObject: {
+                                                    pathname: `/core/product_list_page`,
+                                                    search: ``,
+                                                    state: {
+                                                        data: {}
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                     smooth={true}
                                     duration={500} spy={true}
                                     exact={true}

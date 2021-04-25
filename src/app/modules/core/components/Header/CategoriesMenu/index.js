@@ -158,15 +158,24 @@ export const CategoriesMenu = () => {
                             handleCloseMenu();
                             history.push(
                                 {
-                                    // pathname: `/core/product_list_page?categoryCode=${record.categoryCode}`,
-                                    pathname: `/core/product_list_page`,
-                                    search: `categoryCode=${record.categoryCode}`,
+                                    pathname: `/navigation`,
+                                    search: ``,
                                     state: {
                                         data: {
-                                            categoryCode: record.categoryCode
+                                            locationObject: {
+                                                // pathname: `/core/product_list_page?categoryCode=${record.categoryCode}`,
+                                                pathname: `/core/product_list_page`,
+                                                search: `categoryCode=${record.categoryCode}`,
+                                                state: {
+                                                    data: {
+                                                        categoryCode: record.categoryCode
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
+
                             )
                             scrollToTop()
                         }}

@@ -6,13 +6,14 @@ export const Nav = styled.nav`
   /* background: ${({ scrollNav }) => (scrollNav ? "#000" : "transparent")}; */
   background: ${({ scrollNav }) => (scrollNav ? "#000" : "#000")};
   height: 80px;
-  margin-top: -80px;
+  /* margin-top: -80px; */
   display: flex;
   justify-content: center;
   font-size: 1rem;
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 999;
+  z-index: 1111;
+  width:100%;
 
   /* border: 1px solid red; */
 
@@ -24,10 +25,11 @@ export const NavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   height: 80px;
-  z-index: 999;
+  z-index: 1111;
   width: 100%;
   padding: 0 24px;
-  max-width: 1100px;
+  max-width: 97.5vw;
+    /* border: 1px solid red; */
   
 `;
 
@@ -38,7 +40,7 @@ export const NavLogo = styled(LinkR)`
   font-size: 1.5rem;
   display: flex;
   align-items: center;
-  margin-left: 24px;
+  /* margin-left: 24px; */
   font-weight: bold;
   text-decoration: none;
 `;

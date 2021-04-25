@@ -20,12 +20,27 @@ const AppModule = () => {
     const theme = createMuiTheme({
         palette: {
             primary: {
-                main: "#48B7E2 ",
+                // main: "#48B7E2",
+                // main: "#01bf71",
+                // main: "#fe7241",
+                // main: "#C0EEFF",
+                // main: "#ff9292",
+                // main: "#a4ebf3",
+                // main: "#f05945",
+                main: "#a7c5eb",
             },
             secondary: {
 
                 // main: "#e27348",
-                main: "#478de3",
+                // main: "#478de3",
+                // main: "#41cdfe",
+                // main: "#FFD1C0",
+                // main: "#ffe8e8",
+                // main: "#ccf2f4",
+                // main: "#aaaaaa",
+                // main: "#e7e6e1",
+                // main: "#726a95",
+                main: "#4a47a3",
             },
             background: {
                 default: "rgba(249, 250, 251, var(--bg-opacity))"

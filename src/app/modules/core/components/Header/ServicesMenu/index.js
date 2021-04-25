@@ -125,7 +125,7 @@ export const ServicesMenu = () => {
     return (
         <>
 
-            <NavSLinks to='services'
+            <NavSLinks to='#'
                 smooth={true}
                 duration={500} spy={true}
                 exact={true}
@@ -156,26 +156,47 @@ export const ServicesMenu = () => {
                             handleCloseMenu();
                             history.push(
                                 record.serviceName == "Tạo của riêng bạn"
-                                    ? {
-                                        pathname: `/core/create_your_own_page`,
-                                        // search: ``,
-                                        state: {
-                                            data: {
-                                                serviceCode: record.serviceCode,
-                                                servicePrice: record.servicePrice
-                                            }
-                                        }
-                                    } :
+                                    ?
                                     {
-                                        // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
-                                        pathname: `/core/product_list_page`,
-                                        search: `serviceCode=${record.serviceCode}`,
+                                        pathname: `/navigation`,
+                                        search: ``,
                                         state: {
                                             data: {
-                                                serviceCode: record.serviceCode
+                                                locationObject: {
+                                                    pathname: `/core/create_your_own_page`,
+                                                    // search: ``,
+                                                    state: {
+                                                        data: {
+                                                            serviceCode: record.serviceCode,
+                                                            servicePrice: record.servicePrice
+                                                        }
+                                                    }
+                                                }
                                             }
                                         }
                                     }
+
+                                    :
+
+                                    {
+                                        pathname: `/navigation`,
+                                        search: ``,
+                                        state: {
+                                            data: {
+                                                locationObject: {
+                                                    pathname: `/core/product_list_page`,
+                                                    search: `serviceCode=${record.serviceCode}`,
+                                                    state: {
+                                                        data: {
+                                                            serviceCode: record.serviceCode
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+
                             )
                             scrollToTop()
 

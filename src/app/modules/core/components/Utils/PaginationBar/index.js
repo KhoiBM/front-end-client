@@ -22,9 +22,12 @@ const useStyles = makeStyles((theme) => ({
 
         },
         '& .MuiPagination-ul .MuiButtonBase-root': {
-            // background: "#fff",
+            background: "#fff",
 
             // border: "1px solid #fff"
+            "&:disable": {
+                // background: "#fff",
+            }
         }
 
     }

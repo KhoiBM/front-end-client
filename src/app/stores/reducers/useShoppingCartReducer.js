@@ -123,6 +123,13 @@ export const useShoppingCartReducer = (state = new ShoppingCartState({
                 };
             }
 
+        case SHOPPINGCART_TYPE.COUNT_CART_ITEM.SUCCESS:
+            {
+                return {
+                    ...state
+                };
+            }
+
         default:
             return {
                 ...state,

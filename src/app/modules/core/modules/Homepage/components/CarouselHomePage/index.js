@@ -9,6 +9,8 @@ import { autoPlay } from 'react-swipeable-views-utils';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
 import demophoto from 'src/app/assets/image/bg_auth.jpeg'
 import { Box } from '@material-ui/core';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -125,6 +127,9 @@ const useStyles = makeStyles((theme) => ({
 
 export const CarouselHomePage = () => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+
     const classes = useStyles();
 
     const theme = useTheme();
@@ -151,54 +156,58 @@ export const CarouselHomePage = () => {
     };
 
     return (
-        <div className={classes.root}>
+        <>
+            {/* {<Loader loading={loading} />} */}
+
+            <div className={classes.root}>
 
 
-            <AutoPlaySwipeableViews
-                axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                index={activeStep}
-                onChangeIndex={handleStepChange}
-                enableMouseEvents
-                className={classes.autoPlaySwipeableViews}
+                <AutoPlaySwipeableViews
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    index={activeStep}
+                    onChangeIndex={handleStepChange}
+                    enableMouseEvents
+                    className={classes.autoPlaySwipeableViews}
 
-            >
-                {advertiseSteps.map((step, index) => (
+                >
+                    {advertiseSteps.map((step, index) => (
 
-                    <div key={step.label} className={classes.viewStepContainer}>
-                        {Math.abs(activeStep - index) <= 2 ? (
-                            <img className={classes.img} src={step.imgPath} alt={step.label} />
-                        ) : null}
-                        <Box className={classes.viewContentStepContainer}>
-                            <Box elevation={0} className={classes.viewContentStepWrapper}>
-                                <>
-                                    {/* <Typography variant="h2" style={{ color: "#fff", fontWeight: "300" }}>{step.title}</Typography> */}
-                                    {/* <Typography variant="body" style={{ color: "#fff", fontWeight: "100" }}>{step.content}</Typography> */}
-                                </>
+                        <div key={step.label} className={classes.viewStepContainer}>
+                            {Math.abs(activeStep - index) <= 2 ? (
+                                <img className={classes.img} src={step.imgPath} alt={step.label} />
+                            ) : null}
+                            <Box className={classes.viewContentStepContainer}>
+                                <Box elevation={0} className={classes.viewContentStepWrapper}>
+                                    <>
+                                        {/* <Typography variant="h2" style={{ color: "#fff", fontWeight: "300" }}>{step.title}</Typography> */}
+                                        {/* <Typography variant="body" style={{ color: "#fff", fontWeight: "100" }}>{step.content}</Typography> */}
+                                    </>
+                                </Box>
                             </Box>
-                        </Box>
 
-                    </div>
+                        </div>
 
-                ))}
-            </AutoPlaySwipeableViews>
-            <MobileStepper
-                variant="dots"
-                steps={maxSteps}
-                position="static"
-                activeStep={activeStep}
-                className={classes.dotStepper}
-                nextButton={
-                    <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
-                        {theme.direction === 'rtl' ? <MdKeyboardArrowLeft className={classes.iconArrow} /> : <MdKeyboardArrowRight className={classes.iconArrow} />}
-                    </Button>
-                }
-                backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-                        {theme.direction === 'rtl' ? <MdKeyboardArrowRight className={classes.iconArrow} /> : <MdKeyboardArrowLeft className={classes.iconArrow} />}
-                    </Button>
-                }
-            />
+                    ))}
+                </AutoPlaySwipeableViews>
+                <MobileStepper
+                    variant="dots"
+                    steps={maxSteps}
+                    position="static"
+                    activeStep={activeStep}
+                    className={classes.dotStepper}
+                    nextButton={
+                        <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>
+                            {theme.direction === 'rtl' ? <MdKeyboardArrowLeft className={classes.iconArrow} /> : <MdKeyboardArrowRight className={classes.iconArrow} />}
+                        </Button>
+                    }
+                    backButton={
+                        <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
+                            {theme.direction === 'rtl' ? <MdKeyboardArrowRight className={classes.iconArrow} /> : <MdKeyboardArrowLeft className={classes.iconArrow} />}
+                        </Button>
+                    }
+                />
 
-        </div>
+            </div>
+        </>
     );
 }

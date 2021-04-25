@@ -12,7 +12,7 @@ const useApiPath = {
             "signUp": "user/signup",
             "confirmCode": "user/confirm-email",
             "forgotPassword": "user/forgot-password",
-            "confirmForgotPassword": "user/confirm-forgor-password"
+            "confirmForgotPassword": "user/confirm-forgot-password"
         },
         "photoServices": {
             getPresignedURLToUpload: "manage/upload-photo",
@@ -31,9 +31,7 @@ const useResultStatus = {
 }
 
 const useRegex = {
-    // regexPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/,
-    regexPassword: /./,
-    // regexEmail: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+    regexPassword: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/,
     regexEmail: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/i,
     regexPhone: /^\d{10,11}$/
 }

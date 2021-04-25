@@ -2,15 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { ProductServices } from 'src/app/services'
 import config from 'src/environments/config'
 import { toast } from 'react-toastify'
-import { useGetStateLocation } from 'src/app/utils'
+import { useGetStateLocation, useLoadingEffect } from 'src/app/utils'
 import { MainBar } from '../../../components'
 import { ProductDetail } from '../components'
+import { Loader } from 'src/app/components'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const ProductDetailPage = () => {
+
+    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
+
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
     const [record, setRecord] = useState(null)
 
     const { data } = useGetStateLocation()
+
 
     useEffect(() => {
         if (data && data != null) {
@@ -23,6 +30,7 @@ const ProductDetailPage = () => {
 
     const loadInit = async (data) => {
         console.log("dataloadInit: " + JSON.stringify(data))
+        showLoader()
         try {
 
             const response = await (await ProductServices.viewRawProductDetail({ rawProductID: data.rawProductID })).data
@@ -53,6 +61,7 @@ const ProductDetailPage = () => {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
+        hideLoader()
 
     }
 
@@ -70,10 +79,12 @@ const ProductDetailPage = () => {
     return (
         <>
 
+            {/* {<Loader loading={loading} />} */}
+
             <MainBar>
-                {/* <p>ProductDetailPage</p> */}
                 <ProductDetail record={record} />
             </MainBar>
+
         </>
     )
 }

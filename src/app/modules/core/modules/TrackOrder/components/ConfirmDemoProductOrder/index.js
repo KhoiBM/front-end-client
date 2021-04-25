@@ -8,8 +8,9 @@ import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { useForm } from 'src/app/utils'
 import { PageHeader } from 'src/app/modules/core/components'
-import { IconClose } from 'src/app/components'
+import { IconClose, Loader } from 'src/app/components'
 import { OrderServices } from 'src/app/services'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const useStyles = makeStyles(theme => ({
     rootForm: {
@@ -118,6 +119,9 @@ const initialFValues = {
 }
 
 export const ConfirmDemoProductOrder = (props) => {
+
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const classes = useStyles();
 
     const { formData, setFormData, handleInputChange, helperValid = null, validation } = useForm(initialFValues)
@@ -181,6 +185,8 @@ export const ConfirmDemoProductOrder = (props) => {
 
     return (
         <>
+            {<Loader loading={loading} />}
+
             <Dialog open={isOpen} classes={{ paper: classes.dialog }} TransitionComponent={Transition}>
 
 

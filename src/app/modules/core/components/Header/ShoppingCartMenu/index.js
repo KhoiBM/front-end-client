@@ -7,6 +7,7 @@ import config from 'src/environments/config';
 import { ProductServices, CartServices } from 'src/app/services';
 import { RiShoppingCartLine } from 'react-icons/ri';
 import { animateScroll as scroll } from 'react-scroll';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 export const ShoppingCartMenu = () => {
     const history = useHistory();
 
+    const dispatch = useDispatch();
 
     const classes = useStyles({});
 
@@ -43,46 +45,32 @@ export const ShoppingCartMenu = () => {
 
     const [countBadge, setCountBadge] = useState(0)
 
-    useEffect(() => {
-        loadInit()
+    const { shoppingCart } = useSelector((state) => state.shoppingCartState)
 
-    }, [])
 
     useEffect(() => {
-        loadInit()
-    }, [refresh])
+        loadInit(shoppingCart)
+        console.log("shoppingCart:")
+        console.table(shoppingCart)
+    }, [refresh, shoppingCart])
 
-    const loadInit = async () => {
+    const loadInit = async (shoppingCart) => {
 
-        // loadCountBadge()
+        loadCountBadge(shoppingCart)
 
     }
 
-    // const loadCountBadge = async () => {
-
-    //     try {
-    //         const response = await (await CartServices.countCartItem()).data
-
-    //         // console.log("response: " + response)
-
-    //         if (response && response != null) {
-    //             if (response.result == config.useResultStatus.SUCCESS) {
-    //                 // console.log("countBadge: " + JSON.stringify(response.info.count))
-    //                 const countBadge = response.info.count
-    //                 setCountBadge(countBadge ? countBadge : 0)
-
-    //             } else {
-    //                 toast.error(config.useMessage.resultFailure)
-    //             }
-    //         } else {
-    //             throw new Error("Response is null or undefined")
-    //         }
-
-    //     } catch (err) {
-    //         toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
-    //     }
-
-    // }
+    const loadCountBadge = async (shoppingCart) => {
+        try {
+            if (shoppingCart && shoppingCart != null && shoppingCart.length > 0) {
+                setCountBadge(shoppingCart.length)
+            } else {
+                setCountBadge(0)
+            }
+        } catch (err) {
+            toast.error("Lỗi count cart item")
+        }
+    }
 
     const scrollToTop = () => {
         scroll.scrollToTop();
@@ -100,17 +88,17 @@ export const ShoppingCartMenu = () => {
                         }
                     }
                 >
-                    {/* <Badge
+                    <Badge
                         anchorOrigin={{
                             vertical: 'top',
                             horizontal: 'right',
                         }}
                         badgeContent={countBadge}
                         className={classes.badge}
-                        color="error"> */}
+                        color="error">
 
-                    <RiShoppingCartLine className={classes.icon} />
-                    {/* </Badge> */}
+                        <RiShoppingCartLine className={classes.icon} />
+                    </Badge>
 
                 </IconButton>
             </Tooltip>

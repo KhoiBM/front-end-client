@@ -3,6 +3,8 @@ import React, { useEffect } from 'react'
 import { makeStyles, Box } from '@material-ui/core';
 import { useLoadPhotoList } from 'src/app/utils';
 import config from 'src/environments/config';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 const useStyles = makeStyles(theme => ({
     photoWrapper: {
         width: "300px",
@@ -24,6 +26,8 @@ const useStyles = makeStyles(theme => ({
 
 }))
 export const ProductPhotoCard = (props) => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const classes = useStyles();
     const { recordForPhotoCard } = props
 
@@ -40,7 +44,7 @@ export const ProductPhotoCard = (props) => {
 
     const loadInit = async () => {
         if (recordForPhotoCard && recordForPhotoCard != null) {
-
+            showLoader()
             const { categoryCode, rawProductCode, createdBy } = recordForPhotoCard
             // console.log("categoryCode:" + categoryCode)
             // console.log("rawProductCode:" + rawProductCode)
@@ -65,13 +69,14 @@ export const ProductPhotoCard = (props) => {
 
             await loadPhotoList(bucketName, fileKey)
 
-
+            hideLoader()
 
         }
 
     }
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
             {
                 photoList && photoList != null && photoList.length > 0 &&
                 <>

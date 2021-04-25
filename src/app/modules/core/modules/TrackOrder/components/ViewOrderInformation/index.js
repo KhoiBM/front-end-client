@@ -9,6 +9,7 @@ import { useLoadPhotoList } from 'src/app/utils';
 import { PageHeader } from 'src/app/modules/core/components';
 import { ViewCart, ViewCartOrder } from '../ViewCartOrder';
 import bgAuth from "src/app/assets/image/bg_auth.jpeg"
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     rootGrid: {
@@ -146,6 +147,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 
 export const ViewOrderInformation = (props) => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
     const classes = useStyles();
 
@@ -185,6 +187,7 @@ export const ViewOrderInformation = (props) => {
     return (
         <>
             {/* isOpen */}
+
             <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>

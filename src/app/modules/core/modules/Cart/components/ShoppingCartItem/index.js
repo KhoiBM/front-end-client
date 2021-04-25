@@ -11,6 +11,8 @@ import { useRefresh, useLoadPhotoList, useFormat } from 'src/app/utils';
 import { ConfirmDialog } from 'src/app/modules/core/components';
 import { useDispatch } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
+import { Loader } from 'src/app/components';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     cartItemContainer: {
@@ -72,6 +74,9 @@ const useStyles = makeStyles(theme => ({
 
 export const ShoppingCartItem = (props) => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+
     const dispatch = useDispatch();
 
     const classes = useStyles();
@@ -102,6 +107,7 @@ export const ShoppingCartItem = (props) => {
 
     const loadInit = async () => {
         if (shoppingCartItem && shoppingCartItem != null) {
+            showLoader()
             let bucketName = ""
             let folder = ""
             let categoryCode = shoppingCartItem.categoryCode
@@ -127,6 +133,7 @@ export const ShoppingCartItem = (props) => {
 
 
             // console.log("shoppingCartItem: " + JSON.stringify(shoppingCartItem))
+            hideLoader()
         }
 
     }
@@ -174,6 +181,7 @@ export const ShoppingCartItem = (props) => {
 
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
             <Box className={classes.cartItemContainer}>
                 <Grid container className={classes.rootCartItemGrid}>
                     <Grid item xs={2} sm={2} md={2} className={classes.cardItemPhotoDemoGridContainer}>

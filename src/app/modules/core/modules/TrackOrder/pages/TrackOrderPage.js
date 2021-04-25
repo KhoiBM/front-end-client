@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { OrderServices } from 'src/app/services';
 import { makeStyles, Paper } from '@material-ui/core';
-import { useSearchHandle, useFilterHandle } from 'src/app/utils';
+import { useSearchHandle, useFilterHandle, useLoadingEffect } from 'src/app/utils';
 import { MainBar } from '../../../components';
 import { TrackOrderTable } from '../components/TrackOrderTable';
 import { FilterChipBar } from '../components';
+import { CanActive, Loader } from 'src/app/components';
+import config from 'src/environments/config';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     mainContainer: {
@@ -66,8 +69,16 @@ const TrackOrderPage = (props) => {
             mapToFilter
         }
     )
+
+    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+
     return (
         <>
+            <CanActive isRole={config.useRoleName.customer} />
+            {/* {<Loader loading={loading} />} */}
+
             <MainBar>
                 <Paper elevation={0} className={classes.mainContainer}>
                     <>

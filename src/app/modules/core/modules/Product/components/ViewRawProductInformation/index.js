@@ -6,12 +6,13 @@ import { toast } from 'react-toastify';
 import { PhotoServices, CartServices } from 'src/app/services';
 import { PageHeader, GridPhotoList } from 'src/app/modules/core/components';
 import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
-import { IconClose } from 'src/app/components';
+import { IconClose, Loader } from 'src/app/components';
 import { useFormat, useLoadPhotoList, useRefresh, useScrollToTop } from 'src/app/utils';
 import { useHistory } from 'react-router-dom';
 import { Personalize2 } from '../Personalize2Components';
 import { useDispatch } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     pageViewInfomationContainer: {
@@ -116,6 +117,7 @@ const useStyles = makeStyles(theme => ({
         width: "100%",
         height: "auto",
         // border: "1px solid red",
+        marginBottom: theme.spacing(3),
     },
     buttonWrapper: {
         marginTop: theme.spacing(3),
@@ -123,6 +125,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: "10px",
         display: "flex",
         // justifyContent: "center",
+
 
     },
     buttonPersonalize: {
@@ -157,6 +160,8 @@ const useStyles = makeStyles(theme => ({
 
 export const ViewRawProductInformation = (props) => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const dispatch = useDispatch();
 
     const history = useHistory()
@@ -187,13 +192,19 @@ export const ViewRawProductInformation = (props) => {
     // console.log("photoList:" + photoList)
 
     const loadInit = async (record) => {
+        showLoader()
         loadPhotoInit(record)
         loadDataInit(record)
+        hideLoader()
 
     }
 
     const loadDataInit = async (record) => {
-        setRecordRawProduct(record)
+        setRecordRawProduct({
+            ...record,
+            customersRawProductUploadFiles: [],
+            createdPreviewPhotoList: []
+        })
     }
 
     const loadPhotoInit = async (record) => {
@@ -227,14 +238,14 @@ export const ViewRawProductInformation = (props) => {
 
     const addCartItem = async () => {
 
+        showLoader()
+
+
         if (totalQuantity >= 1) {
             try {
                 const dataToAdd = {
                     ...recordRawProduct,
                     quantity: 1,
-                    servicePrice,
-                    customerRawProductUploadFiles: [],
-                    createdPreviewPhotoList: []
                 }
 
                 dispatch(useShoppingCartAction().addCartItemSuccess(dataToAdd))
@@ -242,18 +253,19 @@ export const ViewRawProductInformation = (props) => {
 
                 // history.push("/core/cart_page")
                 toast.success("Thêm vào giỏ hàng thành công")
-                scrollToTop()
+                // scrollToTop()
 
 
                 console.log("addCartItem")
-                console.log("dataToAdd: " + dataToAdd)
-                // console.log("categoryCode: " + categoryCode)
-                // console.log("rawProductCode: " + rawProductCode)
+                console.log("dataToAdd:")
+                console.table(dataToAdd)
 
             } catch (err) {
                 toast.error("Thất bại")
             }
         }
+
+        hideLoader()
     }
 
     const handleCloseModal = () => {
@@ -264,6 +276,7 @@ export const ViewRawProductInformation = (props) => {
 
     return (
         <>
+            {< Loader loading={loading} />}
             <div className={classes.pageViewInfomationContainer}>
                 <Paper elevation={0} className={classes.pageViewInfomationWrapper}>
 

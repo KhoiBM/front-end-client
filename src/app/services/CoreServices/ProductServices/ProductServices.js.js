@@ -895,20 +895,23 @@ export class ProductServices {
 
     }
 
-    static getOptionToFilter = (data) => {
-        // return useHttpModule().get(config.useApiPath.api., data)
+    static getOptionToFilterAllRawProduct = (data) => {
         return Promise.resolve({
             data: {
                 result: config.useResultStatus.SUCCESS,
                 info: {
                     records: [
                         {
-                            code: "Giá cao đến thấp",
+                            code: 0,
                             name: "Giá cao đến thấp"
                         },
                         {
-                            code: "Giá thấp đến cao",
+                            code: 1,
                             name: "Giá thấp đến cao"
+                        },
+                        {
+                            code: 3,
+                            name: "Sản phẩm mới"
                         },
 
                     ]
@@ -916,6 +919,63 @@ export class ProductServices {
             }
         })
     }
+
+    static getOptionToFilterRawProductOfService = (data) => {
+        // return useHttpModule().post(config.useApiPath.api., data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+                    records:
+                        [
+                            {
+                                categoryCode: "categoryCode",
+                                categoryName: "abc",
+                            },
+                            {
+
+                                categoryCode: "categoryCode1",
+                                categoryName: "abc2",
+                            },
+                            {
+
+                                categoryCode: "categoryCode2",
+                                categoryName: "abc3",
+                            }
+
+                        ]
+                }
+            }
+        })
+    }
+
+    static getOptionToFilterRawProductOfCategory = (data) => {
+
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+                    records: [
+                        {
+                            code: 0,
+                            name: "Giá cao đến thấp"
+                        },
+                        {
+                            code: 1,
+                            name: "Giá thấp đến cao"
+                        },
+                        {
+                            code: 3,
+                            name: "Sản phẩm mới"
+                        },
+
+                    ]
+                }
+            }
+        })
+    }
+
+
     static getServicePriceCreateYourOwn = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
         return Promise.resolve({

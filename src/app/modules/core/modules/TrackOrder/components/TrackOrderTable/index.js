@@ -5,12 +5,13 @@ import { makeStyles, Button, Tooltip, Zoom } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { OrderServices } from 'src/app/services';
 import config from 'src/environments/config';
-import { NotFound } from 'src/app/components';
+import { NotFound, Loader } from 'src/app/components';
 import { RiInformationLine } from 'react-icons/ri';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 import { ConfirmDialog, PaginationBar } from 'src/app/modules/core/components';
 import { ViewOrderInformation } from '../ViewOrderInformation';
 import { ConfirmDemoProductOrder } from '../ConfirmDemoProductOrder';
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
 
@@ -20,6 +21,8 @@ const useStyles = makeStyles(theme => ({
 
 
 export const TrackOrderTable = (props) => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
 
     const classes = useStyles();
 
@@ -72,7 +75,7 @@ export const TrackOrderTable = (props) => {
         // console.log("action: " + action)
         // console.log("filterList:" + JSON.stringify(filterList))
         // console.log("Page: " + page)
-
+        showLoader()
         try {
             const response = await (await OrderServices.viewOrder({ filterBy: filterList, page: page, limit: limit })).data
             // console.log("response: " + JSON.stringify(response))
@@ -93,7 +96,7 @@ export const TrackOrderTable = (props) => {
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
-
+        hideLoader()
     }
 
     const loadData = async (response) => {
@@ -133,7 +136,7 @@ export const TrackOrderTable = (props) => {
             ...confirmDialog,
             isOpen: false
         })
-
+        showLoader()
         try {
             const response = await (await OrderServices.cancelOrder({ orderID })).data
             // console.log("response: " + JSON.stringify(response))
@@ -156,10 +159,12 @@ export const TrackOrderTable = (props) => {
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
+        hideLoader()
     }
 
     return (
         <>
+            {<Loader loading={loading} />}
 
             <TblContainer>
                 <TblHead />

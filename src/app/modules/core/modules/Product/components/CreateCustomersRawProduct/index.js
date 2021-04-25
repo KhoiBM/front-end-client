@@ -4,10 +4,12 @@ import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGet
 import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { ProductServices, CartServices } from 'src/app/services'
-import { IconClose } from 'src/app/components'
-import { ColorPickerInput, DropZoneUpload, PageHeader, Personalize1 } from 'src/app/modules/core/components'
+import { IconClose, Loader } from 'src/app/components'
+import { ColorPickerInput, DropZoneUpload, PageHeader } from 'src/app/modules/core/components'
 import { v4 as uuidv4 } from 'uuid';
 import { v5 as uuidv5 } from 'uuid';
+import { Personalize1 } from '../Personalize1Components'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 const useStyles = makeStyles(theme => ({
     button: {
         width: "350px",
@@ -50,6 +52,8 @@ const initialFValues = {
 }
 
 export const CreateCustomersRawProduct = () => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const classes = useStyles();
 
     const { classesCustomStylesAddEditForm } = useCustomStylesAddEditForm()
@@ -76,6 +80,7 @@ export const CreateCustomersRawProduct = () => {
     }, [])
 
     const loadInit = async () => {
+        showLoader()
         try {
             const response = await (await ProductServices.getAllCategory()).data
             // console.log("response: " + response)
@@ -105,6 +110,7 @@ export const CreateCustomersRawProduct = () => {
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`,)
         }
+        hideLoader()
     }
 
     const handleSubmit = (event) => {
@@ -127,7 +133,7 @@ export const CreateCustomersRawProduct = () => {
     }
 
     const add = async () => {
-
+        showLoader()
         try {
 
             const response = await (await ProductServices.createCustomersRawProductByLocal({ ...formData, customersRawProductPhotoList: uploadFiles })).data
@@ -163,6 +169,7 @@ export const CreateCustomersRawProduct = () => {
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
+        hideLoader()
 
     }
 
@@ -175,6 +182,7 @@ export const CreateCustomersRawProduct = () => {
 
     return (
         <>
+            {<Loader loading={loading} />}
             <div className={classesCustomStylesAddEditForm.pageFormContainer}>
                 <Paper elevation={0} className={classesCustomStylesAddEditForm.pageForm}>
 

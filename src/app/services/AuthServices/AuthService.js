@@ -40,7 +40,7 @@ export class AuthService {
         // return Promise.resolve({
         //     data: {
         //         result: config.useResultStatus.SUCCESS,
-        //         data
+        //         // data
         //     }
         // })
     }
@@ -55,7 +55,7 @@ export class AuthService {
     }
 
     static signOut = () => {
-        // useHttpModule().get(config.useApiPath.api.auth.SignOut)
+        useHttpModule().get(config.useApiPath.api.auth.SignOut)
         localStorage.removeItem("pps-token")
         localStorage.removeItem("role")
     }

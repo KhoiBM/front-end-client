@@ -2,6 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, CardMedia, Divider } from '@material-ui/core';
+import { Loader } from 'src/app/components';
 
 
 const useStyles = makeStyles(theme => ({
@@ -142,6 +143,7 @@ export const GridPhotoList = (props) => {
 
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
             <Paper className={classes.rootContainer} elevation={0}>
 
                 <Grid container className={classes.rootGrid} spacing={5}>

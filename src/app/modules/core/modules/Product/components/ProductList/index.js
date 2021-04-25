@@ -6,8 +6,12 @@ import { useFormat } from 'src/app/utils'
 import { ProductPhotoCard } from '../ProductPhotoCard'
 import { animateScroll as scroll } from 'react-scroll';
 import { PaginationBar } from 'src/app/modules/core/components'
+import { Loader } from 'src/app/components'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 export const ProductList = (props) => {
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const { records, page, setPage, totalPage } = props
 
     useEffect(() => {
@@ -20,6 +24,7 @@ export const ProductList = (props) => {
     }
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
             <ProductListContainer>
                 <Wrapper>
 
@@ -55,7 +60,7 @@ export const ProductList = (props) => {
                                     <Divider />
                                     <br />
                                     <P>
-                                        <Typography variant="body2" style={{ color: "#01bf71" }}>{`${useFormat().formatMoney(record.unitPrice)} đ`}</Typography>
+                                        <Typography variant="body2" style={{ color: "var(--primary-color-main)" }}>{`${useFormat().formatMoney(record.unitPrice)} đ`}</Typography>
                                     </P>
                                 </ProductCard>
                             </CardLinkR>

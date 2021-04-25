@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import AuthModule from './modules/auth/AuthModule';
 import CoreModule from './modules/core/CoreModule';
-import { NoMatch } from './components';
+import { NoMatch, Navigation } from './components';
 const AppRoutes = () => {
     return (
         <Router>
@@ -15,6 +15,7 @@ const AppRoutes = () => {
                 <Route exact path="/" render={() => <Redirect to="/auth" />} />
                 <Route path="/auth" component={AuthModule} />
                 <Route path="/core" component={CoreModule} />
+                <Route path="/navigation" component={Navigation} />
                 <Route component={NoMatch} />
             </Switch>
         </Router >
