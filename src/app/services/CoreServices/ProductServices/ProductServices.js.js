@@ -1,145 +1,144 @@
 import config from "src/environments/config"
+import { useHttpModule } from '../../HttpServices'
 
 export class ProductServices {
 
     static getAllService = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    records: [
-                        {
-                            serviceID: "1",
-                            serviceCode: "serviceCode",
-                            serviceName: "abcd",
-                            servicePrice: 100000,
-                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        },
-                        {
-                            serviceID: "1",
-                            serviceCode: "serviceCode2",
-                            serviceName: "abcd",
-                            servicePrice: 100000,
-                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        }, {
-                            serviceID: "1",
-                            serviceCode: "serviceCode",
-                            serviceName: "abcd",
-                            servicePrice: 100000,
-                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        },
-                        {
-                            serviceID: "1",
-                            serviceCode: "serviceCode2",
-                            serviceName: "abcd",
-                            servicePrice: 100000,
-                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        }
-                        , {
-                            serviceID: "1",
-                            serviceCode: "serviceCode",
-                            serviceName: "Tạo của riêng bạn",
-                            servicePrice: 100000,
-                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                        }
-                    ]
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.productServices.getAllService, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             records: [
+        //                 {
+        //                     serviceID: "1",
+        //                     serviceCode: "serviceCode",
+        //                     serviceName: "abcd",
+        //                     servicePrice: 100000,
+        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        //                 },
+        //                 {
+        //                     serviceID: "1",
+        //                     serviceCode: "serviceCode2",
+        //                     serviceName: "abcd",
+        //                     servicePrice: 100000,
+        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        //                 }, {
+        //                     serviceID: "1",
+        //                     serviceCode: "serviceCode",
+        //                     serviceName: "abcd",
+        //                     servicePrice: 100000,
+        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        //                 },
+        //                 {
+        //                     serviceID: "1",
+        //                     serviceCode: "serviceCode2",
+        //                     serviceName: "abcd",
+        //                     servicePrice: 100000,
+        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        //                 }
+        //                 , {
+        //                     serviceID: "1",
+        //                     serviceCode: "serviceCode",
+        //                     serviceName: "Tạo của riêng bạn",
+        //                     servicePrice: 100000,
+        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        //                 }
+        //             ]
+        //         }
+        //     }
+        // })
     }
 
     static getAllCategory = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    records:
-                        [
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "2",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc2",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "3",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc3",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "2",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc2",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "3",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc3",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            }
-
-
-                        ]
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.productServices.getAllCategory, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             records:
+        //                 [
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     }, {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     }
+        //
+        //                 ]
+        //         }
+        //     }
+        // })
     }
 
 
     static viewRawProduct = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
+        // return useHttpModule().post(config.useApiPath.api.productServices.getAllProduct, data)
         if (data.page == 1) {
             return Promise.resolve({
                 data: {

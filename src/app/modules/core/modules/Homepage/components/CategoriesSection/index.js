@@ -98,7 +98,7 @@ export const CategoriesSection = () => {
                                 scrollToTop()
                             }}>
                             <CategoriesIconContainer recordForCategoriesIcon={{ categoryCode: record.categoryCode }} />
-                            <CategoriesH2>{record.serviceName}</CategoriesH2>
+                            <CategoriesH2>{record.categoryName}</CategoriesH2>
                             <CategoriesP>{record.description}</CategoriesP>
                             <Divider />
                         </CategoriesCard>

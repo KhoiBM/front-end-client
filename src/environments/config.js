@@ -17,6 +17,15 @@ const useApiPath = {
         "photoServices": {
             getPresignedURLToUpload: "manage/upload-photo",
             getPhotoListByLink: "manage/get-list-photo"
+        },
+        "productServices": {
+            getAllService: "homepage/get-list-service",
+            getAllCategory: "homepage/get-list-category",
+            getAllProduct: "homepage/get-list-product"
+        },
+        "manageProfile": {
+            viewProfile: "manager/view-profile",
+            editProfile: "manager/edit-profile"
         }
 
     }
