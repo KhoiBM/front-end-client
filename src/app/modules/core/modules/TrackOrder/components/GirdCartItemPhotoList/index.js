@@ -29,6 +29,10 @@ export const GirdCartItemPhotoList = (props) => {
 
         loadInit()
 
+        return () => {
+            setPhotoList([])
+        }
+
     }, [recordForGridCartItemPhotoList])
 
 

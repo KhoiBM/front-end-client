@@ -51,8 +51,8 @@ export function NavbarHomePage({ toggle }) {
                             <NavItem>
                                 <NavSLinks to='services'
                                     smooth={true}
-                                    duration={500} spy={true}
-                                    exact={true}
+                                    duration={500}
+                                    exact="true"
                                     offset={-80}
                                 >
                                     Dịch vụ
@@ -62,8 +62,8 @@ export function NavbarHomePage({ toggle }) {
                             <NavItem>
                                 <NavSLinks to='categories'
                                     smooth={true}
-                                    duration={500} spy={true}
-                                    exact={true}
+                                    duration={500}
+                                    exact="true"
                                     offset={-80}
                                 >
                                     Thể loại
@@ -89,8 +89,8 @@ export function NavbarHomePage({ toggle }) {
                                     }
                                 }
                                     smooth={true}
-                                    duration={500} spy={true}
-                                    exact={true}
+                                    duration={500}
+                                    exact="true"
                                     offset={-80}
                                     onClick={scrollToTop}
                                 >
@@ -114,8 +114,8 @@ export function NavbarHomePage({ toggle }) {
                                         <NavBtn>
                                             <NavBtnLink to='/auth/signin'
                                                 smooth={true}
-                                                duration={500} spy={true}
-                                                exact={true}
+                                                duration={500}
+                                                exact="true"
                                                 offset={-80}>
                                                 Đăng nhập
                                     </NavBtnLink>

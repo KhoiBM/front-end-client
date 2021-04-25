@@ -210,9 +210,9 @@ export const ViewRawProductInformation = (props) => {
     const loadPhotoInit = async (record) => {
         const { rawProductCode, categoryCode, createdBy } = record
 
-        console.log("categoryCode:" + categoryCode)
-        console.log("rawProductCode:" + rawProductCode)
-        console.log("createdBy:" + createdBy)
+        // console.log("categoryCode:" + categoryCode)
+        // console.log("rawProductCode:" + rawProductCode)
+        // console.log("createdBy:" + createdBy)
 
         let bucketName = ""
         let folder = ""

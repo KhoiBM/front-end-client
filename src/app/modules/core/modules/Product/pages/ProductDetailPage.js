@@ -26,7 +26,7 @@ const ProductDetailPage = () => {
         }
     }, [])
 
-    console.log("record: " + JSON.stringify(record))
+    // console.log("record: " + JSON.stringify(record))
 
     const loadInit = async (data) => {
         console.log("dataloadInit: " + JSON.stringify(data))

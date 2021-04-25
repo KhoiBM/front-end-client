@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 }))
 export const ProductPhotoCard = (props) => {
-    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+    // const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
     const classes = useStyles();
     const { recordForPhotoCard } = props
@@ -37,14 +37,16 @@ export const ProductPhotoCard = (props) => {
         if (recordForPhotoCard && recordForPhotoCard != null) {
             loadInit()
         }
-
+        return () => {
+            setPhotoList([])
+        }
     }, [recordForPhotoCard])
 
     // console.log("photoList:" + photoList)
 
     const loadInit = async () => {
         if (recordForPhotoCard && recordForPhotoCard != null) {
-            showLoader()
+            // showLoader()
             const { categoryCode, rawProductCode, createdBy } = recordForPhotoCard
             // console.log("categoryCode:" + categoryCode)
             // console.log("rawProductCode:" + rawProductCode)
@@ -69,7 +71,7 @@ export const ProductPhotoCard = (props) => {
 
             await loadPhotoList(bucketName, fileKey)
 
-            hideLoader()
+            // hideLoader()
 
         }
 

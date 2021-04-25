@@ -102,8 +102,8 @@ export function Navbar({ toggle }) {
                                     }
                                 }
                                     smooth={true}
-                                    duration={500} spy={true}
-                                    exact={true}
+                                    duration={500}
+                                    exact="true"
                                     offset={-80}
                                     onClick={scrollToTop}
                                     activeClassName={classes.activeNavLink}
@@ -128,8 +128,8 @@ export function Navbar({ toggle }) {
                                         <NavBtn>
                                             <NavBtnLink to='/auth/signin'
                                                 smooth={true}
-                                                duration={500} spy={true}
-                                                exact={true}
+                                                duration={500}
+                                                exact="true"
                                                 offset={-80}>
                                                 Đăng nhập
                                     </NavBtnLink>

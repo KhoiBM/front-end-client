@@ -128,8 +128,8 @@ export const CategoriesMenu = () => {
 
             <NavSLinks to='categories'
                 smooth={true}
-                duration={500} spy={true}
-                exact={true}
+                duration={500}
+                exact="true"
                 offset={-80}
                 onClick={handleMenu}
             >

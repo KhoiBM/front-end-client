@@ -16,18 +16,21 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const advertiseSteps = [
     {
+        key: 0,
         title: 'Chào mừng đến với dịch vụ của chúng tôi',
         content: "",
         button: "",
         imgPath: demophoto,
     },
     {
+        key: 1,
         title: '',
         content: "",
         button: "",
         imgPath: demophoto,
     },
     {
+        key: 2,
         title: 'Khám phá ngay nào',
         content: "",
         button: "",
@@ -172,9 +175,9 @@ export const CarouselHomePage = () => {
                 >
                     {advertiseSteps.map((step, index) => (
 
-                        <div key={step.label} className={classes.viewStepContainer}>
+                        <div key={step.key} className={classes.viewStepContainer}>
                             {Math.abs(activeStep - index) <= 2 ? (
-                                <img className={classes.img} src={step.imgPath} alt={step.label} />
+                                <img className={classes.img} src={step.imgPath} alt={step.key} />
                             ) : null}
                             <Box className={classes.viewContentStepContainer}>
                                 <Box elevation={0} className={classes.viewContentStepWrapper}>

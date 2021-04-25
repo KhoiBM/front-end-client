@@ -140,6 +140,9 @@ const ProductListPage = () => {
 
     useEffect(() => {
         loadInit()
+        return () => {
+            setRecords([])
+        }
     }, [page])
 
     useEffect(() => {

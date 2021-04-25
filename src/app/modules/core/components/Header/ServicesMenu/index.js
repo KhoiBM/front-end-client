@@ -127,8 +127,8 @@ export const ServicesMenu = () => {
 
             <NavSLinks to='#'
                 smooth={true}
-                duration={500} spy={true}
-                exact={true}
+                duration={500}
+                exact="true"
                 offset={-80}
                 onClick={handleMenu}
             >
