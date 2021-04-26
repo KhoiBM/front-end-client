@@ -61,7 +61,7 @@ export const useShoppingCartReducer = (state = new ShoppingCartState({
             console.log("isExist: " + isExist)
             if (isExist) {
                 editedShoppingCart = editedShoppingCart.map((cartItem, index) => {
-                    if (cartItem.rawProductCode == action.payload.data.rawProductCode) {
+                    if (cartItem.cartItemCode == action.payload.data.cartItemCode) {
                         return { ...cartItem, ...action.payload.data }
                     }
                     return cartItem

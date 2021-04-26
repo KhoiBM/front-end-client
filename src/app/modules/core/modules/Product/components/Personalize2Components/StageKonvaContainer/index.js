@@ -6,6 +6,7 @@ import useImage from 'use-image';
 import { v4 as uuidv4 } from 'uuid';
 import { v5 as uuidv5 } from 'uuid';
 import deleteIcon from 'src/app/assets/image/cancel.png'
+import { useRefresh } from 'src/app/utils';
 const useStyles = makeStyles(theme => ({
     dropStageZone: {
 
@@ -69,7 +70,7 @@ const URLImage = ({
     console.log("isSelected:" + JSON.stringify(isSelected))
 
     const shapeRef = useRef();
-    const shapeDeleteRef = useRef();
+    const groupRef = useRef();
     const trRef = useRef();
 
     const [img] = useImage(`${image.src}`);
@@ -77,6 +78,8 @@ const URLImage = ({
     const [deleteImage] = useImage(deleteIcon);
 
     const [scaledImage, setScaledImage] = useState({ ...image })
+
+    const [groupImage, setGroupImage] = useState({ x: image.x, y: image.y })
 
     const [isDragging, setIsDragging] = useState(false);
 
@@ -130,7 +133,7 @@ const URLImage = ({
             {
                 isSelected &&
                 <ImageKonva
-                    ref={shapeDeleteRef}
+
                     onTouchStart={onDelete}
                     onClick={(e) => {
                         setScaledImage(prev => ({
@@ -150,9 +153,8 @@ const URLImage = ({
 
                     offsetX={-200}
                     offsetY={45}
-
-                    x={scaledImage.x - 130}
-                    y={scaledImage.y - 60}
+                    x={groupImage.x - 130}
+                    y={groupImage.y - 60}
 
                     strokeWidth={2}
 
@@ -252,6 +254,8 @@ const URLImage = ({
             />
 
 
+            {/* </Group> */}
+
 
             {
                 isSelected && (
@@ -345,6 +349,9 @@ export const StageKonvaContainer = (props) => {
     const [selectedId, selectShape] = useState(null);
 
     const [bgStage, setBgStage] = useState(null)
+
+    const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
+
 
     console.log("bgStage")
     console.log(bgStage)

@@ -295,7 +295,7 @@ export const ShoppingCartContainer = (props) => {
 
                                 <Grid item xs={12} sm={12} md={12} >
                                     <div className={classes.buttonWrapper}>
-                                        <Button type="submit" variant="outlined" color="primary" size="large" className={classes.button} onClick={() => {
+                                        <Button type="button" variant="outlined" color="primary" size="large" className={classes.button} onClick={() => {
                                             history.push(
                                                 {
                                                     pathname: `/core/create_order_page`,

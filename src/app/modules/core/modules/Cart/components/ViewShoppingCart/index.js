@@ -154,16 +154,16 @@ export const ViewShoppingCart = (props) => {
                                 <Grid item xs={1} sm={1} md={1} >
                                     <Typography variant={"body1"}>Màu</Typography>
                                 </Grid>
-                                <Grid item xs={1} sm={1} md={1} style={{ minWidth: "7rem" }}>
+                                <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
                                     <Typography variant={"body1"}>Giá đơn vị</Typography>
                                 </Grid>
-                                <Grid item xs={1} sm={1} md={1} style={{ minWidth: "7rem" }}>
+                                <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
                                     <Typography variant={"body1"}>Giá dịch vụ</Typography>
                                 </Grid>
                                 <Grid item xs={1} sm={1} md={1} >
                                     <Typography variant={"body1"}>Số lượng</Typography>
                                 </Grid>
-                                <Grid item xs={1} sm={1} md={1} style={{ minWidth: "8rem" }}>
+                                <Grid item xs={1} sm={1} md={1} style={{ width: "8rem" }}>
                                     <Typography variant={"body1"}>Tổng giá</Typography>
                                 </Grid>
                                 <Grid item xs={1} sm={1} md={1} >

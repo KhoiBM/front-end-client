@@ -26,7 +26,8 @@ export const CategoriesIconContainer = (props) => {
 
             bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
             folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["CATEGORY"]
-            fileKey = `${folder}/${categoryCode}/thumbnail`
+            // fileKey = `${folder}/${categoryCode}/thumbnail`
+            fileKey = `${folder}/${categoryCode}/`
 
             loadPhotoList(bucketName, fileKey)
 

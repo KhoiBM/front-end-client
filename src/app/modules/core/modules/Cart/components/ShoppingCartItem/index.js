@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
         // borderTop: "1px solid rgba(0, 0, 0, 0.23)",
         // borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
         borderRadius: "4px",
@@ -75,18 +75,22 @@ const useStyles = makeStyles(theme => ({
     quantityContainer: {
         width: "100%",
         height: "100%",
-        border: "1px solid red",
+        // border: "1px solid red",
         display: "flex",
-        justifyContent: "center",
-        alignItems: "baseline",
+        justifyContent: "flex-start",
+        alignItems: "center",
         '& .MuiFormControl-root': {
-            width: "90%",
-            height: "100%",
+            width: "100px",
+            height: "100% !important",
             fontWeight: '900 !important',
             color: "#000 !important",
             borderRadius: "4px",
             background: "#fff",
+
+            // border: "1px solid blue",
             '& .MuiInputBase-input': {
+                width: "90%",
+                height: "5px !important",
                 color: "#000 !important",
                 // background: "#fff",
                 // background: theme.palette.grey[100],
@@ -94,7 +98,7 @@ const useStyles = makeStyles(theme => ({
                 // background: 'var(--bg-secondary-color-main)',
                 borderColor: "none !important",
                 borderRadius: "4px",
-                height: "30px !important",
+
                 background: "#fff",
                 "& .MuiInputBase-inputMultiline": {
                     // background: "red",
@@ -107,6 +111,7 @@ const useStyles = makeStyles(theme => ({
 ))
 
 const initialFValues = {
+    cartItemCode: "",
     quantity: 1,
     note: ""
 }
@@ -116,14 +121,11 @@ export const ShoppingCartItem = (props) => {
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
-
     const dispatch = useDispatch();
 
     const classes = useStyles();
 
     const { shoppingCartItem, handleRefreshShoppingCart } = props
-
-    const { cartItemCode, categoryCode, rawProductCode, rawProductName, size, color, unitPrice, servicePrice, quantity, note, createdBy } = shoppingCartItem
 
     const [cartItemDetailModal, setCartItemDetailModal] = useState({ isOpen: false })
 
@@ -135,13 +137,16 @@ export const ShoppingCartItem = (props) => {
 
     const [personalizeModal, setPersonalizeModal] = useState({ isOpen: false })
 
-    const { formData, setFormData, handleInputChange, helperValid = null, validation, handleChangeColor } = useForm(initialFValues)
+    const { formData, setFormData, handleInputChange, helperValid = null, validation } = useForm(initialFValues)
 
+    const [shoppingCartItemRecords, setShoppingCartItemRecords] = useState([])
+
+
+    console.log("formData:" + JSON.stringify(formData))
 
     useEffect(() => {
         loadInit()
     }, [shoppingCartItem])
-
 
     useEffect(() => {
         console.log("refresh")
@@ -151,34 +156,51 @@ export const ShoppingCartItem = (props) => {
     const loadInit = async () => {
         if (shoppingCartItem && shoppingCartItem != null) {
             showLoader()
-            let bucketName = ""
-            let folder = ""
-            let categoryCode = shoppingCartItem.categoryCode
-            let rawProductCode = shoppingCartItem.rawProductCode
-            let fileKey = ''
 
-            console.log("shoppingCartItemcategoryCode:" + categoryCode)
-            console.log("shoppingCartItemrawProductCode:" + rawProductCode)
-            console.log("shoppingCartItemcreatedBy:" + createdBy)
+            loadPhotoInit(shoppingCartItem)
 
-            switch (shoppingCartItem.createdBy) {
-                case "Khách hàng":
-
-                    break;
-                case "Quản lý":
-                    bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
-                    folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
-                    // fileKey = `${folder}/${categoryCode}/${rawProductCode}/thumbnail`
-                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
-                    loadPhotoList(bucketName, fileKey)
-                    break;
-            }
-
-
+            loadDataInit(shoppingCartItem)
             // console.log("shoppingCartItem: " + JSON.stringify(shoppingCartItem))
+
             hideLoader()
         }
 
+    }
+
+    const loadPhotoInit = async (shoppingCartItem) => {
+        const { categoryCode, rawProductCode, createdBy } = shoppingCartItem
+
+        let bucketName = ""
+        let folder = ""
+        let fileKey = ''
+
+        console.log("shoppingCartItemcategoryCode:" + categoryCode)
+        console.log("shoppingCartItemrawProductCode:" + rawProductCode)
+        console.log("shoppingCartItemcreatedBy:" + createdBy)
+
+        switch (shoppingCartItem.createdBy) {
+            case "Khách hàng":
+
+                break;
+            case "Quản lý":
+                bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+                folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
+                // fileKey = `${folder}/${categoryCode}/${rawProductCode}/thumbnail`
+                fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                loadPhotoList(bucketName, fileKey)
+                break;
+        }
+
+
+    }
+
+    const loadDataInit = async (shoppingCartItem) => {
+
+        const { quantity, note } = shoppingCartItem
+
+        setFormData({ ...formData, quantity, note })
+
+        setShoppingCartItemRecords(shoppingCartItem)
     }
 
     useEffect(() => {
@@ -210,7 +232,7 @@ export const ShoppingCartItem = (props) => {
             handleRefreshShoppingCart()
 
             console.log("onDeleteCartItem")
-            console.log("rawProductCode: " + rawProductCode)
+            console.log("cartItemCode: " + cartItemCode)
 
         } catch (err) {
             toast.error("Xoá thất bại")
@@ -228,7 +250,9 @@ export const ShoppingCartItem = (props) => {
 
             if (enableSubmit) {
 
-                edit()
+                const { cartItemCode } = shoppingCartItem
+
+                onEditCartItem(formData, cartItemCode)
 
             } else {
                 toast.error(config.useMessage.invalidData);
@@ -237,10 +261,29 @@ export const ShoppingCartItem = (props) => {
 
     }
 
-    const edit = async () => {
+    const onEditCartItem = async (formData, cartItemCode) => {
         showLoader()
+        try {
 
-        // hideLoader()
+            const data = {
+                ...formData,
+                cartItemCode
+            }
+
+            console.log("dataEdit:" + JSON.stringify(data))
+            dispatch(useShoppingCartAction().editCartItemSuccess(data))
+
+            toast.success("Thay đổi thành công")
+
+            handleRefresh()
+            handleRefreshShoppingCart()
+
+            console.log("onEditCartItem")
+
+        } catch (err) {
+            // toast.error("Thay đổi thất bại")
+        }
+        hideLoader()
 
     }
 
@@ -249,58 +292,67 @@ export const ShoppingCartItem = (props) => {
     return (
         <>
             {/* {<Loader loading={loading} />} */}
+
+
+
             <Box className={classes.cartItemContainer}>
-                <form noValidate onKeyDown={handleSubmit} className={classes.rootForm}>
 
-                    <Grid container className={classes.rootCartItemGrid}>
-                        <Grid item xs={2} sm={2} md={2} className={classes.cardItemPhotoDemoGridContainer}>
-                            <Box className={classes.cardItemPhotoDemoGridWrapper}>
-                                <img
-                                    className={classes.cardItemPhotoDemo}
-                                    src={photoList[0]}
-                                    onClick={() => {
+                <Grid container className={classes.rootCartItemGrid}>
+                    <Grid item xs={2} sm={2} md={2} className={classes.cardItemPhotoDemoGridContainer}>
+                        <Box className={classes.cardItemPhotoDemoGridWrapper}>
+                            <img
+                                className={classes.cardItemPhotoDemo}
+                                src={photoList[0]}
+                                onClick={() => {
 
-                                    }}
-                                />
-                            </Box>
+                                }}
+                            />
+                        </Box>
 
-                        </Grid>
-                        <Grid item xs={2} sm={2} md={2}>
-                            <Typography variant={"body1"}>{rawProductName}</Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1} >
-                            <Typography variant={"body1"}>{size}</Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1} >
-                            <Typography variant={"body1"}>
-                                <RiCheckboxBlankCircleFill style={{ color: `${color}` }} />
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
-                            <Typography variant={"body1"}>{`${useFormat().formatMoney(unitPrice)} đ`}</Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
-                            <Typography variant={"body1"}>{`${useFormat().formatMoney(servicePrice)} đ`}</Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1} className={classes.quantityContainer}>
-                            {/* <Typography variant={"body1"}>{quantity}</Typography> */}
+                    </Grid>
+                    <Grid item xs={2} sm={2} md={2}>
+                        <Typography variant={"body1"}>{shoppingCartItemRecords.rawProductName}</Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1} >
+                        <Typography variant={"body1"}>{shoppingCartItemRecords.size}</Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1} >
+                        <Typography variant={"body1"}>
+                            <RiCheckboxBlankCircleFill style={{ color: `${shoppingCartItemRecords.color}` }} />
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
+                        <Typography variant={"body1"}>{`${useFormat().formatMoney(shoppingCartItemRecords.unitPrice)} đ`}</Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
+                        <Typography variant={"body1"}>{`${useFormat().formatMoney(shoppingCartItemRecords.servicePrice)} đ`}</Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1}
+                        className={classes.quantityContainer}
+                    >
+                        <form noValidate
+                            onKeyDown={handleSubmit}
+                            className={classes.rootForm}
+                        >
                             <TextField
                                 variant='outlined'
-                                // label="Số lượng"
                                 value={formData.quantity}
                                 name='quantity'
                                 onChange={handleInputChange}
-                                // error={helperValid.quantity ? true : false}
-                                // helperText={helperValid.quantity}
+                                error={helperValid.quantity ? true : false}
+                                helperText={helperValid.quantity}
                                 required
                                 type="number"
+                                InputProps={{ inputProps: { min: 1, max: 100 } }}
                             />
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1} style={{ width: "8rem" }}>
-                            <Typography variant={"body1"}>{`${useFormat().formatMoney((unitPrice + servicePrice) * quantity)} đ`}</Typography>
-                        </Grid>
-                        <Grid item xs={1} sm={1} md={1}>
-                            {/* < Tooltip TransitionComponent={Zoom} placement="top" title="Xem thông tin chi tiết" >
+                        </form>
+
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1} style={{ width: "8rem" }}>
+                        <Typography variant={"body1"}>{`${useFormat().formatMoney((shoppingCartItemRecords.unitPrice + shoppingCartItemRecords.servicePrice) * shoppingCartItemRecords.quantity)} đ`}</Typography>
+                    </Grid>
+                    <Grid item xs={1} sm={1} md={1}>
+                        {/* < Tooltip TransitionComponent={Zoom} placement="top" title="Xem thông tin chi tiết" >
 
                             <Button onClick={(event) => {
                                 event.stopPropagation()
@@ -312,7 +364,7 @@ export const ShoppingCartItem = (props) => {
 
                         </ Tooltip> */}
 
-                            {/* <Tooltip TransitionComponent={Zoom} placement="top" title="Chỉnh sửa">
+                        {/* <Tooltip TransitionComponent={Zoom} placement="top" title="Chỉnh sửa">
 
                                 <Button onClick={(event) => {
                                     event.stopPropagation()
@@ -335,30 +387,32 @@ export const ShoppingCartItem = (props) => {
 
 
 
-                            < Tooltip TransitionComponent={Zoom} placement="top" title="Xoá" >
+                        < Tooltip TransitionComponent={Zoom} placement="top" title="Xoá" >
 
-                                <Button onClick={(event) => {
-                                    event.stopPropagation()
-                                    setConfirmDialog(
-                                        {
-                                            isOpen: true,
-                                            title: "Bạn có chắc là muốn xoá mục này không?",
-                                            subTitle: "Bạn không thể hoàn tác hành động này",
-                                            onConfirm: () => { onDeleteCartItem(cartItemCode) }
+                            <Button onClick={(event) => {
+                                event.stopPropagation()
+                                setConfirmDialog(
+                                    {
+                                        isOpen: true,
+                                        title: "Bạn có chắc là muốn xoá mục này không?",
+                                        subTitle: "Bạn không thể hoàn tác hành động này",
+                                        onConfirm: () => { onDeleteCartItem(shoppingCartItemRecords.cartItemCode) }
 
-                                        }
-                                    )
-                                }
-                                }>
-                                    <AiOutlineDelete style={{ color: "red" }} />
-                                </Button>
+                                    }
+                                )
+                            }
+                            }>
+                                <AiOutlineDelete style={{ color: "red" }} />
+                            </Button>
 
-                            </ Tooltip>
+                        </ Tooltip>
 
-                        </Grid>
                     </Grid>
-                </form>
+                </Grid>
+
+
             </Box>
+
 
 
 

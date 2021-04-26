@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import Paper from '@material-ui/core/Paper';
@@ -7,61 +7,40 @@ import Button from '@material-ui/core/Button';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
-import demophoto from 'src/app/assets/image/bg_auth.jpeg'
+import carousel1 from 'src/app/assets/image/carousel1.jpg'
+import carousel2 from 'src/app/assets/image/carousel2.jpg'
+import carousel3 from 'src/app/assets/image/carousel3.jpg'
 import { Box } from '@material-ui/core';
 import { Loader } from 'src/app/components';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
+import { useLoadPhotoList } from 'src/app/utils';
+import config from 'src/environments/config';
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-const advertiseSteps = [
-    {
-        key: 0,
-        title: 'Chào mừng đến với dịch vụ của chúng tôi',
-        content: "",
-        button: "",
-        imgPath: demophoto,
-    },
-    {
-        key: 1,
-        title: '',
-        content: "",
-        button: "",
-        imgPath: demophoto,
-    },
-    {
-        key: 2,
-        title: 'Khám phá ngay nào',
-        content: "",
-        button: "",
-        imgPath: demophoto,
-    },
-];
 
 const useStyles = makeStyles((theme) => ({
     root: {
         // flexGrow: 1,
         width: "100%",
-        minHeight: "800px",
-        maxHeight: "800px",
-        // border: "1px solid white",
+        height: "100%",
+        // border: "1px solid yellow",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        gap: theme.spacing(3)
+        gap: theme.spacing(3),
+        position: "relative",
+        top: 0
     },
     img: {
         // display: 'block',
         overflow: 'hidden',
-        border: "1px solid white",
+        // border: "1px solid red",
         objectFit: "cover",
-        // maxWidth: "90%",
-        // maxHeight: "90%",
-        // width: 'auto',
-        // height: 'auto',
-        width: '100%',
-        height: '100%',
+        maxWidth: "100%",
+        maxHeight: "50%",
+        width: 'auto',
+        height: 'auto',
         zIndex: 1
 
     },
@@ -69,18 +48,33 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        // border: "1px solid red",
+        // border: "1px solid orange",
         width: "100%",
-        minHeight: "100%",
-        maxHeight: "100%",
+        height: "90%",
         overflow: 'hidden',
+        '& .react-swipeable-view-container': {
+            "& div": {
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }
+        },
+        position: "absolute",
+        top: 0
     },
     viewStepContainer: {
+        width: "100%",
+        height: "100%",
         position: "relative",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        // border: "1px solid blue",
 
+    },
+    viewStepImageContainer: {
+        width: "100%",
+        height: "100%",
     },
     viewContentStepContainer: {
         position: "absolute",
@@ -94,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        // border: "1px solid red",
     },
     viewContentStepWrapper: {
         width: "50%",
@@ -120,7 +115,9 @@ const useStyles = makeStyles((theme) => ({
                 height: "10px"
             }
 
-        }
+        },
+        position: "absolute",
+        bottom: 0
     },
     iconArrow: {
         color: "white",
@@ -128,16 +125,71 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
+// const advertiseSteps = [
+//     {
+//         key: 1,
+//         title: 'Chào mừng đến với dịch vụ của chúng tôi',
+//         content: "",
+//         button: "",
+//         imgPath: "carousel1",
+//     },
+//     {
+//         key: 2,
+//         title: '',
+//         content: "",
+//         button: "",
+//         imgPath: "carousel2",
+//     },
+//     {
+//         key: 3,
+//         title: 'Khám phá ngay nào',
+//         content: "",
+//         button: "",
+//         imgPath: "carousel3",
+//     },
+// ];
+
+const advertiseSteps = [
+    {
+        key: 1,
+        title: 'Chào mừng đến với dịch vụ của chúng tôi',
+        content: "",
+        button: "",
+        imgPath: carousel1,
+    },
+    {
+        key: 2,
+        title: '',
+        content: "",
+        button: "",
+        imgPath: carousel2,
+    },
+    {
+        key: 3,
+        title: 'Khám phá ngay nào',
+        content: "",
+        button: "",
+        imgPath: carousel3,
+    },
+];
+
+
 export const CarouselHomePage = () => {
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
+    const { loadPhotoList, photoList, setPhotoList } = useLoadPhotoList()
+
+    const [carouselValue, setCarouselValue] = useState(1)
 
     const classes = useStyles();
 
     const theme = useTheme();
 
     const [activeStep, setActiveStep] = useState(0);
+
+
 
     const maxSteps = advertiseSteps.length;
 
@@ -158,6 +210,41 @@ export const CarouselHomePage = () => {
         setActiveStep(step);
     };
 
+    // useEffect(() => {
+    //     loadInit()
+    // }, [carouselValue])
+
+    // const loadInit = async () => {
+    //     // showLoader()
+
+    //     let bucketName = ""
+    //     let folder = ""
+    //     let fileKey = ''
+
+    //     bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+    //     folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["HOMEPAGECAROUSEL"]
+
+    //     switch (carouselValue) {
+
+    //         case 1:
+    //             fileKey = `${folder}/carousel1`
+    //             break;
+    //         case 2:
+
+    //             fileKey = `${folder}/carousel2`
+
+    //             break;
+    //         case 3:
+    //             fileKey = `${folder}/carousel3`
+    //             break;
+    //     }
+
+    //     await loadPhotoList(bucketName, fileKey)
+
+    //     // hideLoader()
+
+    // }
+
     return (
         <>
             {/* {<Loader loading={loading} />} */}
@@ -173,24 +260,24 @@ export const CarouselHomePage = () => {
                     className={classes.autoPlaySwipeableViews}
 
                 >
-                    {advertiseSteps.map((step, index) => (
+                    {advertiseSteps.map((step, index) => {
 
-                        <div key={step.key} className={classes.viewStepContainer}>
-                            {Math.abs(activeStep - index) <= 2 ? (
-                                <img className={classes.img} src={step.imgPath} alt={step.key} />
-                            ) : null}
-                            <Box className={classes.viewContentStepContainer}>
-                                <Box elevation={0} className={classes.viewContentStepWrapper}>
-                                    <>
-                                        {/* <Typography variant="h2" style={{ color: "#fff", fontWeight: "300" }}>{step.title}</Typography> */}
-                                        {/* <Typography variant="body" style={{ color: "#fff", fontWeight: "100" }}>{step.content}</Typography> */}
-                                    </>
+                        return (
+                            <div key={step.key} className={classes.viewStepContainer}>
+                                <Box className={classes.viewStepImageContainer}>
+                                    {Math.abs(activeStep - index) <= 2 ? (
+                                        // <img className={classes.img} src={photoList[0]} alt={step.key} onLoad={() => {
+                                        //     // setCarouselValue(index + 1)
+                                        // }} />
+                                        <img className={classes.img} src={step.imgPath} alt={step.key} />
+                                    ) : null}
                                 </Box>
-                            </Box>
 
-                        </div>
 
-                    ))}
+
+                            </div>
+                        )
+                    })}
                 </AutoPlaySwipeableViews>
                 <MobileStepper
                     variant="dots"
@@ -214,3 +301,12 @@ export const CarouselHomePage = () => {
         </>
     );
 }
+
+{/* <Box className={classes.viewContentStepContainer}>
+    <Box elevation={0} className={classes.viewContentStepWrapper}>
+        <>
+            <Typography variant="h2" style={{ color: "#fff", fontWeight: "300" }}>{step.title}</Typography>
+            <Typography variant="body" style={{ color: "#fff", fontWeight: "100" }}>{step.content}</Typography>
+        </>
+    </Box>
+</Box> */}

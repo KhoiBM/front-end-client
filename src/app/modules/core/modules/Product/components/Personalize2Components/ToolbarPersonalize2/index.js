@@ -109,11 +109,11 @@ const useStyles = makeStyles(theme => ({
 
     },
     titleWrapper: {
-        width: "200px",
+        width: "100%",
         height: "100%",
         // backgroundColor: "red",
         display: "flex",
-        // justifyContent: "center",
+        justifyContent: "center",
         alignItems: "center",
         paddingLeft: theme.spacing(3),
         color: "#fff !important"
@@ -132,9 +132,9 @@ export const ToolbarPersonalize = (props) => {
         <>
             <Grid container className={classes.rootGridContainer}>
                 <Grid item xs={10} sm={10} md={10} className={classes.gridItem1}>
-                    {/* <Box className={classes.titleWrapper}>
+                    <Box className={classes.titleWrapper}>
                         <PageHeader>Cá nhân hoá</PageHeader>
-                    </Box> */}
+                    </Box>
                     <Box className={classes.filterWrapper}>
 
                     </Box>

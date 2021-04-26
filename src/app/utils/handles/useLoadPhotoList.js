@@ -18,12 +18,14 @@ export const useLoadPhotoList = (props) => {
     const loadPhotoList = async (bucketName, fileKey) => {
         try {
 
+            console.log("fileKey: " + JSON.stringify(fileKey))
+
             const response = await (await PhotoServices.getPhotoListByLink({
                 bucketName,
                 fileKey
             })).data
 
-            // console.log("response: " + JSON.stringify(response))
+            console.log("response: " + JSON.stringify(response))
             if (response && response != null) {
                 if (response.result == config.useResultStatus.SUCCESS) {
                     let photoList = response.info.photoList
@@ -35,7 +37,8 @@ export const useLoadPhotoList = (props) => {
                     })
 
                     // console.trace("photoList:")
-                    // console.table(photoList)
+                    console.log("photoList:")
+                    console.table(photoList)
 
                     setPhotoList(photoList)
                     // toast.success("Thành công")

@@ -71,8 +71,11 @@ const useStyles = makeStyles(theme => ({
     },
     dialogTitle: {
         position: "relative",
-        // // backgroundColor: "red"
-        padding: theme.spacing(2),
+        // backgroundColor: "red",
+        // padding: theme.spacing(2),
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
 
 
     },
@@ -125,7 +128,21 @@ const useStyles = makeStyles(theme => ({
 
     },
     PageHeaderWrapper: {
+        width: "700px",
+        // background: "blue",
         marginLeft: theme.spacing(2.2)
+
+    },
+    iconCloseWrapper: {
+        width: "50px",
+        height: "auto",
+        // background: "orange",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        position: "absolute",
+        top: theme.spacing(3),
+        right: theme.spacing(3),
 
     }
 }))
@@ -190,15 +207,18 @@ export const ViewCartItemInformation = (props) => {
 
                 <DialogTitle className={classes.dialogTitle}>
 
+                    <Box className={classes.PageHeaderWrapper}>
+                        <PageHeader>Xem thông tin chi tiết mục trong giỏ hàng</PageHeader>
+                    </Box>
+
+
+                    <div className={classes.iconCloseWrapper}>
+                        <IconClose handleClose={handleCloseModal} />
+                    </div>
                 </DialogTitle>
 
                 <DialogContent className={classes.dialogContent}>
 
-                    <IconClose handleClose={handleCloseModal} />
-
-                    <Box className={classes.PageHeaderWrapper}>
-                        <PageHeader>Xem thông tin chi tiết mục trong giỏ hàng</PageHeader>
-                    </Box>
 
                     <Grid container spacing={1} className={classes.rootGridCartItemDetail}>
 

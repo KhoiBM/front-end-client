@@ -106,7 +106,7 @@ export function Navbar({ toggle }) {
                                     exact="true"
                                     offset={-80}
                                     onClick={scrollToTop}
-                                    activeClassName={classes.activeNavLink}
+                                // activeClassName={classes.activeNavLink}
                                 >
                                     Tất cả sản phẩm
                                 </NavRLinks>

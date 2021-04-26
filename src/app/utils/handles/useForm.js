@@ -49,6 +49,13 @@ export const useForm = (initialFValues, validOnChange = true) => {
         }
 
 
+        if (name == "quantity") {
+            if (Number(value) < 1) {
+                value = 1
+            }
+        }
+
+
         console.log(name + ": " + value)
         setFormData({ ...formData, [name]: value });
         // console.log("formdata" + ": " + JSON.stringify(formData))

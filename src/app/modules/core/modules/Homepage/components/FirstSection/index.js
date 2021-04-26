@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FirstContainer, FirstContent, FirstH1, FirstP, FirstBtnWrapper, ArrowForward, ArrowRight, FirstBg } from './FirstSectionElements'
+import { FirstContainer, FirstContent, FirstContentWrapper, FirstH1, FirstP, FirstBtnWrapper, ArrowForward, ArrowRight, FirstBg } from './FirstSectionElements'
 import { CarouselHomePage } from '../CarouselHomePage';
 export const FirstSection = () => {
 
@@ -13,7 +13,10 @@ export const FirstSection = () => {
             <FirstBg>
             </FirstBg>
             <FirstContent>
-                <CarouselHomePage />
+                <FirstContentWrapper>
+                    <CarouselHomePage />
+                </FirstContentWrapper>
+
             </FirstContent>
         </FirstContainer >
     )

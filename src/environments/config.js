@@ -83,7 +83,8 @@ const useConfigAWS = {
         FOLDER: {
             "STUDIO'SRAWPRODUCT": "Studio'sRawProduct",
             "SERVICE": "Service",
-            "CATEGORY": "Category"
+            "CATEGORY": "Category",
+            "HOMEPAGECAROUSEL": "HomepageCarousel"
         }
     },
     CUSTOMERBUCKET: {

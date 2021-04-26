@@ -9,10 +9,16 @@ display: flex;
 justify-content: center;
 align-items: center;
 padding: 0 30px;
-height: 1000px;
+/* height: 1000px; */
+width:100%;
+height: auto;
+min-height:1000px;
 position: relative;
 z-index: 1;
-/* border:1px solid white; */
+/* border:1px solid purple; */
+/* margin-top:24px; */
+/* margin-bottom:24px; */
+
 
 &:before{
     content: '';
@@ -47,13 +53,21 @@ top:90;
 right: 0;
 bottom: 0;
 left: 0;
-padding: 8px 24px;
+/* padding: 8px 24px; */
 flex-direction:column;
 align-items: center;
 /* border:1px solid white; */
+/* border:1px solid red; */
 /* width:1000px; */
 min-Width:100%;
 height:85%;
+
+`
+export const FirstContentWrapper = styled.div`
+position:relative;
+width:100%;
+height:100%;
+/* border:1px solid blue; */
 
 `
 
