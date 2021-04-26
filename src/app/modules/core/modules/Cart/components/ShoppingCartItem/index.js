@@ -7,7 +7,7 @@ import { AiOutlineEdit, AiOutlineDelete, AiOutlineCloudUpload, AiOutlineBlock } 
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
 import { CartServices } from 'src/app/services';
-import { useRefresh, useLoadPhotoList, useFormat } from 'src/app/utils';
+import { useRefresh, useLoadPhotoList, useFormat, useForm } from 'src/app/utils';
 import { ConfirmDialog } from 'src/app/modules/core/components';
 import { useDispatch } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
@@ -26,10 +26,10 @@ const useStyles = makeStyles(theme => ({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        border: "1px solid rgba(0, 0, 0, 0.23)",
         // borderTop: "1px solid rgba(0, 0, 0, 0.23)",
         // borderBottom: "1px solid rgba(0, 0, 0, 0.23)",
-        // borderRadius: "4px",
+        borderRadius: "4px",
         "&:hover": {
             backgroundColor: "#fffbf2",
         }
@@ -68,9 +68,49 @@ const useStyles = makeStyles(theme => ({
     cardItemPhotoDemoGridWrapper: {
         width: "50%",
         height: "50%",
+    },
+    rootForm: {
+
+    },
+    quantityContainer: {
+        width: "100%",
+        height: "100%",
+        border: "1px solid red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "baseline",
+        '& .MuiFormControl-root': {
+            width: "90%",
+            height: "100%",
+            fontWeight: '900 !important',
+            color: "#000 !important",
+            borderRadius: "4px",
+            background: "#fff",
+            '& .MuiInputBase-input': {
+                color: "#000 !important",
+                // background: "#fff",
+                // background: theme.palette.grey[100],
+                // background: "red",
+                // background: 'var(--bg-secondary-color-main)',
+                borderColor: "none !important",
+                borderRadius: "4px",
+                height: "30px !important",
+                background: "#fff",
+                "& .MuiInputBase-inputMultiline": {
+                    // background: "red",
+
+                }
+            }
+        }
     }
 }
 ))
+
+const initialFValues = {
+    quantity: 1,
+    note: ""
+}
+
 
 export const ShoppingCartItem = (props) => {
 
@@ -83,7 +123,7 @@ export const ShoppingCartItem = (props) => {
 
     const { shoppingCartItem, handleRefreshShoppingCart } = props
 
-    const { categoryCode, rawProductCode, rawProductName, size, color, unitPrice, servicePrice, quantity, note, createdBy } = shoppingCartItem
+    const { cartItemCode, categoryCode, rawProductCode, rawProductName, size, color, unitPrice, servicePrice, quantity, note, createdBy } = shoppingCartItem
 
     const [cartItemDetailModal, setCartItemDetailModal] = useState({ isOpen: false })
 
@@ -94,6 +134,9 @@ export const ShoppingCartItem = (props) => {
     const [confirmDialog, setConfirmDialog] = useState({ isOpen: false, title: "", subTitle: "" })
 
     const [personalizeModal, setPersonalizeModal] = useState({ isOpen: false })
+
+    const { formData, setFormData, handleInputChange, helperValid = null, validation, handleChangeColor } = useForm(initialFValues)
+
 
     useEffect(() => {
         loadInit()
@@ -152,14 +195,14 @@ export const ShoppingCartItem = (props) => {
         handleRefresh()
     }
 
-    const onDeleteCartItem = async (rawProductCode) => {
+    const onDeleteCartItem = async (cartItemCode) => {
         setConfirmDialog({
             ...confirmDialog,
             isOpen: false
         })
         try {
 
-            dispatch(useShoppingCartAction().deleteCartItemSuccess({ rawProductCode }))
+            dispatch(useShoppingCartAction().deleteCartItemSuccess({ cartItemCode }))
 
             toast.success("Xoá thành công")
 
@@ -172,55 +215,92 @@ export const ShoppingCartItem = (props) => {
         } catch (err) {
             toast.error("Xoá thất bại")
         }
+    }
 
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
+        if (event.key === 'Enter') {
+            console.log('do validate');
+            console.log("formdata: " + JSON.stringify(formData))
+            const enableSubmit = validation(formData)
+
+            if (enableSubmit) {
+
+                edit()
+
+            } else {
+                toast.error(config.useMessage.invalidData);
+            }
+        }
 
     }
+
+    const edit = async () => {
+        showLoader()
+
+        // hideLoader()
+
+    }
+
 
 
     return (
         <>
             {/* {<Loader loading={loading} />} */}
             <Box className={classes.cartItemContainer}>
-                <Grid container className={classes.rootCartItemGrid}>
-                    <Grid item xs={2} sm={2} md={2} className={classes.cardItemPhotoDemoGridContainer}>
-                        <Box className={classes.cardItemPhotoDemoGridWrapper}>
-                            <img
-                                className={classes.cardItemPhotoDemo}
-                                src={photoList[0]}
-                                onClick={() => {
+                <form noValidate onKeyDown={handleSubmit} className={classes.rootForm}>
 
-                                }}
+                    <Grid container className={classes.rootCartItemGrid}>
+                        <Grid item xs={2} sm={2} md={2} className={classes.cardItemPhotoDemoGridContainer}>
+                            <Box className={classes.cardItemPhotoDemoGridWrapper}>
+                                <img
+                                    className={classes.cardItemPhotoDemo}
+                                    src={photoList[0]}
+                                    onClick={() => {
+
+                                    }}
+                                />
+                            </Box>
+
+                        </Grid>
+                        <Grid item xs={2} sm={2} md={2}>
+                            <Typography variant={"body1"}>{rawProductName}</Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1} >
+                            <Typography variant={"body1"}>{size}</Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1} >
+                            <Typography variant={"body1"}>
+                                <RiCheckboxBlankCircleFill style={{ color: `${color}` }} />
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
+                            <Typography variant={"body1"}>{`${useFormat().formatMoney(unitPrice)} đ`}</Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1} style={{ width: "7rem" }}>
+                            <Typography variant={"body1"}>{`${useFormat().formatMoney(servicePrice)} đ`}</Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1} className={classes.quantityContainer}>
+                            {/* <Typography variant={"body1"}>{quantity}</Typography> */}
+                            <TextField
+                                variant='outlined'
+                                // label="Số lượng"
+                                value={formData.quantity}
+                                name='quantity'
+                                onChange={handleInputChange}
+                                // error={helperValid.quantity ? true : false}
+                                // helperText={helperValid.quantity}
+                                required
+                                type="number"
                             />
-                        </Box>
-
-                    </Grid>
-                    <Grid item xs={2} sm={2} md={2}>
-                        <Typography variant={"body1"}>{rawProductName}</Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1} >
-                        <Typography variant={"body1"}>{size}</Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1} >
-                        <Typography variant={"body1"}>
-                            <RiCheckboxBlankCircleFill style={{ color: `${color}` }} />
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1} style={{ minWidth: "7rem" }}>
-                        <Typography variant={"body1"}>{`${useFormat().formatMoney(unitPrice)} đ`}</Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1} style={{ minWidth: "7rem" }}>
-                        <Typography variant={"body1"}>{`${useFormat().formatMoney(servicePrice)} đ`}</Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1}>
-                        <Typography variant={"body1"}>{quantity}</Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1} style={{ minWidth: "8rem" }}>
-                        <Typography variant={"body1"}>{`${useFormat().formatMoney((unitPrice + servicePrice) * quantity)} đ`}</Typography>
-                    </Grid>
-                    <Grid item xs={1} sm={1} md={1}>
-                        {/* < Tooltip TransitionComponent={Zoom} placement="top" title="Xem thông tin chi tiết" >
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1} style={{ width: "8rem" }}>
+                            <Typography variant={"body1"}>{`${useFormat().formatMoney((unitPrice + servicePrice) * quantity)} đ`}</Typography>
+                        </Grid>
+                        <Grid item xs={1} sm={1} md={1}>
+                            {/* < Tooltip TransitionComponent={Zoom} placement="top" title="Xem thông tin chi tiết" >
 
                             <Button onClick={(event) => {
                                 event.stopPropagation()
@@ -232,52 +312,52 @@ export const ShoppingCartItem = (props) => {
 
                         </ Tooltip> */}
 
-                        <Tooltip TransitionComponent={Zoom} placement="top" title="Chỉnh sửa">
+                            {/* <Tooltip TransitionComponent={Zoom} placement="top" title="Chỉnh sửa">
 
-                            <Button onClick={(event) => {
-                                event.stopPropagation()
-                                const data = {
-                                    categoryCode: categoryCode,
-                                    rawProductCode: rawProductCode,
-                                    createdBy: createdBy
-                                }
-                                setPersonalizeModal({
-                                    isOpen: true,
-                                    recordForPersonalize: data,
-                                    handleCloseModal
-                                })
-                            }
-                            }>
-                                <AiOutlineEdit />
-                            </Button>
-
-                        </Tooltip>
-
-
-
-                        < Tooltip TransitionComponent={Zoom} placement="top" title="Xoá" >
-
-                            <Button onClick={(event) => {
-                                event.stopPropagation()
-                                setConfirmDialog(
-                                    {
-                                        isOpen: true,
-                                        title: "Bạn có chắc là muốn xoá mục này không?",
-                                        subTitle: "Bạn không thể hoàn tác hành động này",
-                                        onConfirm: () => { onDeleteCartItem(rawProductCode) }
-
+                                <Button onClick={(event) => {
+                                    event.stopPropagation()
+                                    const data = {
+                                        categoryCode: categoryCode,
+                                        rawProductCode: rawProductCode,
+                                        createdBy: createdBy
                                     }
-                                )
-                            }
-                            }>
-                                <AiOutlineDelete style={{ color: "red" }} />
-                            </Button>
+                                    setPersonalizeModal({
+                                        isOpen: true,
+                                        recordForPersonalize: data,
+                                        handleCloseModal
+                                    })
+                                }
+                                }>
+                                    <AiOutlineEdit />
+                                </Button>
 
-                        </ Tooltip>
+                            </Tooltip> */}
 
+
+
+                            < Tooltip TransitionComponent={Zoom} placement="top" title="Xoá" >
+
+                                <Button onClick={(event) => {
+                                    event.stopPropagation()
+                                    setConfirmDialog(
+                                        {
+                                            isOpen: true,
+                                            title: "Bạn có chắc là muốn xoá mục này không?",
+                                            subTitle: "Bạn không thể hoàn tác hành động này",
+                                            onConfirm: () => { onDeleteCartItem(cartItemCode) }
+
+                                        }
+                                    )
+                                }
+                                }>
+                                    <AiOutlineDelete style={{ color: "red" }} />
+                                </Button>
+
+                            </ Tooltip>
+
+                        </Grid>
                     </Grid>
-                </Grid>
-
+                </form>
             </Box>
 
 

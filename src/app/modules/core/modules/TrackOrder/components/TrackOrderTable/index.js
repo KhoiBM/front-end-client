@@ -138,7 +138,9 @@ export const TrackOrderTable = (props) => {
         })
         showLoader()
         try {
-            const response = await (await OrderServices.cancelOrder({ orderID })).data
+            const data = { orderID, statusOrder: config.useStatusOrder.CUSTOMER.FILTER[1] }
+            console.log("data: " + JSON.stringify(data))
+            const response = await (await OrderServices.cancelOrder(data)).data
             // console.log("response: " + JSON.stringify(response))
             if (response && response != null) {
                 if (response.result == config.useResultStatus.SUCCESS) {
@@ -147,7 +149,7 @@ export const TrackOrderTable = (props) => {
 
                     handleRefresh()
                 } else {
-                    toast.error(config.useMessage.resultFailure)
+                    toast.error(`${config.useMessage.resultFailure} + ${response.errorInfo}`)
                 }
             } else {
                 throw new Error("Response is null or undefined")

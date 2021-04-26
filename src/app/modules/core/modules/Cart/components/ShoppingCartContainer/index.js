@@ -230,6 +230,7 @@ export const ShoppingCartContainer = (props) => {
 
         loadInit()
         console.log("refreshShoppingCartContainer")
+        console.log(shoppingCart)
 
     }, [refresh, shoppingCart])
 

@@ -23,7 +23,7 @@ export class RouteService {
     }
     static redirectByRole = (role) => {
         switch (role) {
-            case config.useRoleName.customer: this.history.push("/core/home_page"); break;
+            case config.useRoleName.customer: this.history.replace("/core/home_page"); break;
         }
     }
 
@@ -33,6 +33,11 @@ export class RouteService {
 
     }
 
+    static replace = (data) => {
+
+        this.history.replace(data)
+
+    }
 
 
 

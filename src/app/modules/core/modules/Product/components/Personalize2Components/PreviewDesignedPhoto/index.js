@@ -137,7 +137,7 @@ export const PreviewDesignedPhoto = (props) => {
 
         console.log(photoToShow.src);
 
-        downloadURI(photoToShow.src, 'design.png');
+        downloadURI(photoToShow.src, 'preview.png');
     };
 
     return (

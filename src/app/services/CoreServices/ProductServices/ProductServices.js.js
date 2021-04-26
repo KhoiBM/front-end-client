@@ -1,6 +1,7 @@
 import config from "src/environments/config"
 import { useHttpModule } from '../../HttpServices'
 
+import { v4 as uuidv4 } from 'uuid';
 export class ProductServices {
 
     static getAllService = (data) => {
@@ -802,14 +803,16 @@ export class ProductServices {
 
     static viewRawProductDetail = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
+        const uuid = uuidv4()
         return Promise.resolve({
             data: {
                 result: config.useResultStatus.SUCCESS,
                 info: {
                     record: {
                         rawProductID: 1,
-                        rawProductCode: "productcode",
-                        rawProductName: "Áo thun trắngproductcode",
+                        // rawProductCode: `productcode${uuid}`,
+                        rawProductCode: `productcode`,
+                        rawProductName: `Áo thun trắngproductcode${uuid}`,
                         unitPrice: 100000,
                         totalQuantity: 10,
                         size: "M",

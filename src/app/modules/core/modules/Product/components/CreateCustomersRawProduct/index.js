@@ -147,6 +147,7 @@ export const CreateCustomersRawProduct = () => {
                     toast.success("Tạo thành công");
 
                     const data = {
+                        cartItemCode: uuidv4(),
                         customersRawProductPhotoList: uploadFiles,
                         ...formData
                     }

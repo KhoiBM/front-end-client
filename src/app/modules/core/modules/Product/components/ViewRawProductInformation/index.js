@@ -13,7 +13,7 @@ import { Personalize2 } from '../Personalize2Components';
 import { useDispatch } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
-
+import { v4 as uuidv4 } from 'uuid';
 const useStyles = makeStyles(theme => ({
     pageViewInfomationContainer: {
         width: "100%",
@@ -243,9 +243,11 @@ export const ViewRawProductInformation = (props) => {
 
         if (totalQuantity >= 1) {
             try {
+                const cartItemCode = uuidv4()
                 const dataToAdd = {
                     ...recordRawProduct,
                     quantity: 1,
+                    cartItemCode,
                 }
 
                 dispatch(useShoppingCartAction().addCartItemSuccess(dataToAdd))

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Dropzone from 'react-dropzone'
 import { Paper, makeStyles, Typography, List, ListItem, CardMedia, Divider, Card, Tooltip, Zoom, Box } from '@material-ui/core'
 import { toast } from 'react-toastify'
@@ -191,7 +191,9 @@ export const DropZoneUploadBar = (props) => {
     const maxSize = 10485760;
     // const maxSize = 5242880;
 
-
+    useEffect(() => {
+        setUploadFiles([])
+    }, [])
 
     // const onDrop = useCallback(acceptedFiles => {
     //     console.log(acceptedFiles);

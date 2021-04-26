@@ -284,8 +284,6 @@ export const CreateOrderFormContainer = (props) => {
 
                     toast.success("Đặt hàng thành công");
 
-                    // await CartServices.cleanCart()
-                    localStorage.set("pps-shoppingCart", "")
 
                 } else {
                     toast.error(config.useMessage.resultFailure)

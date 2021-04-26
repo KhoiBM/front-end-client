@@ -7,32 +7,6 @@ import { SHOPPINGCART_TYPE } from '../types/SHOPPINGCART_TYPE'
 
 export const useShoppingCartReducer = (state = new ShoppingCartState({
     shoppingCart: [
-        // {
-        //     rawProductCode: "productcode",
-        //     rawProductName: "Lorem ipsum dolor sit ametuseShoppingCartReducer",
-        //     categoryID: 1,
-        //     categoryCode: "categoryCode",
-        //     createdBy: "Quản lý",
-        //     size: '1',
-        //     color: "#48b7e2",
-        //     unitPrice: 100000,
-        //     servicePrice: 110000,
-        //     quantity: 5,
-        //     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        // },
-        // {
-        //     rawProductCode: "productcode2",
-        //     rawProductName: "Lorem ipsum dolor sit amet2",
-        //     categoryID: 2,
-        //     categoryCode: "categoryCode",
-        //     createdBy: "Quản lý",
-        //     size: '1',
-        //     color: "#48b7e2",
-        //     unitPrice: 100000,
-        //     servicePrice: 110000,
-        //     quantity: 2,
-        //     note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-        // },
     ]
 }), action) => {
 
@@ -50,20 +24,22 @@ export const useShoppingCartReducer = (state = new ShoppingCartState({
 
 
 
-            const isExist = resultShoppingCart.some((cartItem, index) => cartItem.rawProductCode == action.payload.data.rawProductCode)
+            // const isExist = resultShoppingCart.some((cartItem, index) => cartItem.rawProductCode == action.payload.data.rawProductCode)
 
-            console.log("isExist: " + isExist)
-            if (isExist) {
-                resultShoppingCart = resultShoppingCart.map((cartItem, index) => {
-                    if (cartItem.rawProductCode == action.payload.data.rawProductCode) {
-                        return { ...cartItem, quantity: cartItem.quantity + action.payload.data.quantity }
-                    }
-                    return cartItem
-                })
+            // console.log("isExist: " + isExist)
+            // if (isExist) {
 
-            } else {
-                resultShoppingCart = resultShoppingCart.concat(action.payload.data)
-            }
+            //     resultShoppingCart = resultShoppingCart.map((cartItem, index) => {
+            //         if (cartItem.cartItemCode == action.payload.data.cartItemCode) {
+            //             return { ...cartItem, ...action.payload.data, quantity: cartItem.quantity + action.payload.data.quantity }
+            //         }
+            //         return cartItem
+            //     })
+
+
+            // } else {
+            resultShoppingCart = resultShoppingCart.concat(action.payload.data)
+            // }
 
 
 
@@ -80,7 +56,7 @@ export const useShoppingCartReducer = (state = new ShoppingCartState({
             let editedShoppingCart = state.shoppingCart.slice()
 
 
-            const isExist = editedShoppingCart.some((cartItem, index) => cartItem.rawProductCode == action.payload.data.rawProductCode)
+            const isExist = editedShoppingCart.some((cartItem, index) => cartItem.cartItemCode == action.payload.data.cartItemCode)
 
             console.log("isExist: " + isExist)
             if (isExist) {
@@ -105,7 +81,16 @@ export const useShoppingCartReducer = (state = new ShoppingCartState({
 
         case SHOPPINGCART_TYPE.DELETE_CART_ITEM.SUCCESS:
             {
-                const filterCart = state.shoppingCart.filter((cartItem, index) => cartItem.rawProductCode != action.payload.data.rawProductCode)
+                console.log("redux")
+
+                const filterCart = state.shoppingCart.filter((cartItem, index) => {
+                    console.log("cartItem")
+                    console.log(cartItem)
+                    console.log("cartItemCode")
+                    console.log(action.payload.data.cartItemCode)
+                    return cartItem.cartItemCode != action.payload.data.cartItemCode
+                }
+                )
 
                 return {
                     ...state,

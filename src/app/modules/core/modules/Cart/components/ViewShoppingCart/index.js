@@ -111,7 +111,8 @@ export const ViewShoppingCart = (props) => {
     useEffect(() => {
         if (shoppingCart && shoppingCart != null) {
             loadInit(shoppingCart)
-            console.log("shoppingCart: " + JSON.stringify(shoppingCart))
+            console.log("shoppingCart: ")
+            console.log(shoppingCart)
 
         }
     }, [shoppingCart, handleRefreshShoppingCart])
