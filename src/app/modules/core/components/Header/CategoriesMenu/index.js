@@ -15,12 +15,14 @@ import { animateScroll as scroll } from 'react-scroll';
 const useStyles = makeStyles((theme) => ({
 
     menuButton: {
-        marginRight: 36
+        marginRight: 36,
+
     },
     hide: {
         display: "none"
     },
     menu: {
+        zIndex: "1110 !important",
         // background: "red",
         position: "relative",
         "& .MuiMenu-paper": {
@@ -104,8 +106,6 @@ export const CategoriesMenu = () => {
     const loadData = async (response) => {
 
         const records = response.info.records
-
-        const totalPageResponse = response.info.totalPage
 
         if (records && records != null && records.length > 0) {
 

@@ -19,7 +19,8 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         // backgroundColor: "#f7f3e9 !important",
 
-        backgroundColor: "var(--tertiary-color-main) !important",
+        // backgroundColor: "var(--tertiary-color-main) !important",
+        backgroundColor: "#fff !important",
 
 
     },
@@ -40,7 +41,9 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         // border: "1px solid blue",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
-        backgroundColor: "#f7f3e9 !important",
+        // backgroundColor: "#f7f3e9 !important",
+        // background: "var(--tertiary-color-main) !important",
+        backgroundColor: "#fff !important",
     },
     gridItemGridList: {
         // backgroundColor: "blue",
@@ -50,7 +53,8 @@ const useStyles = makeStyles(theme => ({
         display: 'flex',
         justifyContent: "flex-start",
         alignItems: "center",
-        backgroundColor: "#f7f3e9 !important",
+        // backgroundColor: "#f7f3e9 !important",
+        // background: "var(--tertiary-color-main) !important",
     },
     rootGridList: {
         // width: "100%",
@@ -59,9 +63,10 @@ const useStyles = makeStyles(theme => ({
         // justifyContent: 'center',
         overflow: "scroll",
 
-        backgroundColor: theme.palette.background.paper,
+        // backgroundColor: theme.palette.background.paper,
         // border: "1px solid red",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
+        // background: "var(--tertiary-color-main) !important",
 
     },
     gridList: {
@@ -75,16 +80,17 @@ const useStyles = makeStyles(theme => ({
         flexWrap: 'nowrap',
         gap: theme.spacing(2),
         // border: "1px solid red",
+        padding: theme.spacing(2),
         // backgroundColor: "blue",
         // backgroundColor: "#f7f3e9 !important",
 
-        backgroundColor: "var(--tertiary-color-main) !important",
+        // backgroundColor: "var(--tertiary-color-main) !important",
 
     },
     cardMedia: {
         objectFit: "contain",
-        maxWidth: "80%",
-        maxHeight: "80%",
+        maxWidth: "90%",
+        maxHeight: "90%",
         width: 'auto',
         height: 'auto',
         // border: "1px solid blue",
@@ -93,18 +99,29 @@ const useStyles = makeStyles(theme => ({
     gridListTile: {
         overflow: "scroll !important",
         width: "100px !important",
-        height: "auto",
-        maxHeight: "10vh !important",
+        height: "100px !important",
+        // maxHeight: "10vh !important",
         display: 'flex',
         justifyContent: "center !important",
         alignItems: "center",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
-        backgroundColor: "#fff !important",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        // backgroundColor: "#fff !important",
+        // background: "var(--tertiary-color-main) !important",
+        borderRadius: "10px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.2 ease -in -out",
+
+        '&:hover': {
+            transform: "scale(1.02)",
+            transition: "all 0.2 ease -in -out",
+            cursor: "pointer"
+        },
         '& .MuiGridListTile-tile': {
             display: 'flex',
             // justifyContent: "center !important",
             alignItems: "center !important",
             // border: "1px solid red",
+            // background: "var(--tertiary-color-main) !important",
 
         }
     }

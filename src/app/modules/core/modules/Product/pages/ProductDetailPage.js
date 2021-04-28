@@ -79,7 +79,7 @@ const ProductDetailPage = () => {
     return (
         <>
 
-            {/* {<Loader loading={loading} />} */}
+            {<Loader loading={loading} />}
 
             <MainBar>
                 <ProductDetail record={record} />

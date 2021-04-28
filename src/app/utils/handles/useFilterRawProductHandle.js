@@ -42,8 +42,8 @@ export const useFilterRawProductHandle = (props) => {
 
                     // console.log("mapList: " + JSON.stringify(mapFilterList))
 
-                    // await setFilterList(records ? mapFilterList : [])
-                    await setFilterList([])
+                    await setFilterList(records ? mapFilterList : [])
+                    // await setFilterList([])
 
                     // toast.success("Thành công")
                 } else {

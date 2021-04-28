@@ -67,8 +67,6 @@ const useStyles = makeStyles(theme => ({
 
 const ProductListPage = () => {
 
-    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
-
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
 
@@ -95,7 +93,7 @@ const ProductListPage = () => {
 
     if (serviceCode && serviceCode != null) {
 
-        fetchApi = ProductServices.getOptionToFilterRawProductOfService()
+        fetchApi = ProductServices.getOptionToFilterRawProductOfService({ serviceCode })
 
         mapToFilter = (records) => {
             // console.log("mapToFilter")
@@ -163,7 +161,7 @@ const ProductListPage = () => {
 
 
     const loadInit = async () => {
-        // showLoader()
+        showLoader()
         try {
 
 
@@ -206,7 +204,7 @@ const ProductListPage = () => {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
-        // hideLoader()
+        hideLoader()
 
     }
 
@@ -236,7 +234,7 @@ const ProductListPage = () => {
         <>
             {/* <p>ProductListPage</p>
              */}
-            {/* {< Loader loading={loading} />} */}
+            {< Loader loading={loading} />}
 
             <MainBar>
 

@@ -8,43 +8,54 @@ import { OrderServices, CartServices, ProductServices } from 'src/app/services';
 import { CreateCustomersRawProduct } from '../../../Product';
 import { VscCaseSensitive } from 'react-icons/vsc';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
+import { useSelector } from 'react-redux';
 const useStyles = makeStyles(theme => ({
     mainContainer: {
-        width: "100%",
+        // width: "100%",
+        width: "600px",
         // paddingTop: theme.spacing(6),
         // background: '#B6E2F3',
         // background: 'var(bg-secondary-color-main)',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         minHeight: "90%",
         height: "auto",
         position: "relative",
+        // border: "1px solid red",
+        // paddingTop: theme.spacing(5),
+
+        padding: "15px 15px",
         borderRadius: "10px",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
         transition: "all 0.2 ease -in -out",
-        // border: "1px solid red",
-        paddingTop: theme.spacing(5),
 
         '&:hover': {
-            // transform: "scale(1.02)",
+            transform: "scale(1.02)",
             transition: "all 0.2 ease -in -out",
             cursor: "pointer"
         }
 
     },
     PageHeaderWrapper: {
-        marginLeft: theme.spacing(2.2)
+        // marginLeft: theme.spacing(2.2)
 
     },
     rootGrid: {
-        marginTop: theme.spacing(3),
-        width: "100%",
+        // marginTop: theme.spacing(3),
+        width: "600px",
         minHeight: "700px",
         height: "auto",
-        // border: "1px solid red",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
 
         '& .MuiFormControl-root': {
             marginBottom: theme.spacing(3),
             // border: "1px solid red",
-        }
+
+        },
+
     },
     gridItemContentCreateOrder: {
         // background: "red",
@@ -69,7 +80,8 @@ const useStyles = makeStyles(theme => ({
                 // background: 'var(--bg-secondary-color-main)',
                 borderColor: "none !important",
                 borderRadius: "4px",
-                height: "30px !important",
+                // height: "30px !important",
+                height: "auto",
                 background: "#fff",
                 "& .MuiInputBase-inputMultiline": {
                     // background: "red",
@@ -80,7 +92,7 @@ const useStyles = makeStyles(theme => ({
     },
     rootForm: {
         width: "600px",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
         height: "auto",
         padding: theme.spacing(3)
     },
@@ -123,6 +135,25 @@ const useStyles = makeStyles(theme => ({
             transition: "all 0.2s ease-in-out",
             background: "var(--primary-color-main)",
         }
+    },
+    gridItemTitle: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    areaTextField: {
+        width: "95%",
+        height: "200px !important",
+        background: "red",
+        // border: "1px solid red !important",
+        '& .MuiInputBase-root': {
+            width: "100%",
+            height: "200px !important",
+            display: "flex",
+            alignItems: "flex-start",
+
+        }
+
     }
 }));
 const initialFValues = {
@@ -130,6 +161,7 @@ const initialFValues = {
     phone: "",
     address: "",
     note: "",
+    statusPayment: false
 }
 
 export const CreateOrderFormContainer = (props) => {
@@ -142,7 +174,10 @@ export const CreateOrderFormContainer = (props) => {
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
-    const [shoppingCart, setShoppingCart] = useState([])
+
+    const { shoppingCart } = useSelector((state) => state.shoppingCartState)
+
+    const [shoppingCartRecords, setShoppingCartRecords] = useState([])
 
     const { uploadPhoto } = useUploadPhoto()
 
@@ -155,6 +190,7 @@ export const CreateOrderFormContainer = (props) => {
 
     const loadInit = async () => {
         console.log("loadInit")
+        setShoppingCartRecords(shoppingCart)
 
     }
 
@@ -172,11 +208,11 @@ export const CreateOrderFormContainer = (props) => {
             showLoader()
             const data = {
                 ...formData,
-                shoppingCart
+                shoppingCartRecords
             }
             console.log("datacreateOrder: " + JSON.stringify(data))
             try {
-                const flag = createCustomersRawProduct(shoppingCart)
+                const flag = createCustomersRawProduct(shoppingCartRecords)
                 if (flag) {
                     createOrder(data)
                 } else {
@@ -200,7 +236,8 @@ export const CreateOrderFormContainer = (props) => {
     const createCustomersRawProduct = async (shoppingCart) => {
         shoppingCart.forEach(async (cartItem, index) => {
             console.log("cartItem: " + JSON.stringify(cartItem))
-            const { rawProductCode, rawProductName, size, color, description, categoryID, createdBy, customersRawProductPhotoList } = cartItem
+            const { rawProductCode, rawProductName, size, color, description, categoryID, createdBy, customersRawProductUploadFiles,
+                createdPreviewPhotoList } = cartItem
 
             if (createdBy == "Khách hàng") {
 
@@ -215,7 +252,7 @@ export const CreateOrderFormContainer = (props) => {
                 }
                 console.log("dataAddcartItem:" + data)
 
-                await addCustomersRawProduct(data, customersRawProductPhotoList)
+                await addCustomersRawProduct(data, customersRawProductUploadFiles, createdPreviewPhotoList)
             }
 
         })
@@ -305,14 +342,22 @@ export const CreateOrderFormContainer = (props) => {
             {/* {<Loader loading={loading} />} */}
             <Paper elevation={0} className={classes.mainContainer}>
 
+
                 <Grid container className={classes.rootGrid}>
+                    <Grid item xs={12} sm={12} md={12} className={classes.gridItemTitle}>
+                        <Box className={classes.titleWrapper}>
+                            <PageHeader>Tạo đơn hàng</PageHeader>
+                        </Box>
+                    </Grid>
 
                     <Grid item xs={12} sm={12} md={12} className={classes.gridItemContentCreateOrder}>
 
                         <form noValidate onSubmit={handleSubmit} className={classes.rootForm}>
 
                             <Grid container>
+
                                 <Grid item xs={12} sm={12} md={12} >
+
                                     <Box className={classes.gridItemContentContainer} >
 
                                         <TextField
@@ -345,6 +390,7 @@ export const CreateOrderFormContainer = (props) => {
                                             onChange={handleInputChange}
                                             error={helperValid.address ? true : false}
                                             helperText={helperValid.address}
+                                            className={classes.areaTextField}
                                         />
 
 
@@ -358,6 +404,7 @@ export const CreateOrderFormContainer = (props) => {
                                             onChange={handleInputChange}
                                             error={helperValid.note ? true : false}
                                             helperText={helperValid.note}
+                                            className={classes.areaTextField}
                                         />
 
 

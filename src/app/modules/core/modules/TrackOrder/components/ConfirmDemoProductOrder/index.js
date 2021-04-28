@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { useForm } from 'src/app/utils'
 import { PageHeader } from 'src/app/modules/core/components'
-import { IconClose, Loader } from 'src/app/components'
+import { IconClose, Loader, CanActive } from 'src/app/components'
 import { OrderServices } from 'src/app/services'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
@@ -48,15 +48,23 @@ const useStyles = makeStyles(theme => ({
             outlineOffset: "4px",
         }
     },
+    dialogContainer: {
+        zIndex: "999 !important",
+    },
     dialog: {
         width: "50rem",
         height: "auto",
         whiteSpace: "nowrap",
+        zIndex: 555,
     },
     dialogTitle: {
         position: "relative",
-        // // backgroundColor: "red"
-        padding: theme.spacing(2),
+        // backgroundColor: "red",
+        // padding: theme.spacing(2),
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+
 
     },
     dialogContent: {
@@ -101,6 +109,25 @@ const useStyles = makeStyles(theme => ({
     },
     cofirmStatuGroup: {
         display: "flex"
+    },
+    PageHeaderWrapper: {
+        width: "100%",
+        // background: "blue",
+        // marginLeft: theme.spacing(2.2),
+        // border: "1px solid blue",
+
+    },
+    iconCloseWrapper: {
+        width: "50px",
+        height: "auto",
+        // background: "orange",
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        position: "absolute",
+        top: theme.spacing(3),
+        right: theme.spacing(1),
+
     }
 
 }))
@@ -163,7 +190,7 @@ export const ConfirmDemoProductOrder = (props) => {
 
 
     const confirm = async () => {
-
+        showLoader()
         try {
             const response = await (await OrderServices.confirmDemoProduct(formData)).data
             // console.log("response: " + JSON.stringify(response))
@@ -180,22 +207,27 @@ export const ConfirmDemoProductOrder = (props) => {
         } catch (err) {
             toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
+        hideLoader()
 
     }
 
     return (
         <>
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer} />
+            {/* {<Loader loading={loading} zIndexValue={1500} />} */}
 
-            <Dialog open={isOpen} classes={{ paper: classes.dialog }} TransitionComponent={Transition}>
-
+            <Dialog open={isOpen} classes={{ paper: classes.dialog }} className={classes.dialogContainer}
+                TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>
-                    <IconClose handleClose={handleCloseModal} />
-                    <br />
-                    <PageHeader>
-                        Xác nhận sản phẫm mẫu của đơn hàng
-                    </PageHeader>
+                    <Box className={classes.PageHeaderWrapper}>
+                        <PageHeader>Xem thông tin chi tiết mục trong giỏ hàng</PageHeader>
+                    </Box>
+
+
+                    <div className={classes.iconCloseWrapper}>
+                        <IconClose handleClose={handleCloseModal} />
+                    </div>
                 </DialogTitle>
 
                 <DialogContent className={classes.dialogContent}>

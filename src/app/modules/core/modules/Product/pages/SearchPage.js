@@ -59,7 +59,6 @@ const useStyles = makeStyles(theme => ({
 
 const SearchPage = () => {
 
-    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
 
@@ -162,7 +161,7 @@ const SearchPage = () => {
 
     return (
         <>
-            {/* {<Loader loading={loading} />} */}
+            {<Loader loading={loading} />}
 
             <MainBar>
 

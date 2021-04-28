@@ -11,7 +11,7 @@ const CreateYourOwnPage = () => {
 
     return (
         <>
-            {/* {<Loader loading={loading} />} */}
+            {<Loader loading={loading} />}
 
             <MainBar>
                 <CreateCustomersRawProduct />

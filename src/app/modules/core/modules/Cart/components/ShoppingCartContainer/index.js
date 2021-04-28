@@ -88,16 +88,19 @@ const useStyles = makeStyles(theme => ({
 
     },
     gridItemTotalPrice: {
+        width: "100%",
+        height: "117px",
         // height: "15vh",
         // background: "red",
-        paddingTop: theme.spacing(5),
-        paddingBottom: theme.spacing(5),
+        // paddingTop: theme.spacing(5),
+        // paddingBottom: theme.spacing(5),
         display: "flex",
         justifyContent: "center",
-        // alignItems: "center"
+        alignItems: "center"
 
-    }, totalPriceContainer: {
-        width: "98%",
+    },
+    totalPriceContainer: {
+        width: "90%",
         height: "auto",
         minHeight: "80px",
         // background: "red",
@@ -130,7 +133,8 @@ const useStyles = makeStyles(theme => ({
         justifyContent: "center",
     },
     button: {
-        width: "300px",
+        width: "90%",
+        // minWidth: "250px",
         height: "50px",
         bordeRadius: "5px",
         background: "#010606",
@@ -274,7 +278,7 @@ export const ShoppingCartContainer = (props) => {
 
                         <Grid item xs={2} sm={2} md={2} className={classes.gridItemAction}>
 
-                            <Grid container>
+                            <Grid container >
                                 <Grid item xs={12} sm={12} md={12} className={classes.gridItemTotalPrice}>
                                     <Paper elevation={0} className={classes.totalPriceContainer}>
                                         <div className={classes.totalPriceWrapper}>

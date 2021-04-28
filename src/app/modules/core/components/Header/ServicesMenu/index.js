@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useTheme } from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import { RiAccountBoxLine } from 'react-icons/ri'
@@ -14,12 +14,14 @@ import { animateScroll as scroll } from 'react-scroll';
 const useStyles = makeStyles((theme) => ({
 
     menuButton: {
-        marginRight: 36
+        marginRight: 36,
+
     },
     hide: {
         display: "none"
     },
     menu: {
+        zIndex: "1110 !important",
         // background: "red",
         position: "relative",
         "& .MuiMenu-paper": {
@@ -62,6 +64,7 @@ export const ServicesMenu = () => {
 
     useEffect(() => {
         loadInit()
+
     }, [])
 
     const scrollToTop = () => {
@@ -79,6 +82,7 @@ export const ServicesMenu = () => {
             if (response && response != null) {
 
                 if (response.result == config.useResultStatus.SUCCESS) {
+
 
                     loadData(response)
 
@@ -108,7 +112,6 @@ export const ServicesMenu = () => {
 
         const records = response.info.records
 
-        const totalPageResponse = response.info.totalPage
 
         if (records && records != null && records.length > 0) {
 
@@ -155,7 +158,7 @@ export const ServicesMenu = () => {
                         onClick={() => {
                             handleCloseMenu();
                             history.push(
-                                record.serviceName == "Tạo của riêng bạn"
+                                record.serviceName.includes("Tạo của riêng bạn")
                                     ?
                                     {
                                         pathname: `/navigation`,
@@ -164,7 +167,7 @@ export const ServicesMenu = () => {
                                             data: {
                                                 locationObject: {
                                                     pathname: `/core/create_your_own_page`,
-                                                    // search: ``,
+                                                    search: `serviceCode=${record.serviceCode}&servicePrice=${record.servicePrice}`,
                                                     state: {
                                                         data: {
                                                             serviceCode: record.serviceCode,

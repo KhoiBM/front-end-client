@@ -187,8 +187,11 @@ export const ViewRawProductInformation = (props) => {
         if (record && record != null) {
             loadInit(record)
         }
-    }, [record, refresh])
+    }, [record])
 
+    useEffect(() => {
+
+    }, [recordRawProduct])
     // console.log("photoList:" + photoList)
 
     const loadInit = async (record) => {
@@ -202,7 +205,7 @@ export const ViewRawProductInformation = (props) => {
     const loadDataInit = async (record) => {
         setRecordRawProduct({
             ...record,
-            customersRawProductUploadFiles: [],
+            toPrintPhotoList: [],
             createdPreviewPhotoList: []
         })
     }
@@ -243,24 +246,35 @@ export const ViewRawProductInformation = (props) => {
 
         if (totalQuantity >= 1) {
             try {
-                const cartItemCode = uuidv4()
-                const dataToAdd = {
-                    ...recordRawProduct,
-                    quantity: 1,
-                    cartItemCode,
+                const {
+                    toPrintPhotoList,
+                    createdPreviewPhotoList
+                } = recordRawProduct
+
+                if (toPrintPhotoList && toPrintPhotoList != null && toPrintPhotoList.length > 0 && createdPreviewPhotoList && createdPreviewPhotoList != null && createdPreviewPhotoList.length > 0) {
+                    const cartItemCode = uuidv4()
+                    const dataToAdd = {
+                        ...recordRawProduct,
+                        quantity: 1,
+                        cartItemCode,
+                    }
+
+                    dispatch(useShoppingCartAction().addCartItemSuccess(dataToAdd))
+
+
+                    history.push("/core/cart_page")
+                    toast.success("Thêm vào giỏ hàng thành công")
+                    scrollToTop()
+
+
+                    console.log("addCartItem")
+                    console.log("dataToAdd:")
+                    console.table(dataToAdd)
+                    console.log(dataToAdd)
+                } else {
+                    toast.info("Vui lòng cá nhân hoá")
                 }
 
-                dispatch(useShoppingCartAction().addCartItemSuccess(dataToAdd))
-
-
-                // history.push("/core/cart_page")
-                toast.success("Thêm vào giỏ hàng thành công")
-                // scrollToTop()
-
-
-                console.log("addCartItem")
-                console.log("dataToAdd:")
-                console.table(dataToAdd)
 
             } catch (err) {
                 toast.error("Thất bại")
@@ -272,13 +286,13 @@ export const ViewRawProductInformation = (props) => {
 
     const handleCloseModal = () => {
         setPersonalizeModal({ isOpen: false })
-        handleRefresh()
+        // handleRefresh()
     }
 
 
     return (
         <>
-            {< Loader loading={loading} />}
+
             <div className={classes.pageViewInfomationContainer}>
                 <Paper elevation={0} className={classes.pageViewInfomationWrapper}>
 
@@ -312,7 +326,7 @@ export const ViewRawProductInformation = (props) => {
                                     <Grid container>
                                         <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box >
-                                                <Typography variant={"h5"} color={"textSecondary"}>Giá</Typography>
+                                                <Typography variant={"h5"} color={"textSecondary"}>Giá sản phẩm</Typography>
                                                 <Box className={classes.contentWrapper}>
                                                     <Typography variant={"body1"} >{useFormat().formatMoney(unitPrice)} đ</Typography>
                                                 </Box>
@@ -320,10 +334,10 @@ export const ViewRawProductInformation = (props) => {
                                             </Box>
                                         </Grid>
                                         <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
+                                            <Box >
+                                                <Typography variant={"h5"} color={"textSecondary"}>Giá dịch vụ</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{totalQuantity}</Typography>
+                                                    <Typography variant={"body1"} >{useFormat().formatMoney(servicePrice)} đ</Typography>
                                                 </Box>
 
                                             </Box>
@@ -353,14 +367,20 @@ export const ViewRawProductInformation = (props) => {
                                     <Grid container>
                                         <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
                                             <Box>
+                                                <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
+                                                <Box className={classes.contentWrapper}>
+                                                    <Typography variant={"body1"}>{totalQuantity}</Typography>
+                                                </Box>
+
+                                            </Box>
+
+                                        </Grid>
+                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                            <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Thể loại:</Typography>
                                                 <Box className={classes.contentWrapper}>
                                                     <Typography variant={"body1"}>{categoryName}</Typography>
                                                 </Box>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box>
                                             </Box>
                                         </Grid>
 
@@ -371,10 +391,12 @@ export const ViewRawProductInformation = (props) => {
                                             <div className={classes.buttonWrapper}>
                                                 <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonPersonalize} onClick={(event) => {
                                                     event.stopPropagation()
+                                                    showLoader()
                                                     const data = {
                                                         categoryCode,
                                                         rawProductCode,
-                                                        createdBy
+                                                        createdBy,
+                                                        personalizeType: config.usePersonalizeType.studioRawProductDetail
                                                     }
                                                     setPersonalizeModal({
                                                         isOpen: true,
@@ -382,6 +404,7 @@ export const ViewRawProductInformation = (props) => {
                                                         setRecordRawProduct,
                                                         handleCloseModal
                                                     })
+                                                    hideLoader()
                                                 }}>Cá nhân hoá</Button>
                                             </div>
                                         </Grid>

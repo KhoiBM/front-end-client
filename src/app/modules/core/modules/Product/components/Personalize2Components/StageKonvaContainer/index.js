@@ -7,16 +7,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { v5 as uuidv5 } from 'uuid';
 import deleteIcon from 'src/app/assets/image/cancel.png'
 import { useRefresh } from 'src/app/utils';
+import config from 'src/environments/config';
 const useStyles = makeStyles(theme => ({
     dropStageZone: {
 
         width: "902px !important",
         height: "602px !important",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
         display: 'flex',
         justifyContent: "center !important",
         alignItems: "center !important",
-        position: 'relative'
+        position: 'relative',
+
+
     },
     stageContainer: {
         position: "absolute",
@@ -35,7 +38,10 @@ const useStyles = makeStyles(theme => ({
             // display: 'flex',
             // justifyContent: "center !important",
             // alignItems: "center !important",
-        }
+        },
+        borderRadius: "10px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        overflow: "hidden",
 
     },
     layerContainer: {
@@ -64,10 +70,11 @@ const URLImage = ({
     selectShape,
     onDelete,
     onDragEnd,
-    onChange
+    onChange,
+    handleRefresh
 }) => {
 
-    console.log("isSelected:" + JSON.stringify(isSelected))
+    // console.log("isSelected:" + JSON.stringify(isSelected))
 
     const shapeRef = useRef();
     const groupRef = useRef();
@@ -81,15 +88,23 @@ const URLImage = ({
 
     const [groupImage, setGroupImage] = useState({ x: image.x, y: image.y })
 
+    const [deleteButton, setDeleteButton] = useState({
+        x: image.x,
+        y: image.y,
+        newWidth: 20,
+        newHeight: 20
+    })
+
     const [isDragging, setIsDragging] = useState(false);
 
 
-    console.log("img:")
-    console.log(img)
-    console.log("image:")
-    console.log(image)
-    console.log("scaledImage:")
-    console.log(scaledImage)
+    // console.log("img:")
+    // console.log(img)
+    // console.log("image:")
+    // console.log(image)
+    // console.log("scaledImage:")
+    // console.log(scaledImage)
+
     useEffect(() => {
         if (img && img != null) {
             console.table(JSON.stringify(img))
@@ -122,8 +137,8 @@ const URLImage = ({
         height,
     ) {
         let bestRatio = (containerWidth) / width
-        let newWidth = width * bestRatio * 0.2,
-            newHeight = height * bestRatio * 0.2
+        let newWidth = parseInt(width * bestRatio * 0.4),
+            newHeight = parseInt(height * bestRatio * 0.4)
         return { newWidth, newHeight }
     }
 
@@ -133,30 +148,42 @@ const URLImage = ({
             {
                 isSelected &&
                 <ImageKonva
-
-                    onTouchStart={onDelete}
-                    onClick={(e) => {
-                        setScaledImage(prev => ({
+                    onLoad={(e) => {
+                        setDeleteButton(prev => ({
                             ...prev,
-                            isDragging: false,
-                            newWidth: 0,
-                            newHeight: 0
-                        }));
+                            isDragging: true,
+                            newWidth: scaledImage.newWidth > 0 ? 20 : 0,
+                            newHeight: scaledImage.newHeight > 0 ? 20 : 0,
+                            x: scaledImage.x,
+                            y: scaledImage.y,
+                        }))
+                    }}
+
+                    onClick={async (e) => {
+
                         selectShape(null)
-                        onDelete()
+
+                        await onDelete()
+
+                        handleRefresh()
 
                     }}
+
+
                     image={deleteImage}
 
-                    width={10}
-                    height={10}
 
-                    offsetX={-200}
-                    offsetY={45}
-                    x={groupImage.x - 130}
-                    y={groupImage.y - 60}
+
+                    width={deleteButton ? deleteButton.newWidth : 10}
+                    height={deleteButton ? deleteButton.newHeight : 10}
+
+
+                    x={deleteButton.x - 100}
+                    y={deleteButton.y - 100}
 
                     strokeWidth={2}
+                    stroke={"white"}
+                    fill={"white"}
 
                 />
             }
@@ -180,11 +207,8 @@ const URLImage = ({
                 width={scaledImage ? scaledImage.newWidth : 0}
                 height={scaledImage ? scaledImage.newHeight : 0}
 
-                // width={scaledImage ? scaledImage.width : 0}
-                // height={scaledImage ? scaledImage.height : 0}
-
-                offsetX={scaledImage ? -(scaledImage.newWidth / 2) : 0}
-                offsetY={scaledImage ? -(scaledImage.newHeight / 10) : 0}
+                offsetX={scaledImage ? -Number((scaledImage.newWidth / 2)) : 0}
+                offsetY={scaledImage ? -Number((scaledImage.newHeight / 10)) : 0}
 
                 draggable
 
@@ -197,6 +221,11 @@ const URLImage = ({
                         ...scaledImage,
                         isDragging: true
                     })
+                    setDeleteButton(prev => ({
+                        ...prev,
+                        isDragging: true
+                    }))
+
                 }}
                 onDragEnd={e => {
                     setScaledImage(prev => ({
@@ -211,6 +240,12 @@ const URLImage = ({
                         x: e.target.x() + 130,
                         y: e.target.y() + 60
                     })
+                    setDeleteButton(prev => ({
+                        ...prev,
+                        isDragging: false,
+                        x: e.target.x() + 130,
+                        y: e.target.y() + 60
+                    }))
 
                 }}
 
@@ -235,6 +270,12 @@ const URLImage = ({
                         newWidth: Math.max(5, node.width() * scaleX),
                         newHeight: Math.max(node.height() * scaleY),
                     }));
+
+                    setDeleteButton(prev => ({
+                        ...prev,
+                        x: node.x() + 130,
+                        y: node.y() + 60,
+                    }))
 
 
                 }}
@@ -262,12 +303,12 @@ const URLImage = ({
                     <Transformer
                         ref={trRef}
                         borderStroke="#a7c5eb"
-                        borderStrokeWidth="2"
+                        borderStrokeWidth={2}
                         // borderEnabled={true}
                         anchorStroke="#a7c5eb"
-                        anchorStrokeWidth="2"
-                        anchorSize="10"
-                        anchorCornerRadius="1"
+                        anchorStrokeWidth={2}
+                        anchorSize={parseInt(10)}
+                        anchorCornerRadius={1}
                         keepRatio={true}
                         // centeredScaling={true}
                         boundBoxFunc={(oldBox, newBox) => {
@@ -285,10 +326,10 @@ const URLImage = ({
 };
 
 const URLBGImage = ({ image }) => {
-    const [img] = useImage(`${image.src}?cacheblock=true`);
+    const [img] = useImage(`${image.src}`);
     const [scaledImage, setScaledImage] = useState({})
-    console.log("img:")
-    console.log(img)
+    // console.log("img:")
+    // console.log(img)
     useEffect(() => {
         if (img && img != null) {
             console.table(JSON.stringify(img))
@@ -326,8 +367,8 @@ const URLBGImage = ({ image }) => {
             // width={scaledImage ? scaledImage.width : 0}
             // height={scaledImage ? scaledImage.height : 0}
 
-            offsetX={scaledImage ? -(scaledImage.newWidth / 1.2) : 0}
-            offsetY={scaledImage ? -(scaledImage.newHeight / 15) : 0}
+            offsetX={scaledImage ? -Number((scaledImage.newWidth / 1.2)) : 0}
+            offsetY={scaledImage ? -Number((scaledImage.newHeight / 15)) : 0}
 
         />
     );
@@ -337,14 +378,35 @@ const URLBGImage = ({ image }) => {
 export const StageKonvaContainer = (props) => {
 
 
-    const { bgPhoto, dragUrl, stageRef, isPressCreatePreviewPhoto, setSeletedPhotoID } = props
+    const {
+        bgPhoto,
+        dragUrl,
+        stageRef,
+        isPressCreatePreviewPhoto,
+        setIsPressCreatePreviewPhoto,
+        setSeletedPhotoID,
+        setPhotoCustomerUploadList,
+        photoPreviewID,
+        isPressDeletePreviewPhoto,
+        setIsPressDeletePreviewPhoto,
+        photoCustomerUploadList,
+        setPhotoPreviewID,
+        toPrintInStageImages,
+        setToPrintInStageImages,
+        personalizeType } = props
 
     const stageWidth = "1000"
     const stageHeight = "1000"
 
     const classes = useStyles({ bgPhoto });
 
-    const [images, setImages] = useState([]);
+    // if (personalizeType == config.usePersonalizeType.createYourOwn) {
+    //     const [imgBg] = useImage(`${bgPhoto}`);
+    // } else {
+
+    // }
+
+
 
     const [selectedId, selectShape] = useState(null);
 
@@ -353,13 +415,12 @@ export const StageKonvaContainer = (props) => {
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
 
-    console.log("bgStage")
-    console.log(bgStage)
+    // console.log("bgStage")
+    // console.log(bgStage)
     useEffect(() => {
 
         if (bgPhoto && bgPhoto != null) {
             console.log("bgPhoto: " + bgPhoto)
-
 
             let imgBg = new Image()
             imgBg.crossOrigin = "Anonymous"
@@ -368,6 +429,7 @@ export const StageKonvaContainer = (props) => {
 
             console.log("imgBg: ")
             console.log(imgBg)
+
             setBgStage(imgBg)
 
         }
@@ -375,30 +437,61 @@ export const StageKonvaContainer = (props) => {
 
 
     }, [bgPhoto])
+
+    useEffect(() => {
+        // console.log("photoCustomerUploadListStage:")
+        // console.log(photoCustomerUploadList)
+    }, [photoCustomerUploadList])
+
     useEffect(() => {
 
+    }, [isPressDeletePreviewPhoto])
+
+
+    useEffect(() => {
+
+        console.log("isPressCreatePreviewPhotoStage")
         selectShape(null)
+        setSeletedPhotoID(null)
+
+
 
     }, [isPressCreatePreviewPhoto])
 
-    useEffect(() => {
-
-    }, [dragUrl, images])
 
     useEffect(() => {
+        // if (isPressCreatePreviewPhoto) {
 
-        setSeletedPhotoID(selectedId)
+        if (photoPreviewID && photoPreviewID != null) {
+            setPhotoCustomerUploadList(prev => [...new Set(prev.concat(toPrintInStageImages.map((val) => ({ photoPreviewID: photoPreviewID, acceptedFile: val.acceptedFile }))))])
+            setPhotoPreviewID(null)
+        }
+
+        // }
+
+    }, [photoPreviewID])
+
+    useEffect(() => {
+        console.log("refresh")
+        console.log("toPrintInStageImages:" + JSON.stringify(toPrintInStageImages))
+    }, [dragUrl, toPrintInStageImages, refresh])
+
+    useEffect(() => {
+
 
     }, [selectedId])
 
-    console.log("images:" + JSON.stringify(images))
-    console.log("selectedId:" + JSON.stringify(selectedId))
+    // console.log("toPrintInStageImages:" + JSON.stringify(toPrintInStageImages))
+    // console.log("selectedId:" + JSON.stringify(selectedId))
 
     const checkDeselect = (e) => {
         // deselect when clicked on empty area
         const clickedOnEmpty = e.target === e.target.getStage();
         if (clickedOnEmpty) {
             selectShape(null);
+            console.log("changeSelectedIdStageNull")
+            setSeletedPhotoID(null)
+
         }
     };
 
@@ -407,25 +500,39 @@ export const StageKonvaContainer = (props) => {
         <>
 
             <div
-                onDrop={(e) => {
+                onDrop={async (e) => {
                     e.preventDefault();
                     // register event position
                     stageRef.current.setPointersPositions(e);
-                    console.log("PointersPositions:" + stageRef.current.setPointersPositions(e))
+                    // console.log("PointersPositions:" + stageRef.current.setPointersPositions(e))
                     // add image
-                    setImages(
-                        images.concat([
+                    // console.log("dragUrl.current")
+                    // console.log(dragUrl.current)
+                    const uuid = await `${uuidv4()}${new Date().getTime()}`
+                    const source = await dragUrl.current.src
+                    const acceptedFile = await dragUrl.current.acceptedFile
+                    // console.log("acceptedFile")
+                    // console.log(acceptedFile)
+                    dragUrl.current = await ""
+                    await setToPrintInStageImages(
+                        toPrintInStageImages.concat([
                             {
                                 ...stageRef.current.getPointerPosition(),
-                                src: dragUrl.current,
-                                id: uuidv4()
+                                src: source,
+                                acceptedFile,
+                                id: uuid
                             }
                         ])
                     );
-                    dragUrl.current = ""
+
+                    handleRefresh()
+
+
                 }}
-                onDragOver={(e) => e.preventDefault()}
+                onDragOver={(e) => e.preventDefault()
+                }
                 className={classes.dropStageZone}
+
             >
 
 
@@ -442,23 +549,32 @@ export const StageKonvaContainer = (props) => {
                             <URLBGImage image={bgStage}
                             />
                         }
-                        {images && images != null && images.map((image, index) => {
+                        {toPrintInStageImages && toPrintInStageImages != null && toPrintInStageImages.map((image, index) => {
                             return <URLImage image={image} key={index}
                                 isSelected={image.id === selectedId}
                                 onSelect={() => {
                                     selectShape(image.id);
+                                    console.log("changeSelectedIdStage")
+                                    setSeletedPhotoID(image.id)
                                 }}
                                 selectShape={selectShape}
-                                onDelete={() => {
-                                    const newImages = [...images];
-                                    images.splice(index, 1);
-                                    setImages(newImages);
+                                onDelete={async () => {
+                                    const newImages = await toPrintInStageImages.filter((val, index) => `${val.id}` !== `${image.id}`);
+
+                                    // console.log("deletedImages:" + JSON.stringify(newImages))
+                                    await setToPrintInStageImages(newImages);
+                                    // console.log("onDelete:")
+                                    handleRefresh()
+
                                 }}
                                 onChange={(newAttrs) => {
-                                    const newImages = images.slice();
+                                    const newImages = toPrintInStageImages.slice();
                                     newImages[index] = newAttrs;
-                                    setImages(newImages);
+                                    // console.log("newImages:" + JSON.stringify(newImages))
+                                    setToPrintInStageImages(newImages);
                                 }}
+                                handleRefresh={handleRefresh}
+
                             />;
                         })}
 
@@ -585,7 +701,7 @@ export const StageKonvaContainer = (props) => {
 
 
 // const [img] = useImage("https://photo-upload-album-1.s3-ap-southeast-1.amazonaws.com/Studio'sRawProduct/categoryCode/productcode/61895338-2d60-50a8-aa53-5768dbe89724aaaa.png");
-// const [img] = useImage(`${bgPhoto}`);
+// const [img] = useImage(`${ bgPhoto }`);
 {/* <URLBGImage image={{ src: bgPhoto }} /> */ }
 {/* <img
                 style={{ height: "100px" }}

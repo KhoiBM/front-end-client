@@ -5,7 +5,7 @@ import { makeStyles, Button, Tooltip, Zoom } from '@material-ui/core';
 import { toast } from 'react-toastify';
 import { OrderServices } from 'src/app/services';
 import config from 'src/environments/config';
-import { NotFound, Loader } from 'src/app/components';
+import { NotFound, Loader, CanActive } from 'src/app/components';
 import { RiInformationLine } from 'react-icons/ri';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 import { ConfirmDialog, PaginationBar } from 'src/app/modules/core/components';
@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
 
 
 export const TrackOrderTable = (props) => {
-    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
     const classes = useStyles();
 
@@ -166,8 +166,8 @@ export const TrackOrderTable = (props) => {
 
     return (
         <>
-            {<Loader loading={loading} />}
-
+            {/* {<Loader loading={loading} />} */}
+            <CanActive isRole={config.useRoleName.customer} />
             <TblContainer>
                 <TblHead />
                 <TblBody>
@@ -216,6 +216,8 @@ export const TrackOrderTable = (props) => {
 
                                         <Button onClick={(event) => {
                                             event.stopPropagation()
+
+                                            // showLoader()
                                             const data = {
                                                 orderID: row.orderID,
                                             }
@@ -226,6 +228,7 @@ export const TrackOrderTable = (props) => {
                                                 recordForConfirmDemoProductOrder: data,
                                                 handleCloseModal
                                             })
+                                            // hideLoader()
                                         }
                                         }>
                                             <AiOutlineCheck className={classesCustom.acceptIcon} />

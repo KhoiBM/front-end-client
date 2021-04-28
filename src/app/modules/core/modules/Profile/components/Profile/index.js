@@ -15,7 +15,7 @@ import parse from 'date-fns/parse'
 import bgAuth from "src/app/assets/image/bg_auth.jpeg"
 import { useForm } from 'src/app/utils'
 import { PageHeader } from 'src/app/modules/core/components'
-import { Loader } from 'src/app/components'
+import { Loader, CanActive } from 'src/app/components'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const useStyles = makeStyles(theme => ({
@@ -180,10 +180,17 @@ export const Profile = () => {
                 setRecord({ ...response.info.record })
                 setFormData({ ...formData, ...response.info.record })
 
-                const formatDob = parse(response.info.record.dob, 'dd-MM-yyyy', new Date())
-                console.log("formatDob: " + formatDob)
+                const parseDob = parse(response.info.record.dob, 'yyyy-MM-dd', new Date())
 
-                setDobSelected(formatDob)
+                console.log("parseDob: " + parseDob)
+
+                // const formatDob = format(parseDob, "dd-MM-yyyy")
+
+                // console.log("formatDob: " + formatDob)
+
+                setDobSelected(parseDob)
+                // setDobSelected(response.info.record.dob)
+
 
             } else {
                 // toast.error(config.useMessage.resultFailure)
@@ -231,19 +238,21 @@ export const Profile = () => {
     return (
         <>
             {/* <p>Profile</p> */}
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer} />
+
             <div className={classes.profileContainer}>
                 <div className={classes.pageFormContainer}>
                     <Paper elevation={0} className={classes.pageForm}>
 
-                        <div className={classes.iconCloseWrapper} onClick={() => {
+                        {/* <div className={classes.iconCloseWrapper} onClick={(e) => {
+                            e.stopPropagation()
                             history.goBack()
                             // scrollToTop()
                         }}>
                             <div className={classes.iconClose}>
                                 <RiCloseFill />
                             </div>
-                        </div >
+                        </div > */}
 
                         <PageHeader>
                             Hồ sơ của tôi

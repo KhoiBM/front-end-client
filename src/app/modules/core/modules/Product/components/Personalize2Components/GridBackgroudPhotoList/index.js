@@ -24,45 +24,85 @@ export const GridBackgroudPhotoList = (props) => {
 
     useEffect(() => {
         loadInit()
-        console.log("recordForBackgroudPhotoList:" + JSON.stringify(recordForBackgroudPhotoList))
+        // console.log("recordForBackgroudPhotoList:" + JSON.stringify(recordForBackgroudPhotoList))
     }, [recordForBackgroudPhotoList])
 
 
     const loadInit = async () => {
         if (recordForBackgroudPhotoList && recordForBackgroudPhotoList != null) {
             showLoader()
-            const { categoryCode, rawProductCode, createdBy } = recordForBackgroudPhotoList
 
-            let bucketName = ""
-            let folder = ""
-            let fileKey = ''
+            const { orderCode, orderDetailCode, categoryCode, rawProductCode, createdBy, customersRawProductUploadFiles, personalizeType } = recordForBackgroudPhotoList
 
-            switch (createdBy) {
-                case "Khách hàng":
-                    bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
-                    folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
-                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+            switch (personalizeType) {
+                case config.usePersonalizeType.createYourOwn: {
+                    if (customersRawProductUploadFiles && customersRawProductUploadFiles != null && customersRawProductUploadFiles.length > 0) {
+                        setPhotoList(customersRawProductUploadFiles.map((photo) => photo.src))
+                    }
+                }
                     break;
-                case "Quản lý":
-                    bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
-                    folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
-                    fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                case config.usePersonalizeType.studioRawProductDetail: {
+
+                    let bucketName = ""
+                    let folder = ""
+                    let fileKey = ''
+
+                    switch (createdBy) {
+                        case "Khách hàng":
+                            bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
+                            folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
+                            fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                            break;
+                        case "Quản lý":
+                            bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+                            folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
+                            fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                            break;
+                    }
+
+                    await loadPhotoList(bucketName, fileKey)
+                }
+
+
+                    break;
+
+                case config.usePersonalizeType.technicalCartItem: {
+                    let bucketName = ""
+                    let folder = ""
+                    let fileKey = ''
+
+                    switch (createdBy) {
+                        case "Khách hàng":
+                            bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
+                            folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
+                            fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                            break;
+                        case "Quản lý":
+                            bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
+                            folder = config.useConfigAWS.STUDIOBUCKET.FOLDER["STUDIO'SRAWPRODUCT"]
+                            fileKey = `${folder}/${categoryCode}/${rawProductCode}/`
+                            break;
+                    }
+
+                    await loadPhotoList(bucketName, fileKey)
+                }
                     break;
             }
 
 
-            await loadPhotoList(bucketName, fileKey)
-
-
-            // console.log("recordForBackgroudPhotoList: " + JSON.stringify(recordForBackgroudPhotoList))
-            hideLoader()
         }
 
+
+
+        // console.log("recordForBackgroudPhotoList: " + JSON.stringify(recordForBackgroudPhotoList))
+        hideLoader()
     }
+
+
 
     return (
         <>
-            {/* {<Loader loading={loading} />} */}
+            {loading.status && < Loader loading={loading} zIndexValue={2350} />}
             {
                 photoList && photoList != null && photoList.length > 0 &&
                 < GridSelectPhotoList photoList={photoList} setBgPhoto={setBgPhoto} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, Grid, Button, FormHelperText, MenuItem, FormControl, InputLabel, Select, TextField, Paper } from '@material-ui/core'
-import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGetStateLocation } from 'src/app/utils'
+import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGetStateLocation, useScrollToTop } from 'src/app/utils'
 import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { ProductServices, CartServices } from 'src/app/services'
@@ -8,8 +8,13 @@ import { IconClose, Loader } from 'src/app/components'
 import { ColorPickerInput, DropZoneUpload, PageHeader } from 'src/app/modules/core/components'
 import { v4 as uuidv4 } from 'uuid';
 import { v5 as uuidv5 } from 'uuid';
-import { Personalize1 } from '../Personalize1Components'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
+import { useDispatch } from 'react-redux'
+import { useShoppingCartAction } from 'src/app/stores/actions'
+import { Personalize2 } from '../Personalize2Components'
+import { scrollToTop } from 'react-scroll/modules/mixins/animate-scroll'
+import { useHistory } from 'react-router-dom'
+
 const useStyles = makeStyles(theme => ({
     button: {
         width: "350px",
@@ -33,6 +38,20 @@ const useStyles = makeStyles(theme => ({
             transition: "all 0.2s ease-in-out",
             background: "var(--primary-color-main)",
         }
+    },
+    buttonWrapper: {
+        marginTop: -theme.spacing(2),
+        // border: "1px solid rgba(0, 0, 0, 0.23)",
+        borderRadius: "10px",
+        display: "flex",
+        // justifyContent: "center",
+
+
+    },
+    buttonPersonalize: {
+        width: "100%",
+        height: "50px",
+
     }
 }))
 
@@ -48,11 +67,21 @@ const initialFValues = {
     unitPrice: 0,
     servicePrice: 10000000,
     createdBy: "Khách hàng",
+    customersRawProductUploadFiles: [],
+    createdPreviewPhotoList: [],
+    toPrintPhotoList: []
 
 }
 
-export const CreateCustomersRawProduct = () => {
+export const CreateCustomersRawProduct = (props) => {
+
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+    const { scrollToTop } = useScrollToTop()
+
+    const history = useHistory()
+
+    const dispatch = useDispatch();
 
     const classes = useStyles();
 
@@ -101,14 +130,14 @@ export const CreateCustomersRawProduct = () => {
                     }
 
                 } else {
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
                 }
             } else {
                 throw new Error("Response is null or undefined")
             }
 
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`,)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`,)
         }
         hideLoader()
     }
@@ -121,7 +150,7 @@ export const CreateCustomersRawProduct = () => {
         if (enableSubmit) {
             if (uploadFiles && uploadFiles != null && uploadFiles.length > 0) {
 
-                add()
+                add(uploadFiles)
 
             } else {
                 toast.info(config.useMessage.uploadFilePlease);
@@ -133,43 +162,51 @@ export const CreateCustomersRawProduct = () => {
     }
 
     const add = async () => {
-        showLoader()
+
+
+
+
+
         try {
+            const {
+                toPrintPhotoList,
+                createdPreviewPhotoList
+            } = formData
 
-            const response = await (await ProductServices.createCustomersRawProductByLocal({ ...formData, customersRawProductPhotoList: uploadFiles })).data
-            // console.log("response: " + JSON.stringify(response))
+            if (toPrintPhotoList && toPrintPhotoList != null && toPrintPhotoList.length > 0 && createdPreviewPhotoList && createdPreviewPhotoList != null && createdPreviewPhotoList.length > 0) {
 
-            if (response && response != null) {
-                if (response.result == config.useResultStatus.SUCCESS) {
+                showLoader()
 
-                    // const record = response.info.record
-
-                    toast.success("Tạo thành công");
-
-                    const data = {
-                        cartItemCode: uuidv4(),
-                        customersRawProductPhotoList: uploadFiles,
-                        ...formData
-                    }
-
-                    setPersonalizeModal({
-                        isOpen: true,
-                        recordForPersonalize: data,
-                        handleCloseModal
-                    })
-
-
-
-                } else {
-                    toast.error(config.useMessage.resultFailure)
+                const cartItemCode = uuidv4()
+                const dataToAdd = {
+                    ...formData,
+                    quantity: 1,
+                    cartItemCode,
+                    customersRawProductUploadFiles: uploadFiles
                 }
+
+                dispatch(useShoppingCartAction().addCartItemSuccess(dataToAdd))
+
+
+                history.push("/core/cart_page")
+                toast.success("Thêm vào giỏ hàng thành công")
+                scrollToTop()
+
+
+                console.log("addCartItem")
+                console.log("dataToAdd:")
+                console.table(dataToAdd)
+                console.log(dataToAdd)
+
             } else {
-                throw new Error("Response is null or undefined")
+                toast.info("Vui lòng cá nhân hoá")
             }
 
+
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            toast.error("Thất bại" + `${err}`)
         }
+
         hideLoader()
 
     }
@@ -282,6 +319,32 @@ export const CreateCustomersRawProduct = () => {
                                         </FormHelperText>
                                     </FormControl>
                                 </>
+                                <div className={classes.buttonWrapper}>
+                                    <Button type="button" variant="outlined" color="primary" size="large" className={classes.buttonPersonalize} onClick={(event) => {
+                                        event.stopPropagation()
+
+                                        if (uploadFiles && uploadFiles != null && uploadFiles.length > 0) {
+
+                                            const data = {
+                                                customersRawProductUploadFiles: uploadFiles,
+                                                createdBy: formData.createdBy,
+                                                personalizeType: config.usePersonalizeType.createYourOwn
+
+                                            }
+                                            setPersonalizeModal({
+                                                isOpen: true,
+                                                recordForPersonalize: data,
+                                                setRecordRawProduct: setFormData,
+                                                handleCloseModal
+                                            })
+
+                                        } else {
+                                            toast.info(config.useMessage.uploadFilePlease);
+                                        }
+
+                                    }}>Cá nhân hoá</Button>
+                                </div>
+                                <></>
 
 
                             </Grid>
@@ -290,12 +353,12 @@ export const CreateCustomersRawProduct = () => {
                             </Grid>
                         </Grid>
                         <div className={classesCustomStylesAddEditForm.buttonWrapper}>
-                            <Button type="submit" variant="outline" color="primary" size="large" className={classes.button}>Tạo ngay</Button>
+                            <Button type="submit" variant="outline" color="primary" size="large" className={classes.button}>Thêm vào giỏ hàng</Button>
                         </div>
                     </form>
                 </Paper>
             </div>
-            <Personalize1 personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
+            <Personalize2 personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
 
         </>
     )

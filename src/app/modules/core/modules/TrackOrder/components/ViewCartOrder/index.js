@@ -5,7 +5,7 @@ import config from 'src/environments/config';
 import { toast } from 'react-toastify';
 import { PhotoServices, OrderServices } from 'src/app/services';
 import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
-import { IconClose } from 'src/app/components';
+import { IconClose, Loader, CanActive } from 'src/app/components';
 import { PageHeader } from 'src/app/modules/core/components';
 import { useLoadPhotoList, useFormat } from 'src/app/utils';
 import { CartItem } from '../CartItem';
@@ -161,6 +161,8 @@ export const ViewCartOrder = (props) => {
 
     return (
         <>
+            {/* {<Loader loading={loading} />} */}
+            <CanActive isRole={config.useRoleName.customer} />
             <div className={classes.cartContainer}>
                 <Grid container spacing={0} className={classes.rootGrid}>
                     <Grid item xs={12} sm={12} md={12} className={classes.gridItemCount}>

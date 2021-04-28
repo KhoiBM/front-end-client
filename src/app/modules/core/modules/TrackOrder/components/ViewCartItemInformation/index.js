@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, Typography, Container, Box, TextField, Switch, FormControlLabel, Divider, DialogTitle, DialogContent, Slide, Dialog } from '@material-ui/core'
 import { toast } from 'react-toastify';
 import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
-import { IconClose } from 'src/app/components';
+import { IconClose, CanActive, Loader } from 'src/app/components';
 import config from 'src/environments/config';
 import { useLoadPhotoList, useRefresh, useFormat } from 'src/app/utils';
 import { PageHeader } from 'src/app/modules/core/components';
@@ -63,6 +63,9 @@ const useStyles = makeStyles(theme => ({
             }
         }
 
+    },
+    dialogContainer: {
+        zIndex: "1101 !important",
     },
     dialog: {
 
@@ -130,7 +133,7 @@ const useStyles = makeStyles(theme => ({
     PageHeaderWrapper: {
         width: "700px",
         // background: "blue",
-        marginLeft: theme.spacing(2.2)
+        // marginLeft: theme.spacing(2.2)
 
     },
     iconCloseWrapper: {
@@ -142,7 +145,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         position: "absolute",
         top: theme.spacing(3),
-        right: theme.spacing(3),
+        right: theme.spacing(1.5),
 
     }
 }))
@@ -203,7 +206,9 @@ export const ViewCartItemInformation = (props) => {
 
     return (
         <>
-            <Dialog fullScreen open={isOpen} classes={{ paper: classes.dialog }} TransitionComponent={Transition}>
+            <CanActive isRole={config.useRoleName.customer} />
+            {/* {<Loader loading={loading} zIndexValue={2350} />} */}
+            <Dialog fullScreen open={isOpen} classes={{ paper: classes.dialog }} className={classes.dialogContainer} TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>
 
@@ -306,7 +311,7 @@ export const ViewCartItemInformation = (props) => {
 
 
                                         />
-                                        <TextField
+                                        {/* <TextField
                                             variant='outlined'
                                             label="Ghi chú"
                                             value={note}
@@ -314,7 +319,7 @@ export const ViewCartItemInformation = (props) => {
                                             multiline
                                         // rows="10"
 
-                                        />
+                                        /> */}
                                         {/* <TextField
                                             variant='outlined'
                                             label="Ngày tạo"

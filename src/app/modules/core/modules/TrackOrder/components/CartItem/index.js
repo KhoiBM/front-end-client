@@ -7,7 +7,7 @@ import { ViewCartItemInformation } from '../ViewCartItemInformation';
 import { useFormat, useLoadPhotoList, useRefresh } from 'src/app/utils';
 import config from 'src/environments/config';
 import { Personalize } from 'src/app/modules/core/components';
-import { Loader } from 'src/app/components';
+import { Loader, CanActive } from 'src/app/components';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
@@ -72,9 +72,7 @@ export const CartItem = (props) => {
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
-
     const classes = useStyles();
-
 
     const { recordForCartItem } = props
 
@@ -139,7 +137,8 @@ export const CartItem = (props) => {
 
     return (
         <>
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer} />
+            {<Loader loading={loading} zIndexValue={2350} />}
 
             <Box className={classes.cartItemContainer}>
                 <Grid container className={classes.rootCartItemGrid}>

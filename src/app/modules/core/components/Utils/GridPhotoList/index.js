@@ -3,13 +3,22 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, CardMedia, Divider } from '@material-ui/core';
 import { Loader } from 'src/app/components';
+import { useScrollToTop } from 'src/app/utils';
 
 
 const useStyles = makeStyles(theme => ({
     rootContainer: {
         width: "100%",
-        height: "100%",
+        height: "1070px",
         // backgroundColor: "blue",
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center",
+        // border: "1px solid red",
+        padding: theme.spacing(2),
+        // backgroundColor: "#f7f3e9 !important",
+        // backgroundColor: "var(--tertiary-color-main) !important",
+        backgroundColor: "#fff !important",
 
     },
 
@@ -21,35 +30,37 @@ const useStyles = makeStyles(theme => ({
     },
     rootGrid: {
         width: "100%",
-        minHeight: "700px",
-        height: "auto",
+        height: "100%",
         // border: "1px solid red",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
     },
     gridItemShowPhoto: {
         width: "100%",
-        height: "70vh",
+        height: "70%",
         // background: "red",
         display: 'flex',
         justifyContent: "center",
         alignItems: "center",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
+        transition: "all 0.2 ease -in -out",
     },
     gridItemGridList: {
         // backgroundColor: "blue",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
         width: "100%",
-        height: "14rem",
+        height: "30%",
         display: 'flex',
         justifyContent: "flex-start",
         alignItems: "center"
     },
     rootGridList: {
         width: "100%",
+        height: "100%",
         display: 'flex',
         // flexWrap: 'nowrap',
         // justifyContent: 'space-around',
-
+        // justifyContent: "center",
+        // alignItems: "center",
         backgroundColor: theme.palette.background.paper,
         // border: "1px solid red",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
@@ -58,7 +69,7 @@ const useStyles = makeStyles(theme => ({
     gridList: {
         // width: "auto",
         width: "130%",
-        height: "12rem",
+        height: "100%",
         display: 'flex',
         // justifyContent: "space-between !important",
         justifyContent: "flex-start !important",
@@ -67,12 +78,14 @@ const useStyles = makeStyles(theme => ({
         gap: theme.spacing(2),
         // border: "1px solid red",
         // backgroundColor: "blue",
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2)
 
     },
     cardMedia: {
         objectFit: "contain",
-        maxWidth: "100%",
-        maxHeight: "100%",
+        maxWidth: "90%",
+        maxHeight: "90%",
         width: 'auto',
         height: 'auto',
         // border: "1px solid blue",
@@ -83,7 +96,8 @@ const useStyles = makeStyles(theme => ({
         maxWidth: "100%",
         maxHeight: "100%",
         width: 'auto',
-        height: 'auto'
+        height: 'auto',
+        // border: "1px solid blue",
     },
     gridListTile: {
         // // width: "100px",
@@ -101,14 +115,15 @@ const useStyles = makeStyles(theme => ({
         //     // borderColor: theme.palette.primary.main
 
         // }
+
+
         overflow: "scroll !important",
-        width: "100px !important",
-        height: "auto",
-        maxHeight: "10vh !important",
+        width: "200px !important",
+        height: "200px !important",
+        // maxHeight: "10vh !important",
         display: 'flex',
         justifyContent: "center !important",
         alignItems: "center",
-        border: "1px solid rgba(0, 0, 0, 0.23)",
 
         '& .MuiGridListTile-tile': {
             display: 'flex',
@@ -116,13 +131,25 @@ const useStyles = makeStyles(theme => ({
             alignItems: "center !important",
             // border: "1px solid red",
 
-        }
+        },
+        borderRadius: "10px",
+        boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
+        transition: "all 0.2 ease -in -out",
+
+        '&:hover': {
+            transform: "scale(1.02)",
+            transition: "all 0.2 ease -in -out",
+            cursor: "pointer"
+        },
     }
 }))
 
 
 export const GridPhotoList = (props) => {
     const classes = useStyles();
+
+    const { scrollToTop } = useScrollToTop()
+
 
     const { photoList } = props
 
@@ -168,8 +195,10 @@ export const GridPhotoList = (props) => {
                                         <img
                                             className={classes.cardMedia}
                                             src={url}
-                                            onClick={() => {
+                                            onClick={async () => {
+                                                await scrollToTop()
                                                 setPhotoToShow(url)
+
                                             }}
                                         />
                                     </GridListTile >

@@ -6,7 +6,7 @@ import { CanActive, Loader } from 'src/app/components'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 import { useLoadingEffect } from 'src/app/utils'
 const ProfilePage = () => {
-    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
+
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
 
@@ -14,7 +14,7 @@ const ProfilePage = () => {
         <>
             {/* <p>ProfilePage</p> */}
             <CanActive isRole={config.useRoleName.customer} />
-            {/* {<Loader loading={loading} />} */}
+            {<Loader loading={loading} />}
 
             <MainBar>
                 <Profile />

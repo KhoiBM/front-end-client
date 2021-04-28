@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { makeStyles, GridList, GridListTile, GridListTileBar, IconButton, Paper, Grid, Typography, Container, Box, TextField, Switch, FormControlLabel, Divider, DialogTitle, DialogContent, Slide, Dialog } from '@material-ui/core'
 import { toast } from 'react-toastify';
 import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
-import { IconClose } from 'src/app/components';
+import { IconClose, Loader, CanActive } from 'src/app/components';
 import config from 'src/environments/config';
 import { useLoadPhotoList } from 'src/app/utils';
 import { PageHeader } from 'src/app/modules/core/components';
@@ -68,6 +68,9 @@ const useStyles = makeStyles(theme => ({
         // background: "red"
         // overflowY: "hidden"
     },
+    dialogContainer: {
+        zIndex: "1101 !important",
+    },
     dialog: {
 
         // background: theme.palette.grey[50],
@@ -83,6 +86,7 @@ const useStyles = makeStyles(theme => ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        zIndex: "2300 !important",
 
 
     },
@@ -133,15 +137,14 @@ const useStyles = makeStyles(theme => ({
     totalPriceWrapper: {
         width: "98%",
         // background: "red",
-
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center"
     },
     PageHeaderWrapper: {
-        width: "500px",
+        width: "700px",
         // background: "blue",
-        marginLeft: theme.spacing(2.2)
+        marginLeft: theme.spacing(1.8)
 
     },
     iconCloseWrapper: {
@@ -153,7 +156,7 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         position: "absolute",
         top: theme.spacing(3),
-        right: theme.spacing(3),
+        right: theme.spacing(1.5),
 
     }
 }))
@@ -185,6 +188,7 @@ export const ViewOrderInformation = (props) => {
 
 
     useEffect(() => {
+        showLoader()
         if (recordForViewInformation && recordForViewInformation != null) {
             setRecordForCart({
                 orderID: recordForViewInformation.orderID,
@@ -192,6 +196,7 @@ export const ViewOrderInformation = (props) => {
             })
             setRecordOrder({ ...recordOrder, ...recordForViewInformation })
         }
+        hideLoader()
     }, [recordForViewInformation])
 
     useEffect(() => {
@@ -205,12 +210,11 @@ export const ViewOrderInformation = (props) => {
 
     return (
         <>
-
-
-            <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} TransitionComponent={Transition}>
+            {/* {<Loader loading={loading} zIndexValue={2350} />} */}
+            <CanActive isRole={config.useRoleName.customer} />
+            <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} className={classes.dialogContainer} TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>
-
 
                     <Box className={classes.PageHeaderWrapper}>
                         <PageHeader>Xem thông tin chi tiết đơn hàng</PageHeader>

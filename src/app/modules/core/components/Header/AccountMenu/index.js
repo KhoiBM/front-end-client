@@ -11,12 +11,13 @@ import { animateScroll as scroll } from 'react-scroll';
 const useStyles = makeStyles((theme) => ({
 
     menuButton: {
-        marginRight: 36
+        marginRight: 36,
     },
     hide: {
         display: "none"
     },
     menuAccount: {
+        zIndex: "1110  !important",
         // background: "red",
         position: "relative",
         "& .MuiMenu-paper": {
@@ -89,7 +90,23 @@ export const AccountMenu = () => {
 
                     <MenuItem onClick={() => {
                         handleCloseMenuAccount();
-                        history.push('/core/profile')
+                        history.push(
+                            {
+                                pathname: `/navigation`,
+                                search: ``,
+                                state: {
+                                    data: {
+                                        locationObject: {
+                                            pathname: `/core/profile`,
+                                            search: ``,
+                                            state: {
+                                                data: {}
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        )
                         scrollToTop()
                     }}><span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineProfile /></span>
     Hồ sơ của tôi
@@ -97,7 +114,21 @@ export const AccountMenu = () => {
 
                     <MenuItem onClick={() => {
                         handleCloseMenuAccount();
-                        history.push('/core/track_order_page')
+                        history.push({
+                            pathname: `/navigation`,
+                            search: ``,
+                            state: {
+                                data: {
+                                    locationObject: {
+                                        pathname: `/core/track_order_page`,
+                                        search: ``,
+                                        state: {
+                                            data: {}
+                                        }
+                                    }
+                                }
+                            }
+                        })
                         scrollToTop()
                     }}><span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineFileSearch /></span>
    Theo dõi đơn hàng
@@ -107,7 +138,21 @@ export const AccountMenu = () => {
                         handleCloseMenuAccount();
                         AuthService.signOut()
                         toast.success("Đăng xuất thành công")
-                        history.push('/auth/signin')
+                        history.push({
+                            pathname: `/navigation`,
+                            search: ``,
+                            state: {
+                                data: {
+                                    locationObject: {
+                                        pathname: `/auth/signin`,
+                                        search: ``,
+                                        state: {
+                                            data: {}
+                                        }
+                                    }
+                                }
+                            }
+                        })
                         scrollToTop()
                     }}>
                         <span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineLogout />

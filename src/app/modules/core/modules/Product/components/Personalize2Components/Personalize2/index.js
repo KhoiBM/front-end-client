@@ -19,13 +19,17 @@ const useStyles = makeStyles(theme => ({
             color: "#fff"
         }
     },
+    dialogContainer: {
+        zIndex: "1101 !important",
+    },
     dialog: {
         whiteSpace: "nowrap",
         overflow: "hidden !important",
         // backgroundColor: "#f7f3e9 !important",
         // backgroundColor: "var(--tertiary-color-main)",
         // backgroundColor: "var(--secondary-color-main)",
-        background: "var(--tertiary-color-main)",
+        // background: "var(--tertiary-color-main) !important",
+        background: "#fff !important",
     },
     dialogTitle: {
         maxHeight: "0px",
@@ -34,7 +38,8 @@ const useStyles = makeStyles(theme => ({
         // justifyContent: "center",
         // alignItems: "center",
         // border: "1px solid red",
-        display: "none"
+        display: "none",
+        background: "#fff !important",
 
     },
     dialogContent: {
@@ -42,7 +47,8 @@ const useStyles = makeStyles(theme => ({
         width: "100%",
         height: "auto",
         // border: "1px solid red",
-        padding: 0
+        padding: 0,
+        background: "#fff !important",
 
     },
     dialogAction: {
@@ -71,12 +77,17 @@ const useStyles = makeStyles(theme => ({
         // border: "1px solid rgb(0,0,0,0.23)",
         overflow: "scroll !important",
         paddingTop: theme.spacing(2),
-        background: "var(--tertiary-color-main)",
+        // background: "var(--tertiary-color-main)",
+        background: "#fff !important",
         // borderRight: "1px solid #f7f3e9",
-        borderTop: "1px solid #f7f3e9",
-        borderBottom: "1px solid #f7f3e9",
-        borderRight: "1px solid #f7f3e9",
-        borderLeft: "1px solid #f7f3e9",
+        // borderTop: "1px solid #f7f3e9",
+        // borderBottom: "1px solid #f7f3e9",
+        // borderRight: "1px solid #f7f3e9",
+        // borderLeft: "1px solid #f7f3e9",
+        borderTop: "1px solid rgb(0,0,0,0.23)",
+        borderBottom: "1px solid rgb(0,0,0,0.23)",
+        borderRight: "1px solid rgb(0,0,0,0.23)",
+        borderLeft: "1px solid rgb(0,0,0,0.23)",
 
 
     },
@@ -88,6 +99,7 @@ const useStyles = makeStyles(theme => ({
         // borderBottom: "1px solid rgb(0,0,0,0.23)",
         // background: "red",
         overflow: "hidden !important",
+        background: "#fff !important",
     }
 }))
 
@@ -102,7 +114,7 @@ export const Personalize2 = (props) => {
 
     const { personalizeModal, setPersonalizeModal } = props
 
-    const { isOpen, recordForPersonalize, handleCloseModal } = personalizeModal
+    const { isOpen, recordForPersonalize, handleCloseModal, setRecordRawProduct } = personalizeModal
 
     const [uploadFiles, setUploadFiles] = useState([])
 
@@ -114,7 +126,7 @@ export const Personalize2 = (props) => {
 
     const [recordToUse, setRecordToUse] = useState({})
 
-    console.log("recordToUse: " + JSON.stringify(recordToUse))
+    // console.log("recordToUse: " + JSON.stringify(recordToUse))
 
     useEffect(() => {
         console.log("recordForPersonalize: " + JSON.stringify(recordForPersonalize))
@@ -130,7 +142,7 @@ export const Personalize2 = (props) => {
 
     return (
         <>
-            <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} TransitionComponent={Transition}>
+            <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} className={classes.dialogContainer} TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>
                     {/* <div className={classes.iconCloseWrapper}>
@@ -156,6 +168,7 @@ export const Personalize2 = (props) => {
                                     dragUrl={dragUrl}
                                     stageRef={stageRef}
                                     handleCloseModal={handleCloseModal}
+                                    setRecordRawProduct={setRecordRawProduct}
                                 />
                             </Grid>
                         </Grid>

@@ -83,7 +83,22 @@ export const ShoppingCartMenu = () => {
                 <IconButton
                     onClick={
                         () => {
-                            history.push('/core/cart_page')
+                            history.push(
+                                {
+                                    pathname: `/navigation`,
+                                    search: ``,
+                                    state: {
+                                        data: {
+                                            locationObject: {
+                                                pathname: '/core/cart_page',
+                                                search: ``,
+                                                state: {
+                                                    data: {}
+                                                }
+                                            }
+                                        }
+                                    }
+                                })
                             scrollToTop()
                         }
                     }

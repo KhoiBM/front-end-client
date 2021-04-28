@@ -25,7 +25,7 @@
         //     console.log('active')
         // }
     
-    
+    {<Loader loading={loading} zIndexValue={2350} />}
 
 
     const loadData = async (response) => {

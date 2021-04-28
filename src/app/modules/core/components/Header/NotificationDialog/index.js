@@ -6,6 +6,9 @@ import format from 'date-fns/format'
 import parse from 'date-fns/parse'
 
 const useStyles = makeStyles((theme) => ({
+    dialogContainer: {
+        zIndex: "1110 !important",
+    },
     dialog: {
         width: "30rem",
         height: "40rem",
@@ -13,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         whiteSpace: "nowrap",
         position: 'absolute',
         // top: theme.spacing(24),
+
     },
     dialogTitle: {
         textAlign: "center"
@@ -46,7 +50,7 @@ export const NotificationDialog = (props) => {
     return (
         <>
             {notificationDialog &&
-                <Dialog open={notificationDialog.isOpen} classes={{ paper: classes.dialog }} TransitionComponent={Transition} onClose={() => {
+                <Dialog open={notificationDialog.isOpen} classes={{ paper: classes.dialog }} className={classes.dialogContainer} TransitionComponent={Transition} onClose={() => {
 
                     notificationDialog.onIsView(true)
                 }}>

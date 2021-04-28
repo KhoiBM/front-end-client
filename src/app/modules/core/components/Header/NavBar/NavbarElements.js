@@ -12,7 +12,7 @@ export const Nav = styled.nav`
   font-size: 1rem;
   position: fixed;
   top: 0;
-  z-index: 1111;
+  z-index: 1101;
   width:100%;
 
   /* border: 1px solid red; */
@@ -25,7 +25,7 @@ export const NavbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   height: 80px;
-  z-index: 1111;
+  z-index: 2050;
   width: 100%;
   padding: 0 24px;
   max-width: 97.5vw;

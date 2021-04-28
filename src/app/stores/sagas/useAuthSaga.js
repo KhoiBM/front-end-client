@@ -62,6 +62,8 @@ export const useAuthSaga = () => {
                     localStorage.setItem("pps-token", JSON.stringify(token));
                     localStorage.setItem("role", role);
                     // localStorage.setItem("role", "");
+                    console.log("role:" + role)
+                    console.log("checkRole:" + role == config.useRoleName.customer)
 
                     toast.success('Đăng nhập thành công');
 

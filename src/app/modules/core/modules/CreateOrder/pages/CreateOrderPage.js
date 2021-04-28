@@ -15,7 +15,7 @@ const CreateOrderPage = () => {
         <>
             {/* <p>CreateOrderPage</p> */}
             <CanActive isRole={config.useRoleName.customer} />
-            {/* {<Loader loading={loading} />} */}
+            {<Loader loading={loading} />}
 
             <MainBar>
                 <CreateOrderFormContainer />

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import config from 'src/environments/config'
 import { makeStyles, InputLabel, FormControl, MenuItem, Select, Chip, Input, useTheme } from '@material-ui/core'
+import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -50,6 +51,8 @@ function getStyles(ID, recordsSelect, theme) {
 
 export const FilterRawProductBar = (props) => {
 
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
     const { recordsSelect, setRecordsSelect, filterList, setFilterList, inputLabel, setAction, setClickFilter } = props
 
     const theme = useTheme();
@@ -65,10 +68,12 @@ export const FilterRawProductBar = (props) => {
     console.log("filterList: " + filterList)
 
     const handleFilterChange = (event) => {
+        showLoader()
         setClickFilter((prev) => !prev)
         setAction("filter")
         setFilterSelectList(event.target.value);
         setFilterList(event.target.value);
+        hideLoader()
 
     }
 
@@ -90,7 +95,7 @@ export const FilterRawProductBar = (props) => {
                     id="filter-chip"
                     value={filterSelectList}
                     onChange={handleFilterChange}
-                    displayEmpty={true}
+                    displayEmpty={false}
                     MenuProps={MenuProps}
                     labelWidth={50}
                     className={classes.selectContainer}

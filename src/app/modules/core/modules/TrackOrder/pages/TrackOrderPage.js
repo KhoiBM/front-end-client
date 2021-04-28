@@ -77,7 +77,7 @@ const TrackOrderPage = (props) => {
     return (
         <>
             <CanActive isRole={config.useRoleName.customer} />
-            {/* {<Loader loading={loading} />} */}
+            {<Loader loading={loading} />}
 
             <MainBar>
                 <Paper elevation={0} className={classes.mainContainer}>

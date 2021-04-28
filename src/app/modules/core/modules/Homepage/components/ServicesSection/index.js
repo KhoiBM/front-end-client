@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ServicesSectionContainer, ServicesH1, ServicesWrapper, ServicesCard, ServicesH2, ServicesP, ServicesCardLinkR } from './ServicesSectionElements'
+import { ServicesSectionContainer, ServicesH1, ServicesWrapper, ServicesCard, ServicesH2, ServicesP, ServicesCardLinkR, ServicesPrice } from './ServicesSectionElements'
 import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { ProductServices } from 'src/app/services'
@@ -83,7 +83,7 @@ export const ServicesSection = () => {
                             <ServicesCardLinkR key={index} to={{
                                 // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
                                 pathname: `/core/create_your_own_page`,
-                                // search: ``,
+                                search: `serviceCode=${record.serviceCode}&servicePrice=${record.servicePrice}`,
                                 state: {
                                     data: {
                                         serviceCode: record.serviceCode,
@@ -107,10 +107,10 @@ export const ServicesSection = () => {
                                     <ServicesP>{record.description}</ServicesP>
                                     <Divider />
                                     <br />
-                                    <ServicesP>
+                                    <ServicesPrice>
                                         <Typography variant="body2" style={{ color: "#01bf71" }}>Giá dịch vụ: {`${useFormat().formatMoney(record.servicePrice)} đ`}</Typography>
 
-                                    </ServicesP>
+                                    </ServicesPrice>
                                 </ServicesCard>
                             </ServicesCardLinkR>
 
@@ -139,10 +139,10 @@ export const ServicesSection = () => {
                                     <ServicesP>{record.description}</ServicesP>
                                     <Divider />
                                     <br />
-                                    <ServicesP>
+                                    <ServicesPrice>
                                         <Typography variant="body2" style={{ color: "#01bf71" }}>Giá dịch vụ: {`${useFormat().formatMoney(record.servicePrice)} đ`}</Typography>
 
-                                    </ServicesP>
+                                    </ServicesPrice>
                                 </ServicesCard>
                             </ServicesCardLinkR>
 

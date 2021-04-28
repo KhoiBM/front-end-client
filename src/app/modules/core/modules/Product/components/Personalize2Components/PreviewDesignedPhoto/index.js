@@ -6,6 +6,9 @@ import { useDownLoadURI } from 'src/app/utils';
 
 const useStyles = makeStyles(theme => ({
 
+    dialogContainer: {
+        zIndex: "2300 !important",
+    },
     dialog: {
         width: "90vw !important",
         maxWidth: "100vw !important",
@@ -32,8 +35,8 @@ const useStyles = makeStyles(theme => ({
     },
     photoPreviewContainer: {
         width: "100%",
-        height: "90vh",
-        border: "1px solid rgb(0,0,0,0.23)",
+        height: "80vh",
+        // border: "1px solid rgb(0,0,0,0.23)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -142,7 +145,7 @@ export const PreviewDesignedPhoto = (props) => {
 
     return (
         <>
-            <Dialog open={isOpen} classes={{ paper: classes.dialog }} TransitionComponent={Transition}>
+            <Dialog open={isOpen} classes={{ paper: classes.dialog }} className={classes.dialogContainer} TransitionComponent={Transition}>
 
                 {/* 
                 <DialogTitle className={classes.dialogTitle}>

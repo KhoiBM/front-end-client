@@ -19,7 +19,7 @@ export const useFilterHandle = (props) => {
         loadFilterInit()
     }, [])
 
-    // console.log("filterList:" + JSON.stringify(filterList))
+    console.log("filterList:" + JSON.stringify(filterList))
     const loadFilterInit = async () => {
         try {
 

@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 }))
 export const ProductPhotoCard = (props) => {
-    // const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+    const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
     const classes = useStyles();
     const { recordForPhotoCard } = props
@@ -78,7 +78,8 @@ export const ProductPhotoCard = (props) => {
     }
     return (
         <>
-            {/* {<Loader loading={loading} />} */}
+
+
             {
                 photoList && photoList != null && photoList.length > 0 &&
                 <>

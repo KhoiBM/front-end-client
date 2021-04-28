@@ -29,7 +29,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-scroll": "1.8.2",
-    "react-swipeable-views": "^0.13.9",
+    "react-swipeable-views": "0.13.9",
     "react-toastify": "7.0.3",
     "redux": "4.0.5",
     "redux-devtools-extension": "2.13.9",

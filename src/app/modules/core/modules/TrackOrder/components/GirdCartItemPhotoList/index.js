@@ -4,7 +4,7 @@ import config from 'src/environments/config'
 import { useLoadPhotoList, useTab } from 'src/app/utils'
 import { makeStyles, Divider } from '@material-ui/core'
 import { GridPhotoList } from 'src/app/modules/core/components'
-import { Loader } from 'src/app/components'
+import { Loader, CanActive } from 'src/app/components'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const useStyles = makeStyles(theme => ({
@@ -102,12 +102,12 @@ export const GirdCartItemPhotoList = (props) => {
 
     return (
         <>
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer} />
+            {<Loader loading={loading} zIndexValue={2350} />}
 
             <TabBar tabArr={[
                 {
                     label: "Hình sản phẩm thô",
-
                     onClick: () => { }
                 },
                 {

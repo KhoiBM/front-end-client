@@ -7,9 +7,9 @@ import Button from '@material-ui/core/Button';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from 'react-icons/md';
-import carousel1 from 'src/app/assets/image/carousel1.jpg'
-import carousel2 from 'src/app/assets/image/carousel2.jpg'
-import carousel3 from 'src/app/assets/image/carousel3.jpg'
+import carousel1 from 'src/app/assets/image/carousel1.svg'
+import carousel2 from 'src/app/assets/image/carousel2.svg'
+import carousel3 from 'src/app/assets/image/carousel3.svg'
 import { Box } from '@material-ui/core';
 import { Loader } from 'src/app/components';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';

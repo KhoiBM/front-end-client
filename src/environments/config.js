@@ -31,7 +31,7 @@ const useApiPath = {
     }
 }
 const useRoleName = {
-    customer: "customer"
+    customer: "Customer"
 };
 
 const useResultStatus = {
@@ -138,6 +138,12 @@ const useDataInfoSection = {
 }
 
 
-const config = { useApiPath, useRoleName, useResultStatus, useRegex, useUserRole, useStyles, useMessage, useConfigAWS, useStatusOrder, useDataInfoSection }
+const usePersonalizeType = {
+    "createYourOwn": "1",
+    "studioRawProductDetail": "2",
+    "technicalCartItem": "3"
+}
+
+const config = { useApiPath, useRoleName, useResultStatus, useRegex, useUserRole, useStyles, useMessage, useConfigAWS, useStatusOrder, useDataInfoSection, usePersonalizeType }
 export default config
 
