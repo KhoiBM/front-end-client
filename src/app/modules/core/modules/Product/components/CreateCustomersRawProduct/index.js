@@ -11,9 +11,9 @@ import { v5 as uuidv5 } from 'uuid';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 import { useDispatch } from 'react-redux'
 import { useShoppingCartAction } from 'src/app/stores/actions'
-import { Personalize2 } from '../Personalize2Components'
 import { scrollToTop } from 'react-scroll/modules/mixins/animate-scroll'
 import { useHistory } from 'react-router-dom'
+import { Personalize } from '../PersonalizeComponents'
 
 const useStyles = makeStyles(theme => ({
     button: {
@@ -358,7 +358,7 @@ export const CreateCustomersRawProduct = (props) => {
                     </form>
                 </Paper>
             </div>
-            <Personalize2 personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
+            <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
 
         </>
     )

@@ -5,4 +5,4 @@ export * from './FilterRawProductBar'
 export * from './ViewRawProductInformation'
 
 export * from './CreateCustomersRawProduct'
-export * from './Personalize2Components'
+export * from './PersonalizeComponents'

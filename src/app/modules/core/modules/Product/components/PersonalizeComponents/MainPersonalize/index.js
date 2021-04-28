@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react'
 import { Grid, makeStyles } from '@material-ui/core'
-import { ToolbarPersonalize } from '../ToolbarPersonalize2';
+import { ToolbarPersonalize } from '../ToolbarPersonalize';
 import { MainStageBar } from '../MainStageBar';
 import { FooterBarPersonalize } from '../FooterBarPersonalize';
 import { useDownLoadURI, useUploadPhoto } from 'src/app/utils';

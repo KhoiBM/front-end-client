@@ -9,11 +9,12 @@ import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
 import { IconClose, Loader } from 'src/app/components';
 import { useFormat, useLoadPhotoList, useRefresh, useScrollToTop } from 'src/app/utils';
 import { useHistory } from 'react-router-dom';
-import { Personalize2 } from '../Personalize2Components';
 import { useDispatch } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 import { v4 as uuidv4 } from 'uuid';
+import { Personalize } from '../PersonalizeComponents';
+
 const useStyles = makeStyles(theme => ({
     pageViewInfomationContainer: {
         width: "100%",
@@ -426,7 +427,7 @@ export const ViewRawProductInformation = (props) => {
                     </Grid>
                 </Paper>
             </div >
-            <Personalize2 personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
+            <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
 
 
         </>

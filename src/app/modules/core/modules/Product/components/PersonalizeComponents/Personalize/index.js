@@ -5,7 +5,7 @@ import { useUploadPhoto } from 'src/app/utils'
 import { RiCloseFill } from 'react-icons/ri'
 import useImage from 'use-image'
 import { Image, Stage, Layer } from 'react-konva'
-import { PageHeader } from '../../../../../components/Utils'
+import { PageHeader } from '../../../../../../../../../../../client/frontend-client/src/app/modules/core/components/Utils'
 import { DropZoneUploadBar } from '../DropZoneUploadBar'
 import MainPersonalize from '../MainPersonalize'
 import { IconClose } from 'src/app/components'
@@ -108,7 +108,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 
-export const Personalize2 = (props) => {
+export const Personalize = (props) => {
 
     const classes = useStyles();
 

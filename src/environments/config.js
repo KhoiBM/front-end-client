@@ -40,9 +40,14 @@ const useResultStatus = {
 }
 
 const useRegex = {
+    // regexPassword: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/,
+    // regexEmail: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/i,
+    // regexPhone: /^\d{10,11}$/
     regexPassword: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,20}$/,
     regexEmail: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/i,
-    regexPhone: /^\d{10,11}$/
+    regexPhone: /^\d{10,11}$/,
+    // regexPrice: /^([\d]{1,3})([.]\d{3})*$/,
+    regexPrice: /^\d{1,}$/,
 }
 
 const useUserRole = {
