@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
+
 import React, { useState, useEffect, useRef } from 'react'
 import { DialogContent, DialogTitle, Dialog, Slide, makeStyles, Grid, Button } from '@material-ui/core'
 import { useUploadPhoto } from 'src/app/utils'
 import { RiCloseFill } from 'react-icons/ri'
 import useImage from 'use-image'
 import { Image, Stage, Layer } from 'react-konva'
-import { PageHeader } from '../../../../../../../../../../../client/frontend-client/src/app/modules/core/components/Utils'
 import { DropZoneUploadBar } from '../DropZoneUploadBar'
 import MainPersonalize from '../MainPersonalize'
 import { IconClose } from 'src/app/components'
@@ -145,12 +145,6 @@ export const Personalize = (props) => {
             <Dialog fullScreen open={isOpen} classes={{ paper: `${classes.dialog}` }} className={classes.dialogContainer} TransitionComponent={Transition}>
 
                 <DialogTitle className={classes.dialogTitle}>
-                    {/* <div className={classes.iconCloseWrapper}>
-                        <IconClose handleClose={handleCloseModal} />
-                    </div> */}
-                    {/* <PageHeader>
-                        Cá nhân hoá
-                    </PageHeader> */}
                 </DialogTitle>
 
                 <DialogContent className={classes.dialogContent}>
