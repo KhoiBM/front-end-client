@@ -105,6 +105,7 @@ export function Navbar({ toggle }) {
                                     duration={500}
                                     exact="true"
                                     offset={-80}
+                                    spy={true}
                                     onClick={scrollToTop}
                                 // activeClassName={classes.activeNavLink}
                                 >
@@ -130,7 +131,9 @@ export function Navbar({ toggle }) {
                                                 smooth={true}
                                                 duration={500}
                                                 exact="true"
-                                                offset={-80}>
+                                                offset={-80}
+                                                spy={true}
+                                            >
                                                 Đăng nhập
                                     </NavBtnLink>
                                         </NavBtn>

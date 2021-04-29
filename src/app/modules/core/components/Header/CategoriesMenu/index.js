@@ -131,6 +131,7 @@ export const CategoriesMenu = () => {
                 duration={500}
                 exact="true"
                 offset={-80}
+                spy={true}
                 onClick={handleMenu}
             >
                 Thể loại

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { makeStyles, Grid, Paper, GridList, GridListTile, Zoom, Tooltip } from '@material-ui/core';
 import { GridSelectPhotoList } from '../GridSelectPhotoList';
 import { GridBackgroudPhotoList } from '../GridBackgroudPhotoList';
@@ -27,7 +27,11 @@ export const FooterBarPersonalize = (props) => {
 
     const { recordForFooterBarPersonalize, setBgPhoto } = props
 
+    const tooltipRef = useRef(null)
 
+    useEffect(() => {
+        tooltipRef.current.blur()
+    }, [])
     useEffect(() => {
         console.log("recordForFooterBarPersonalize: " + JSON.stringify(recordForFooterBarPersonalize))
     }, [recordForFooterBarPersonalize])
@@ -35,7 +39,8 @@ export const FooterBarPersonalize = (props) => {
 
     return (
         <>
-            <Tooltip TransitionComponent={Zoom} placement="top" title="Vui lòng ấn vào ảnh trong khu vực này để thay đổi hình nền thiết kế">
+            <Tooltip ref={tooltipRef} TransitionComponent={Zoom} placement="top" title="Vui lòng ấn vào ảnh trong khu vực này để thay đổi hình nền thiết kế">
+
                 <Grid container className={classes.rootGridContainer}>
 
                     <Grid item xs={12} sm={12} md={12} className={classes.gridItem1}>

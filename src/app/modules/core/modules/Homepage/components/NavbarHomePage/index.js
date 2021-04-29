@@ -54,6 +54,7 @@ export function NavbarHomePage({ toggle }) {
                                     duration={500}
                                     exact="true"
                                     offset={-80}
+                                    spy={true}
                                 >
                                     Dịch vụ
                                     </NavSLinks>
@@ -65,6 +66,7 @@ export function NavbarHomePage({ toggle }) {
                                     duration={500}
                                     exact="true"
                                     offset={-80}
+                                    spy={true}
                                 >
                                     Thể loại
                                     </NavSLinks>
@@ -92,7 +94,9 @@ export function NavbarHomePage({ toggle }) {
                                     duration={500}
                                     exact="true"
                                     offset={-80}
+                                    spy={true}
                                     onClick={scrollToTop}
+
                                 >
                                     Tất cả sản phẩm
                                 </NavRLinks>
@@ -116,7 +120,9 @@ export function NavbarHomePage({ toggle }) {
                                                 smooth={true}
                                                 duration={500}
                                                 exact="true"
-                                                offset={-80}>
+                                                offset={-80}
+                                                spy={true}
+                                            >
                                                 Đăng nhập
                                     </NavBtnLink>
                                         </NavBtn>

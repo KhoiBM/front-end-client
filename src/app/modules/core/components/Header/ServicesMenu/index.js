@@ -133,6 +133,7 @@ export const ServicesMenu = () => {
                 duration={500}
                 exact="true"
                 offset={-80}
+                spy={true}
                 onClick={handleMenu}
             >
                 Dịch vụ

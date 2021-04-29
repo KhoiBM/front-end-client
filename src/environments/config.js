@@ -3,7 +3,7 @@
 import { MdSupervisorAccount, MdShowChart, MdImportExport } from "react-icons/md";
 import { AiOutlineAppstore, AiOutlineTag, AiOutlineSync } from 'react-icons/ai'
 import { RiProductHuntLine } from "react-icons/ri";
-import inforSectionOne from 'src/app/assets/image/infosectionone.svg'
+import infoSectionOne from 'src/app/assets/image/infosectionone.svg'
 const useApiPath = {
     "apiEndpoint": "https://tyadtos4x2.execute-api.ap-southeast-1.amazonaws.com/dev/",
     "api": {
@@ -118,8 +118,6 @@ const useStatusOrder = {
 
 const useDataInfoSection = {
     homeObjOne: {
-
-
         id: 'signup',
         lightBg: true,
         lightText: false,
@@ -129,7 +127,7 @@ const useDataInfoSection = {
         description: 'Thiết lập mọi thứ và sẵn sàng trong vòng chưa đầy 10 phút. Tất cả những gì bạn cần làm là thêm thông tin của mình và bạn đã sẵn sàng.',
         buttonLabel: 'Bắt đầu ngay',
         imgStart: false,
-        img: inforSectionOne,
+        img: infoSectionOne,
         alt: "signup",
         dark: false,
         primary: false,

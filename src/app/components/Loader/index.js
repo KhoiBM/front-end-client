@@ -6,7 +6,7 @@ import { IconClose } from '../IconClose';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 const useStyles = makeStyles(theme => ({
     loaderContainer: {
-        zIndex: "1100 !important",
+        zIndex: props => props.zIndexValue ? `${props.zIndexValue} !important` : "1100 !important",
         width: "100%",
         height: "auto",
         minHeight: "100vh",

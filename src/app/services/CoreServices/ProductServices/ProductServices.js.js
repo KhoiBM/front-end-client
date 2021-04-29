@@ -5,50 +5,50 @@ import { v4 as uuidv4 } from 'uuid';
 export class ProductServices {
 
     static getAllService = (data) => {
-        return useHttpModule().post(config.useApiPath.api.productServices.getAllService, data)
-        // return Promise.resolve({
-        //     data: {
-        //         result: config.useResultStatus.SUCCESS,
-        //         info: {
-        //             records: [
-        //                 {
-        //                     serviceID: "1",
-        //                     serviceCode: "serviceCode",
-        //                     serviceName: "abcd",
-        //                     servicePrice: 100000,
-        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        //                 },
-        //                 {
-        //                     serviceID: "1",
-        //                     serviceCode: "serviceCode2",
-        //                     serviceName: "abcd",
-        //                     servicePrice: 100000,
-        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        //                 }, {
-        //                     serviceID: "1",
-        //                     serviceCode: "serviceCode",
-        //                     serviceName: "abcd",
-        //                     servicePrice: 100000,
-        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        //                 },
-        //                 {
-        //                     serviceID: "1",
-        //                     serviceCode: "serviceCode2",
-        //                     serviceName: "abcd",
-        //                     servicePrice: 100000,
-        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        //                 }
-        //                 , {
-        //                     serviceID: "1",
-        //                     serviceCode: "serviceCode",
-        //                     serviceName: "Tạo của riêng bạn",
-        //                     servicePrice: 100000,
-        //                     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-        //                 }
-        //             ]
-        //         }
-        //     }
-        // })
+        // return useHttpModule().post(config.useApiPath.api.productServices.getAllService, data)
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+                    records: [
+                        {
+                            serviceID: "1",
+                            serviceCode: "serviceCode",
+                            serviceName: "abcd",
+                            servicePrice: 100000,
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        },
+                        {
+                            serviceID: "1",
+                            serviceCode: "serviceCode2",
+                            serviceName: "abcd",
+                            servicePrice: 100000,
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        }, {
+                            serviceID: "1",
+                            serviceCode: "serviceCode",
+                            serviceName: "abcd",
+                            servicePrice: 100000,
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        },
+                        {
+                            serviceID: "1",
+                            serviceCode: "serviceCode2",
+                            serviceName: "abcd",
+                            servicePrice: 100000,
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        }
+                        , {
+                            serviceID: "1",
+                            serviceCode: "serviceCode",
+                            serviceName: "Tạo của riêng bạn",
+                            servicePrice: 100000,
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                        }
+                    ]
+                }
+            }
+        })
     }
 
     static getAllCategory = (data) => {
