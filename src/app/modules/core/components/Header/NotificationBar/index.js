@@ -152,14 +152,14 @@ export const NotificationBar = () => {
 
                     // toast.success("Thành công")
                 } else {
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
                 }
             } else {
                 throw new Error("Response is null or undefined")
             }
 
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
 
     }
@@ -182,7 +182,7 @@ export const NotificationBar = () => {
                     setRecordsNoti(records && records != null && records.length > 0 ? records : [])
 
                 } else {
-                    toast.error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
                 }
 
             } else {
@@ -193,7 +193,7 @@ export const NotificationBar = () => {
 
         } catch (err) {
 
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
 
         }
 
@@ -229,7 +229,7 @@ export const NotificationBar = () => {
         <>
             <div>
                 {
-                    role != useRoleName.administrator && role != useRoleName.manager &&
+
                     <>
                         <Tooltip TransitionComponent={Zoom} placement="left" title="Thông báo">
                             <IconButton
