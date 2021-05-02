@@ -162,11 +162,6 @@ export const CreateCustomersRawProduct = (props) => {
     }
 
     const add = async () => {
-
-
-
-
-
         try {
             const {
                 toPrintPhotoList,

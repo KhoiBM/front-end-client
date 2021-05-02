@@ -125,7 +125,7 @@ export const ShoppingCartItem = (props) => {
 
     const classes = useStyles();
 
-    const { shoppingCartItem, handleRefreshShoppingCart } = props
+    const { shoppingCartItem } = props
 
     const [cartItemDetailModal, setCartItemDetailModal] = useState({ isOpen: false })
 
@@ -142,25 +142,22 @@ export const ShoppingCartItem = (props) => {
     const [shoppingCartItemRecords, setShoppingCartItemRecords] = useState([])
 
 
-    console.log("formData:" + JSON.stringify(formData))
-
     useEffect(() => {
         loadInit()
     }, [shoppingCartItem])
 
     useEffect(() => {
-        console.log("refresh")
+        // console.log("refresh")
     }, [refresh])
 
 
     const loadInit = async () => {
-        if (shoppingCartItem && shoppingCartItem != null) {
+        if (shoppingCartItem && shoppingCartItem != null && Object.keys(shoppingCartItem).length > 0) {
             showLoader()
 
             loadPhotoInit(shoppingCartItem)
 
             loadDataInit(shoppingCartItem)
-            // console.log("shoppingCartItem: " + JSON.stringify(shoppingCartItem))
 
             hideLoader()
         }
@@ -168,7 +165,8 @@ export const ShoppingCartItem = (props) => {
     }
 
     const loadPhotoInit = async (shoppingCartItem) => {
-        const { categoryCode, rawProductCode, createdBy } = shoppingCartItem
+
+        const { categoryCode, rawProductCode, createdBy, customersRawProductUploadFiles } = shoppingCartItem
 
         let bucketName = ""
         let folder = ""
@@ -180,7 +178,7 @@ export const ShoppingCartItem = (props) => {
 
         switch (shoppingCartItem.createdBy) {
             case "Khách hàng":
-
+                setPhotoList(customersRawProductUploadFiles.map((photo) => photo.src))
                 break;
             case "Quản lý":
                 bucketName = config.useConfigAWS.STUDIOBUCKET.BUCKETNAME
@@ -229,7 +227,6 @@ export const ShoppingCartItem = (props) => {
             toast.success("Xoá thành công")
 
             handleRefresh()
-            handleRefreshShoppingCart()
 
             console.log("onDeleteCartItem")
             console.log("cartItemCode: " + cartItemCode)
@@ -276,12 +273,11 @@ export const ShoppingCartItem = (props) => {
             toast.success("Thay đổi thành công")
 
             handleRefresh()
-            handleRefreshShoppingCart()
 
             console.log("onEditCartItem")
 
         } catch (err) {
-            // toast.error("Thay đổi thất bại")
+            toast.error("Thay đổi thất bại")
         }
         hideLoader()
 
@@ -292,9 +288,6 @@ export const ShoppingCartItem = (props) => {
     return (
         <>
             {/* {<Loader loading={loading} />} */}
-
-
-
             <Box className={classes.cartItemContainer}>
 
                 <Grid container className={classes.rootCartItemGrid}>

@@ -104,7 +104,7 @@ const SearchPage = () => {
             let response = null
 
             if (keywords && keywords != null) {
-                response = await (await ProductServices.searchRawProduct({ keywords, filterBy: [], page: page, limit: limit })).data
+                response = await (await ProductServices.searchRawProduct({ keywords, page: page, limit: limit })).data
 
             }
             // console.log("response: " + JSON.stringify(response))

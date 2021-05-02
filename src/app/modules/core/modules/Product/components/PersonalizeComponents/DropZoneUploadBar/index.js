@@ -48,8 +48,6 @@ const useStyles = makeStyles((theme) => ({
 
     },
     titleUpload: {
-
-
     },
     photoPreviewCard: {
         width: "100px",

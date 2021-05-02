@@ -12,7 +12,7 @@ export function FooterBar() {
                         <Footer.Link href="#">Giới thiệu về chúng tôi</Footer.Link>
                         <Footer.Link href="#">Câu chuyện của chúng tôi</Footer.Link>
                         <Footer.Link href="#">Khách hàng của chúng tôi</Footer.Link>
-                        <Footer.Link href="#">Liên hệ chúng tôi</Footer.Link>
+                        <Footer.Link href="#">Liên hệ: 0939724538</Footer.Link>
                     </Footer.Column>
                     <Footer.Column>
                         <Footer.Title>Hướng dẫn</Footer.Title>

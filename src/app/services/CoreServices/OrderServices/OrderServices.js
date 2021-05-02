@@ -18,7 +18,7 @@ export class OrderServices {
             data: {
                 result: config.useResultStatus.SUCCESS,
                 info: {
-
+                    orderCode: "orderCode"
                 }
             }
         })
@@ -43,7 +43,7 @@ export class OrderServices {
                                 note: "cần giao sau 6h",
                                 statusOrder: "Đơn chờ duyệt",
                                 statusPayment: true,
-                                shipAt: "27-02-2021",
+                                shipAt: "2021-02-27",
                                 phone: "0313823823",
                                 address: "Tân Hà, Tân Châu, Tây Ninh",
                                 createdAt: "20-02-2021",

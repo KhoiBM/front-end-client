@@ -81,7 +81,7 @@ export const CategoriesMenu = () => {
 
                     loadData(response)
 
-                    console.log("loadInit")
+                    // console.log("loadInit")
 
                 } else {
 

@@ -5,18 +5,6 @@ import photoDemo from 'src/app/assets/image/demoPhoto.jpeg'
 import photoDemo2 from 'src/app/assets/image/demoPhoto2.jpg'
 import photoDemo3 from 'src/app/assets/image/demoPhoto3.jpg'
 export class PhotoServices {
-    // static = (data) => {
-    //     // return useHttpModule().post(config.useApiPath.api., data)
-    //     return Promise.resolve({
-    //         data: {
-    //             result: config.useResultStatus.SUCCESS,
-    //             info: {
-
-    //             }
-    //         }
-    //     })
-    // }
-
 
     static uploadPhotoWithPresignedURL = (url, file) => {
 
@@ -32,8 +20,9 @@ export class PhotoServices {
     static getPresignedURLToUpload = (data) => {
 
         const { bucketName, fileKey, fileType } = data
-        // console.log("getPresignedURLToUpload")
+
         return useHttpModule().get(`${config.useApiPath.api.photoServices.getPresignedURLToUpload}?bucketName=${bucketName}&fileKey=${fileKey}&fileType=${fileType}`)
+
     }
 
 

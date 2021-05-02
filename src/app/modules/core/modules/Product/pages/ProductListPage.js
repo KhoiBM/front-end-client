@@ -69,10 +69,9 @@ const ProductListPage = () => {
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
-
     const classes = useStyles();
 
-    const { data: dataToGet } = useGetStateLocation()
+    // const { data: dataToGet } = useGetStateLocation()
 
     let query = useQueryURL();
 
@@ -87,96 +86,95 @@ const ProductListPage = () => {
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
-    let fetchApi = ProductServices.getOptionToFilterAllRawProduct()
-
-    let mapToFilter = []
-
-    if (serviceCode && serviceCode != null) {
-
-        fetchApi = ProductServices.getOptionToFilterRawProductOfService({ serviceCode })
-
-        mapToFilter = (records) => {
-            // console.log("mapToFilter")
-            return records.map((val) => ({ ID: val.categoryCode, name: val.categoryName }));
-        }
-
-    } else if (categoryCode && categoryCode != null) {
-
-        fetchApi = ProductServices.getOptionToFilterRawProductOfCategory()
-
-        mapToFilter = (records) => {
-            // console.log("mapToFilter")
-            return records.map((val) => ({ ID: val.code, name: val.name }));
-        }
-
-    } else {
-
-        fetchApi = ProductServices.getOptionToFilterAllRawProduct()
-
-        mapToFilter = (records) => {
-            // console.log("mapToFilter")
-            return records.map((val) => ({ ID: val.code, name: val.name }));
-        }
-
-    }
-
-
-
-    const { recordsSelect, setRecordsSelect, filterList, setFilterList, action, setAction, clickFilter, setClickFilter } = useFilterRawProductHandle(
-        {
-            fetchApi,
-            mapToFilter
-        }
-    )
-
-
-
-
-
+    const { recordsSelect, setRecordsSelect, filterList, setFilterList, action, setAction, clickFilter, setClickFilter, filterHandleObject, setFilterHandleObject } = useFilterRawProductHandle()
 
 
 
     useEffect(() => {
-        loadInit()
+
+        if (serviceCode && serviceCode != null) {
+
+            setFilterHandleObject({
+                fetchApi: ProductServices.getOptionToFilterRawProductOfService({ serviceCode }),
+                mapToFilter: (records) => {
+                    // console.log("mapToFilter")
+                    return records.map((val) => ({ ID: val.categoryCode, name: val.categoryName }));
+
+                }
+            })
+
+
+        } else if (categoryCode && categoryCode != null) {
+
+            setFilterHandleObject({
+                fetchApi: ProductServices.getOptionToFilterRawProductOfCategory(),
+                mapToFilter: (records) => {
+                    // console.log("mapToFilter")
+                    return records.map((val) => ({ ID: val.code, name: val.name }));
+                }
+            })
+
+        } else {
+
+
+            setFilterHandleObject({
+                fetchApi: ProductServices.getOptionToFilterAllRawProduct(),
+                mapToFilter: (records) => {
+                    // console.log("mapToFilter")
+                    return records.map((val) => ({ ID: val.code, name: val.name }));
+                }
+            })
+
+        }
+
+
         return () => {
             setRecords([])
+            setFilterList([])
         }
-    }, [page])
+
+    }, [])
+
 
     useEffect(() => {
-        if (!first) {
+        if (filterList != null) {
             setPage(1)
             loadInit()
-        } else {
             setFirst(false)
+            console.log("getByChange")
+        }
+    }, [serviceCode, categoryCode, filterList])
+
+    useEffect(() => {
+
+        if (!first) {
+            loadInit()
+            console.log("pageChange")
         }
 
-    }, [serviceCode, categoryCode])
+    }, [page])
 
-    // useEffect(() => {
-    //     if (dataToGet && dataToGet != null) {
-    //         console.log("dataToGet: " + JSON.stringify(dataToGet))
-    //     }
-    // }, [])
+
+
 
 
     const loadInit = async () => {
         showLoader()
         try {
 
-
+            console.log("filterList:" + filterList)
 
             let response = null
 
             if (serviceCode && serviceCode != null) {
-                response = await (await ProductServices.viewRawProductByService({ getBy: { serviceCode }, filterBy: filterList, page: page, limit: limit })).data
-
+                response = await (await ProductServices.viewRawProductByService({ serviceCode, filterBy: filterList, page: page, limit: limit })).data
+                console.log("getByService")
             } else if (categoryCode && categoryCode != null) {
-                response = await (await ProductServices.viewRawProductByCategory({ getBy: { categoryCode }, filterBy: filterList, page: page, limit: limit })).data
-
+                response = await (await ProductServices.viewRawProductByCategory({ categoryCode, filterBy: filterList, page: page, limit: limit })).data
+                console.log("getByCategory")
             } else {
-                response = await (await ProductServices.viewRawProduct({ getBy: "all", filterBy: filterList, page: page, limit: limit })).data
-
+                response = await (await ProductServices.viewRawProduct({ filterBy: filterList, page: page, limit: limit })).data
+                console.log("getAll")
             }
             // console.log("response: " + JSON.stringify(response))
 

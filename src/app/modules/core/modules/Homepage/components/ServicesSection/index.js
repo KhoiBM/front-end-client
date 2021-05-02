@@ -109,7 +109,6 @@ export const ServicesSection = () => {
                                     <br />
                                     <ServicesPrice>
                                         <Typography variant="body2" style={{ color: "#01bf71" }}>Giá dịch vụ: {`${useFormat().formatMoney(record.servicePrice)} đ`}</Typography>
-
                                     </ServicesPrice>
                                 </ServicesCard>
                             </ServicesCardLinkR>

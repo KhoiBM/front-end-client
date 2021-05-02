@@ -52,89 +52,89 @@ export class ProductServices {
     }
 
     static getAllCategory = (data) => {
-        // return useHttpModule().post(config.useApiPath.api.productServices.getAllCategory, data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    records:
-                        [
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            }, {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            },
-                            {
-                                categoryID: "1",
-                                categoryCode: "categoryCode",
-                                categoryName: "abc",
-                                description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                                serviceID: 6,
-                                serviceCode: "serviceCode",
-                                serviceName: "abc6",
-                                // isActive: true,
-                                // createdAt: "02-02-2020",
-                                // updatedAt: "02-02-2020"
-                            }
+        return useHttpModule().post(config.useApiPath.api.productServices.getAllCategory, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             records:
+        //                 [
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     }, {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     },
+        //                     {
+        //                         categoryID: "1",
+        //                         categoryCode: "categoryCode",
+        //                         categoryName: "abc",
+        //                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        //                         serviceID: 6,
+        //                         serviceCode: "serviceCode",
+        //                         serviceName: "abc6",
+        //                         // isActive: true,
+        //                         // createdAt: "02-02-2020",
+        //                         // updatedAt: "02-02-2020"
+        //                     }
 
-                        ]
-                }
-            }
-        })
+        //                 ]
+        //         }
+        //     }
+        // })
     }
 
 
@@ -187,17 +187,130 @@ export class ProductServices {
 
     static viewRawProductByCategory = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
+        if (data.page == 1) {
+            return Promise.resolve({
+                data: {
+                    result: config.useResultStatus.SUCCESS,
+                    info: {
+                        records: [
+                            {
+                                rawProductID: 1,
+                                rawProductCode: "productcode",
+                                rawProductName: "Áo sweater đen",
+                                unitPrice: 100000,
+                                totalQuantity: 10,
+                                size: "M",
+                                color: "#4cbb3d",
+                                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                categoryID: "1",
+                                categoryCode: "categoryCode",
+                                categoryName: "Áo",
+                                createdBy: "Quản lý",
+                                createdAt: "03-03-2021",
+                                updatedAt: "03-03-2021"
 
+                            }
+                        ],
+                        totalPage: 20
+
+                    }
+                }
+            })
+        } else {
+            return Promise.resolve({
+                data: {
+                    result: config.useResultStatus.SUCCESS,
+                    info: {
+                        records: [
+
+                        ],
+                        totalPage: 20
+
+                    }
+                }
+            })
+        }
     }
 
     static viewRawProductByService = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
+        if (data.page == 1) {
+            return Promise.resolve({
+                data: {
+                    result: config.useResultStatus.SUCCESS,
+                    info: {
+                        records: [
+                            {
+                                rawProductID: 1,
+                                rawProductCode: "productcode",
+                                rawProductName: "Áo sweater đen",
+                                unitPrice: 100000,
+                                totalQuantity: 10,
+                                size: "M",
+                                color: "#4cbb3d",
+                                description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                                categoryID: "1",
+                                categoryCode: "categoryCode",
+                                categoryName: "Áo",
+                                createdBy: "Quản lý",
+                                createdAt: "03-03-2021",
+                                updatedAt: "03-03-2021"
 
+                            }
+                        ],
+                        totalPage: 20
+
+                    }
+                }
+            })
+        } else {
+            return Promise.resolve({
+                data: {
+                    result: config.useResultStatus.SUCCESS,
+                    info: {
+                        records: [
+
+                        ],
+                        totalPage: 20
+
+                    }
+                }
+            })
+        }
     }
 
 
     static searchRawProduct = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
+
+        return Promise.resolve({
+            data: {
+                result: config.useResultStatus.SUCCESS,
+                info: {
+                    records: [
+                        {
+                            rawProductID: 1,
+                            rawProductCode: "productcode",
+                            rawProductName: "Áo sweater đen",
+                            unitPrice: 100000,
+                            totalQuantity: 10,
+                            size: "M",
+                            color: "#4cbb3d",
+                            description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                            categoryID: "1",
+                            categoryCode: "categoryCode",
+                            categoryName: "Áo",
+                            createdBy: "Quản lý",
+                            createdAt: "03-03-2021",
+                            updatedAt: "03-03-2021"
+
+                        }
+                    ],
+                    totalPage: 20
+
+                }
+            }
+        })
 
     }
 
@@ -312,7 +425,7 @@ export class ProductServices {
                             name: "Giá thấp đến cao"
                         },
                         {
-                            code: 3,
+                            code: 2,
                             name: "Sản phẩm mới"
                         },
 
@@ -367,26 +480,11 @@ export class ProductServices {
                             name: "Giá thấp đến cao"
                         },
                         {
-                            code: 3,
+                            code: 2,
                             name: "Sản phẩm mới"
                         },
 
                     ]
-                }
-            }
-        })
-    }
-
-
-    static getServicePriceCreateYourOwn = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    record: {
-                        servicePrice: 200000
-                    }
                 }
             }
         })
