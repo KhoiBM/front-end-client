@@ -9,7 +9,7 @@ export const useFilterRawProductHandle = (props) => {
 
     const [recordsSelect, setRecordsSelect] = useState([])
 
-    const [filterList, setFilterList] = useState([]);
+    const [filterList, setFilterList] = useState();
 
     const [action, setAction] = useState("filter")
 
@@ -38,11 +38,11 @@ export const useFilterRawProductHandle = (props) => {
 
                     await setRecordsSelect(records ? records : [])
 
-                    const mapFilterList = records.map((val) => (val.ID))
+                    // const mapFilterList = records.map((val) => (val.ID))
 
                     // console.log("mapList: " + JSON.stringify(mapFilterList))
 
-                    await setFilterList(records ? mapFilterList : [])
+                    await setFilterList("")
                     // await setFilterList([])
 
                     // toast.success("Thành công")

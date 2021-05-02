@@ -58,14 +58,14 @@ export const FilterRawProductBar = (props) => {
     const theme = useTheme();
 
     const classes = useStyles({
-        length: filterList.length
+        // length: filterList.length
     });
 
     const [first, setFirst] = useState(true)
 
-    const [filterSelectList, setFilterSelectList] = useState([])
+    const [filterSelectList, setFilterSelectList] = useState("")
 
-    console.log("filterList: " + filterList)
+    // console.log("filterList: " + filterList)
 
     const handleFilterChange = (event) => {
         showLoader()
@@ -78,9 +78,9 @@ export const FilterRawProductBar = (props) => {
     }
 
 
-    useEffect(() => {
-        console.log("filterSelectList: " + JSON.stringify(filterSelectList))
-    }, [filterSelectList])
+    // useEffect(() => {
+    //     console.log("filterSelectList: " + JSON.stringify(filterSelectList))
+    // }, [filterSelectList])
 
     return (
         <>

@@ -140,7 +140,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const initialFValues = {
     orderID: '',
-    isConfirm: true,
+    confirm: true,
     note: ''
 
 }
@@ -238,7 +238,7 @@ export const ConfirmDemoProductOrder = (props) => {
 
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend">Bạn có đồng ý sản phẩm mẫu hay không? :</FormLabel>
-                                    <RadioGroup aria-label="isConfirm" name="isConfirm" value={formData.isConfirm ? "true" : "false"} onChange={handleInputChange} className={classes.cofirmStatuGroup}>
+                                    <RadioGroup aria-label="confirm" name="confirm" value={formData.confirm ? "true" : "false"} onChange={handleInputChange} className={classes.cofirmStatuGroup}>
                                         <FormControlLabel value={"true"} control={<Radio color='primary' />} label="Có" />
                                         <FormControlLabel value={"false"} control={<Radio color='primary' />} label="Không" />
                                     </RadioGroup>

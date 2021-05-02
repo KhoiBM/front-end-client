@@ -137,21 +137,27 @@ const ProductListPage = () => {
 
 
     useEffect(() => {
+        if (!first) {
         loadInit()
+
+        } else {
+            setFirst(false)
+        }
         return () => {
             setRecords([])
         }
     }, [page])
 
     useEffect(() => {
-        if (!first) {
-            setPage(1)
+        console.log("filterListTest:" + JSON.stringify(filterList))
+
+        setPage(1)
+        if(filterList!=null){
             loadInit()
-        } else {
-            setFirst(false)
         }
 
-    }, [serviceCode, categoryCode])
+
+    }, [serviceCode, categoryCode,filterList])
 
     // useEffect(() => {
     //     if (dataToGet && dataToGet != null) {
@@ -169,13 +175,13 @@ const ProductListPage = () => {
             let response = null
 
             if (serviceCode && serviceCode != null) {
-                response = await (await ProductServices.viewRawProductByService({ getBy: { serviceCode }, filterBy: filterList, page: page, limit: limit })).data
+                response = await (await ProductServices.viewRawProductByService({ serviceCode , filterBy: filterList, page: page, limit: limit })).data
 
             } else if (categoryCode && categoryCode != null) {
-                response = await (await ProductServices.viewRawProductByCategory({ getBy: { categoryCode }, filterBy: filterList, page: page, limit: limit })).data
+                response = await (await ProductServices.viewRawProductByCategory({  categoryCode , filterBy: filterList, page: page, limit: limit })).data
 
             } else {
-                response = await (await ProductServices.viewRawProduct({ getBy: "all", filterBy: filterList, page: page, limit: limit })).data
+                response = await (await ProductServices.viewRawProduct({ filterBy: filterList, page: page, limit: limit })).data
 
             }
             // console.log("response: " + JSON.stringify(response))
