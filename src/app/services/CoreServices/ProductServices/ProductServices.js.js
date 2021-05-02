@@ -801,7 +801,7 @@ export class ProductServices {
     }
 
     static viewRawProductDetail = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
+        return useHttpModule().post(config.useApiPath.api.productServices.getDetailProduct, data)
         // const uuid = uuidv4()
         // return Promise.resolve({
         //     data: {
