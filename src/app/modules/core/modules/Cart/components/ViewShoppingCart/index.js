@@ -4,6 +4,7 @@ import { makeStyles, Typography, Grid, Box, Card } from '@material-ui/core';
 import { ShoppingCartItem } from '../ShoppingCartItem';
 import { Loader } from 'src/app/components';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
+import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     cartContainer: {
@@ -100,25 +101,26 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const ViewShoppingCart = (props) => {
+
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
     const classes = useStyles();
 
-    const { shoppingCart, handleRefreshShoppingCart } = props
-
     const [orderDetailList, setOrderDetailList] = useState([])
 
-    useEffect(() => {
-        if (shoppingCart && shoppingCart != null) {
-            loadInit(shoppingCart)
-            console.log("shoppingCart: ")
-            console.log(shoppingCart)
+    const { shoppingCart } = useSelector((state) => state.shoppingCartState)
 
-        }
-    }, [shoppingCart, handleRefreshShoppingCart])
+    const [shoppingCartRecords, setShoppingCartRecords] = useState([])
+
+
+    useEffect(() => {
+
+        loadInit(shoppingCart)
+
+    }, [shoppingCart])
 
     const loadInit = async (shoppingCart) => {
-        console.log("loadInit")
+
         setOrderDetailList(shoppingCart && shoppingCart != null && shoppingCart.length > 0 ? shoppingCart : [])
 
     }
@@ -126,7 +128,6 @@ export const ViewShoppingCart = (props) => {
 
     return (
         <>
-            {/* {<Loader loading={loading} />} */}
             <div className={classes.cartContainer}>
                 <Grid container spacing={0} className={classes.rootGrid}>
                     <Grid item xs={12} sm={12} md={12} className={classes.gridItemCount}>
@@ -134,13 +135,9 @@ export const ViewShoppingCart = (props) => {
                             <Typography variant={"h3"}>Giỏ hàng</Typography>
                             <Typography variant={"body1"}>Có {orderDetailList.length} sản phẩm</Typography>
                         </Box>
-
                     </Grid>
-                    {/* <Divider /> */}
                     <Grid item xs={12} sm={12} md={12} className={classes.gridItem1}>
-
                         <Card elevation={0} className={classes.cartItemTitleContainer}>
-
                             <Grid container className={classes.rootCartItemTitleGrid}>
                                 <Grid item xs={2} sm={2} md={2} >
                                     <Typography variant={"body1"}>Hình minh hoạ</Typography>
@@ -170,12 +167,11 @@ export const ViewShoppingCart = (props) => {
                                     <Typography variant={"body1"}>Thao tác</Typography>
                                 </Grid>
                             </Grid>
-
                         </Card>
-
                         {orderDetailList && orderDetailList != null && orderDetailList.length > 0 &&
                             orderDetailList.map((val, index) => (
-                                <ShoppingCartItem key={index} shoppingCartItem={val} handleRefreshShoppingCart={handleRefreshShoppingCart} />
+                                <ShoppingCartItem key={index} shoppingCartItem={val}
+                                />
                             ))
                         }
                     </Grid>

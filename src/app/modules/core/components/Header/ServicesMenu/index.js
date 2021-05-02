@@ -86,7 +86,7 @@ export const ServicesMenu = () => {
 
                     loadData(response)
 
-                    console.log("loadInit")
+                    // console.log("loadInit")
 
                 } else {
 

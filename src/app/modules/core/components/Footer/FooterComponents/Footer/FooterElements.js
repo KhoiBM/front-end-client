@@ -10,16 +10,19 @@ export const Wrapper = styled.div`
 display:flex;
 flex-direction:column;
 justify-content:center;
-max-width: 1000px;
-margin: 0 auto;`
+/* max-width: 1000px; */
+width:70%;
+margin: 0 auto;
+/* border: 1px solid black; */
+`
 
 export const Column = styled.div`
 display:flex;
 flex-direction: column;
 text-align: left;
 /* margin-left: 10px; */
-/* border: 1px solid black; */
-width:15rem
+/* border: 1px solid red; */
+width:100%
 `
 
 export const Row = styled.div`
@@ -37,6 +40,8 @@ grid-gap: 20px;
 
 
 export const Link = styled.a`
+/* border: 1px solid red; */
+width:100%;
 color:#fff;
 margin-bottom: 20px;
 font-size: 18px;

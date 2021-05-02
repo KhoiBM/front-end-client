@@ -178,41 +178,11 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-// localStorage.setItem("pps-shoppingCart", JSON.stringify(
-// [
-//     {
-//         rawProductCode: "productcode",
-//         rawProductName: "Lorem ipsum dolor sit amet",
-//         categoryID: 1,
-//         categoryCode: "categoryCode",
-//         createdBy: "Quản lý",
-//         size: '1',
-//         color: "#48b7e2",
-//         unitPrice: 100000,
-//         servicePrice: 110000,
-//         quantity: 5,
-//         note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-//     },
-//     {
-//         rawProductCode: "productcode2",
-//         rawProductName: "Lorem ipsum dolor sit amet2",
-//         categoryID: 2,
-//         categoryCode: "categoryCode",
-//         createdBy: "Quản lý",
-//         size: '1',
-//         color: "#48b7e2",
-//         unitPrice: 100000,
-//         servicePrice: 110000,
-//         quantity: 2,
-//         note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-//     },
-// ]
-// ))
+
 
 export const ShoppingCartContainer = (props) => {
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
-
 
     const classes = useStyles();
 
@@ -222,10 +192,6 @@ export const ShoppingCartContainer = (props) => {
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
-    const store = useStore();
-
-    const dispatch = useDispatch();
-
     const { shoppingCart } = useSelector((state) => state.shoppingCartState)
 
     const [shoppingCartRecords, setShoppingCartRecords] = useState([])
@@ -233,15 +199,15 @@ export const ShoppingCartContainer = (props) => {
     useEffect(() => {
 
         loadInit()
-        console.log("refreshShoppingCartContainer")
-        console.log(shoppingCart)
+        // console.log("refreshShoppingCartContainer")
+        // console.log(shoppingCart)
 
     }, [refresh, shoppingCart])
 
     const loadInit = async () => {
         console.log("loadInit")
 
-        if (shoppingCart && shoppingCart != null && Object.keys(shoppingCart).length > 0) {
+        if (shoppingCart && shoppingCart != null && shoppingCart.length > 0) {
 
             const analyzeObject = shoppingCart.reduce((acc, curr) => {
                 const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
@@ -264,15 +230,14 @@ export const ShoppingCartContainer = (props) => {
     return (
         <>
             {/* {<Loader loading={loading} />} */}
-
             <Paper elevation={0} className={classes.mainContainer}>
-                {shoppingCart && shoppingCart != null && shoppingCart.length > 0 ?
+                {shoppingCartRecords && shoppingCartRecords != null && shoppingCartRecords.length > 0 ?
                     <Grid container spacing={0} className={classes.rootGrid}>
 
                         <Grid item xs={10} sm={10} md={10} className={classes.gridItemViewCart}>
                             <ViewShoppingCart
-                                shoppingCart={shoppingCart}
-                                handleRefreshShoppingCart={handleRefresh}
+                            // shoppingCart={shoppingCartRecords}
+                            // handleRefreshShoppingCart={handleRefresh}
                             />
                         </Grid>
 
@@ -306,7 +271,6 @@ export const ShoppingCartContainer = (props) => {
                                                     search: ``,
                                                     state: {
                                                         data: {
-                                                            shoppingCart: shoppingCart
                                                         }
                                                     }
                                                 }

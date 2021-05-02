@@ -130,7 +130,6 @@ export class ProductServices {
         //                         // createdAt: "02-02-2020",
         //                         // updatedAt: "02-02-2020"
         //                     }
-        //
         //                 ]
         //         }
         //     }
@@ -972,21 +971,6 @@ export class ProductServices {
                         },
 
                     ]
-                }
-            }
-        })
-    }
-
-
-    static getServicePriceCreateYourOwn = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    record: {
-                        servicePrice: 200000
-                    }
                 }
             }
         })

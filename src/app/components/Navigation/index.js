@@ -8,7 +8,7 @@ export const Navigation = (props) => {
     useEffect(() => {
         if (dataToGet && dataToGet != null) {
             console.log("dataToGet: " + JSON.stringify(dataToGet))
-            history.push(dataToGet.locationObject)
+            history.replace(dataToGet.locationObject)
         }
     }, [])
 

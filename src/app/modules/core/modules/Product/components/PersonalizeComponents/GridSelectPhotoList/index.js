@@ -89,8 +89,8 @@ const useStyles = makeStyles(theme => ({
     },
     cardMedia: {
         objectFit: "contain",
-        maxWidth: "90%",
-        maxHeight: "90%",
+        maxWidth: "80%",
+        maxHeight: "80%",
         width: 'auto',
         height: 'auto',
         // border: "1px solid blue",

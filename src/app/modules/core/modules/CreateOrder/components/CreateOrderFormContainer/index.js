@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Paper, makeStyles, Box, TextField, Grid, Button } from '@material-ui/core'
 import { PageHeader } from 'src/app/modules/core/components';
-import { useForm, useRefresh, useUploadPhoto } from 'src/app/utils';
+import { useForm, useRefresh, useUploadPhoto, useScrollToTop } from 'src/app/utils';
 import { toast } from 'react-toastify';
 import config from 'src/environments/config';
 import { OrderServices, CartServices, ProductServices } from 'src/app/services';
@@ -10,6 +10,7 @@ import { VscCaseSensitive } from 'react-icons/vsc';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 import { useSelector, useDispatch } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
     mainContainer: {
         // width: "100%",
@@ -159,8 +160,8 @@ const useStyles = makeStyles(theme => ({
 }));
 const initialFValues = {
     customerName: "",
-    phone: "",
-    address: "",
+    phoneOrder: "",
+    addressOrder: "",
     note: "",
     statusPayment: false
 }
@@ -183,23 +184,20 @@ export const CreateOrderFormContainer = (props) => {
 
     const { uploadPhoto } = useUploadPhoto()
 
+    const { scrollToTop } = useScrollToTop()
+
+    const history = useHistory()
+
 
     useEffect(() => {
         loadInit()
         console.log("CreateOrderFormContainer")
     }, [refresh])
 
-
     const loadInit = async () => {
         console.log("loadInit")
         setShoppingCartRecords(shoppingCart)
-
     }
-
-
-
-
-
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -207,54 +205,69 @@ export const CreateOrderFormContainer = (props) => {
         const enableSubmit = validation(formData)
 
         if (enableSubmit) {
+
             showLoader()
-            const data = {
-                ...formData,
-                shoppingCartRecords
+
+            const dataOrder = {
+                customerName: formData.customerName,
+                phone: formData.phoneOrder,
+                address: formData.addressOrder,
+                note: formData.note,
+                statusPayment: false
             }
-            console.log("datacreateOrder: " + JSON.stringify(data))
+            console.log("dataOrder: " + JSON.stringify(dataOrder))
+            console.log("shoppingCartRecords: ")
+            console.table(shoppingCartRecords)
             try {
                 const flag = createCustomersRawProduct(shoppingCartRecords)
+
                 if (flag) {
-                    createOrder(data)
+                    createOrder(dataOrder, shoppingCartRecords)
                 } else {
                     throw new Error("Tạo sản phẩm của khách hàng thất bại")
                 }
-
-
-            } catch (e) {
-                toast.error(config.useMessage.createOrderFailure);
+            } catch (err) {
+                toast.error(`${config.useMessage.createOrderFailure}:${err}`);
             }
-            hideLoader()
-
-
-
         } else {
             toast.error(config.useMessage.invalidData);
         }
+
+        hideLoader()
+
     }
 
 
-    const createCustomersRawProduct = async (shoppingCart) => {
-        shoppingCart.forEach(async (cartItem, index) => {
+    const createCustomersRawProduct = async (shoppingCartRecords) => {
+
+        shoppingCartRecords.forEach(async (cartItem, index) => {
+
             console.log("cartItem: " + JSON.stringify(cartItem))
-            const { rawProductCode, rawProductName, size, color, description, categoryID, createdBy, customersRawProductUploadFiles,
-                createdPreviewPhotoList } = cartItem
 
-            if (createdBy == "Khách hàng") {
+            const { rawProductCode,
+                rawProductName,
+                size,
+                color,
+                description,
+                categoryID,
+                createdBy,
+                customersRawProductUploadFiles } = cartItem
 
-                const data = {
+            if (createdBy == config.useCreateBy.customer) {
+
+                const dataCustomersRawProduct = {
                     rawProductCode,
                     rawProductName,
                     size,
                     color,
                     description,
-                    categoryID: "",
-                    createdBy: "Khách hàng"
+                    categoryID,
+                    createdBy
                 }
-                console.log("dataAddcartItem:" + data)
 
-                await addCustomersRawProduct(data, customersRawProductUploadFiles, createdPreviewPhotoList)
+                console.log("dataCustomersRawProduct:" + dataCustomersRawProduct)
+
+                await addCustomersRawProduct(dataCustomersRawProduct, customersRawProductUploadFiles)
             }
 
         })
@@ -264,10 +277,12 @@ export const CreateOrderFormContainer = (props) => {
     const addCustomersRawProduct = async (data, customersRawProductPhotoList) => {
         try {
             const response = await (await ProductServices.createCustomersRawProduct(data)).data
+
             // console.log("response: " + JSON.stringify(response))
 
             if (response && response != null) {
                 if (response.result == config.useResultStatus.SUCCESS) {
+
                     const bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
                     const folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["CUSTOMER'SRAWPRODUCT"]
 
@@ -275,33 +290,30 @@ export const CreateOrderFormContainer = (props) => {
 
                     const categoryCode = record.categoryCode
                     const rawProductCode = record.rawProductCode
-                    // const rawProductCode = data.rawProductCode
+
 
                     const uploadInfo = {
                         bucketName,
                         prefix: `${folder}/${categoryCode}/${rawProductCode}`,
                     }
                     const prefix = `${folder}/${categoryCode}/${rawProductCode}`
-                    console.log("prefix:" + prefix)
 
+                    console.log("prefix:" + prefix)
 
                     uploadPhoto(uploadInfo, customersRawProductPhotoList)
 
-
                 } else {
-                    toast.error(config.useMessage.resultFailure)
-                    throw new Error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
+                    return false
 
                 }
             } else {
                 throw new Error("Response is null or undefined")
-
             }
 
         } catch (err) {
 
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err} `)
-            // throw err
+            // toast.error(`${config.useMessage.fetchApiFailure} + ${err} `)
             return false
 
         }
@@ -310,19 +322,32 @@ export const CreateOrderFormContainer = (props) => {
     }
 
 
-    const createOrder = async (data) => {
+    const createOrder = async (dataOrder, shoppingCartRecords) => {
         try {
-
-            const response = await (await OrderServices.createNewOrder(data)).data
+            const data = {
+                dataOrder,
+                shoppingCartRecords: shoppingCartRecords.map(({
+                    rawProductCode,
+                    unitPrice,
+                    servicePrice,
+                }) => ({
+                    // rawProductID,
+                    rawProductCode,
+                    unitPrice,
+                    servicePrice,
+                }))
+            }
+            console.log("data: " + JSON.stringify(data))
+            const response = await (await OrderServices.createNewOrder(dataOrder)).data
             // console.log("response: " + JSON.stringify(response))
 
             if (response && response != null) {
                 if (response.result == config.useResultStatus.SUCCESS) {
 
-                    // const record = response.info.record
                     dispatch(useShoppingCartAction().cleanCartItemSuccess())
-
                     toast.success("Đặt hàng thành công");
+                    history.push("/core/home_page")
+                    scrollToTop()
 
                 } else {
                     toast.error(config.useMessage.resultFailure)
@@ -337,6 +362,7 @@ export const CreateOrderFormContainer = (props) => {
             throw err
         }
     }
+
 
 
     return (
@@ -375,23 +401,23 @@ export const CreateOrderFormContainer = (props) => {
                                         <TextField
                                             variant='outlined'
                                             label="Số điện thoại"
-                                            value={formData.phone}
-                                            name='phone'
+                                            value={formData.phoneOrder}
+                                            name='phoneOrder'
                                             required
                                             onChange={handleInputChange}
-                                            error={helperValid.phone ? true : false}
-                                            helperText={helperValid.phone}
+                                            error={helperValid.phoneOrder ? true : false}
+                                            helperText={helperValid.phoneOrder}
                                         />
                                         <TextField
                                             variant='outlined'
                                             label="Địa chỉ"
-                                            value={formData.address}
-                                            name='address'
+                                            value={formData.addressOrder}
+                                            name='addressOrder'
                                             required
                                             multiline
                                             onChange={handleInputChange}
-                                            error={helperValid.address ? true : false}
-                                            helperText={helperValid.address}
+                                            error={helperValid.addressOrder ? true : false}
+                                            helperText={helperValid.addressOrder}
                                             className={classes.areaTextField}
                                         />
 

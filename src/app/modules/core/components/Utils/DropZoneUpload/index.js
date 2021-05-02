@@ -53,31 +53,32 @@ const useStyles = makeStyles((theme) => ({
     photoPreviewCard: {
         width: "100px",
         height: "100px",
-        // float: "left",
+        float: "left",
         // border: "1px solid rgba(0, 0, 0, 0.23)",
         // backgroundColor: "blue",
-        // marginLeft: theme.spacing(1),
-        // marginTop: theme.spacing(1)
+        marginLeft: theme.spacing(1),
+        marginTop: theme.spacing(1),
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+
+        borderRadius: "10px",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
         transition: "all 0.2 ease -in -out",
-        // border: "1px solid red",
 
         '&:hover': {
-            // transform: "scale(1.02)",
+            transform: "scale(1.02)",
             transition: "all 0.2 ease -in -out",
             cursor: "pointer"
-        }
+        },
 
     },
     photoPreview: {
-        width: "100px",
-        height: "100px",
-        // alignSelf: "flex-start",
         objectFit: "contain",
-        maxWidth: "100%",
-        maxHeight: "100%",
-        // width: 'auto',
-        // height: 'auto',
+        maxWidth: "80%",
+        maxHeight: "80%",
+        width: 'auto',
+        height: 'auto',
 
     },
     dropZonePreviewContainer: {
@@ -308,9 +309,9 @@ export const DropZoneUpload = (props) => {
                     <Card elevation={0} key={index} className={classes.photoPreviewCard}>
                         <Tooltip TransitionComponent={Zoom} placement="left" title={acceptedFile.name} >
 
-                            <CardMedia image={acceptedFile.src} className={classes.photoPreview}
-
-                            />
+                            {/* <CardMedia image={acceptedFile.src} className={classes.photoPreview}
+                            /> */}
+                            <img src={acceptedFile.src} className={classes.photoPreview} />
 
                         </Tooltip>
                     </Card>
@@ -324,78 +325,3 @@ export const DropZoneUpload = (props) => {
         </>
     )
 }
-
-
-// const mimeTypes = "image/png, image/jpg, image/jpeg"
-// // const mimeTypes = ""
-// // 5242880    5Mb
-// const maxSize = 1048576;
-// // const maxSize = 5242880;
-
-
-// return (
-//     <>
-
-//         <Paper elevation={0} className={classes.dropZoneUploadContainer}>
-//             <Dropzone
-//                 accept={mimeTypes}
-//                 minSize={0}
-//                 maxSize={maxSize}
-//                 multiple
-
-//                 onDropAccepted={
-//                     acceptedFiles => {
-//                         console.info("acceptedFiles:")
-//                         console.log(acceptedFiles)
-//                     }
-//                 }
-
-//                 onDropRejected={
-//                     rejectedFiles => {
-//                         console.log("rejectedFiles: " + JSON.stringify(rejectedFiles))
-//                         console.log(rejectedFiles)
-//                         rejectedFiles.forEach((rejectedFile) => {
-//                             toast.error(`Tệp  ${ rejectedFile.file.path } quá lớn`)
-//                         })
-
-//                     }
-//                 }
-
-
-//             >
-
-//                 {({ getRootProps, getInputProps, isDragActive, isDragReject, rejectedFiles }) => {
-//                     // const isFileTooLarge = rejectedFiles && rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize;
-//                     return (
-//                         <section>
-//                             <div {...getRootProps({ className: classes.dropZoneUploadWrapper })}>
-//                                 <input {...getInputProps()} />
-
-//                                 <Typography variant={"caption"}>
-//                                     {!isDragActive && "Kéo thả tệp vào đây hoặc nhấp chuột để chọn tệp"}
-//                                 </Typography>
-
-//                                 <Typography variant={"caption"}>
-//                                     {isDragActive && !isDragReject && "Hãy thả nó xuống"}
-//                                 </Typography>
-
-//                                 <Typography variant={"caption"} color="error">
-//                                     {isDragReject && "Tệp không được chấp nhận!"}
-//                                 </Typography>
-//                                 {/* 
-//                                 <Typography variant={"caption"} color="error">
-//                                     {isFileTooLarge && "Tệp quá lớn"}
-//                                 </Typography> */}
-
-
-
-//                             </div>
-//                         </section>
-//                     )
-//                 }
-//                 }
-//             </Dropzone>
-//         </Paper>
-
-//     </>
-// )

@@ -63,6 +63,7 @@ export const FilterRawProductBar = (props) => {
 
     const [first, setFirst] = useState(true)
 
+    // const [filterSelectList, setFilterSelectList] = useState([])
     const [filterSelectList, setFilterSelectList] = useState("")
 
     // console.log("filterList: " + filterList)
@@ -78,9 +79,9 @@ export const FilterRawProductBar = (props) => {
     }
 
 
-    // useEffect(() => {
-    //     console.log("filterSelectList: " + JSON.stringify(filterSelectList))
-    // }, [filterSelectList])
+    useEffect(() => {
+        // console.log("filterSelectList: " + JSON.stringify(filterSelectList))
+    }, [filterSelectList])
 
     return (
         <>

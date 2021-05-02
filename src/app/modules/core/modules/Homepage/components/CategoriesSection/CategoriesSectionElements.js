@@ -22,28 +22,27 @@ padding:68px;
 
 export const CategoriesWrapper = styled.div`
 max-width: 1200px;
-margin: 48px auto;
+/* margin: 48px auto; */
 /* margin-bottom: 48px; */
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
-grid-template-rows:  minmax(100px,1fr) minmax(100px,1fr) minmax(100px,1fr);
-grid-gap: 16px;
-/* display:flex; */
-/* justify-content:flex; */
+/* display: grid; */
+/* grid-template-columns: 1fr 1fr 1fr; */
+/* grid-gap: 16px; */
+display:flex;
+justify-content:center;
 align-items: center;
-/* gap:5px; */
-/* flex-wrap:wrap; */
-padding: 0 50px;
+gap:16px;
+flex-wrap:wrap;
+padding: 50px 50px;
 height:auto;
-min-height: 800px;
+/* min-height: 800px; */
 /* border: 1px solid red; */
 
 @media screen and (max-width: 1000px){
-    grid-template-columns: 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr; */
 }
 
 @media screen and (max-width: 768px){
-    grid-template-columns: 1fr;
+    /* grid-template-columns: 1fr; */
     padding: 0 20px;
 }
 `
@@ -55,11 +54,13 @@ flex-direction: column;
 justify-content: flex-start;
 align-items: center;
 border-radius: 10px;
-max-height: 340px;
+/* max-height: 340px; */
+height: 300px;
 box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 transition: all 0.2 ease-in-out;
 padding: 15px 10px;
 width:300px;
+/* border: 1px solid blue; */
 
 &:hover {
     transform: scale(1.02);
@@ -81,8 +82,8 @@ export const CategoriesCardLinkR = styled(LinkR)`
 export const CategoriesH1 = styled.h1`
 font-size: 2.5rem;
 color: #fff;
-margin-bottom: 64px;
-
+/* margin-bottom: 64px; */
+/* border:1px solid red; */
 @media screen and (max-width: 480px){
     font-size: 2rem;
 }
@@ -90,11 +91,25 @@ margin-bottom: 64px;
 
 export const CategoriesH2 = styled.h2`
 font-size: 1.25rem;
-margin-bottom: 10px;
+/* margin-bottom: 10px; */
+/* border:1px solid red; */
+width:100%;
+height:15%;
+display: flex;
+justify-content: center;
+align-items: center;
+white-space:wrap;
 `
 
 export const CategoriesP = styled.p`
 font-size:1rem;
 text-align: center;
+/* border:1px solid red; */
+width:100%;
+height:30%;
+display: flex;
+justify-content: center;
+align-items: center;
+white-space:wrap;
 
 `
