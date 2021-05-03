@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { PhotoServices, CartServices } from 'src/app/services';
 import { PageHeader, GridPhotoList } from 'src/app/modules/core/components';
 import { RiCheckboxBlankCircleFill } from 'react-icons/ri';
-import { IconClose, Loader } from 'src/app/components';
+import { IconClose, Loader, NotFound } from 'src/app/components';
 import { useFormat, useLoadPhotoList, useRefresh, useScrollToTop } from 'src/app/utils';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -280,6 +280,8 @@ export const ViewRawProductInformation = (props) => {
             } catch (err) {
                 toast.error("Thất bại")
             }
+        } else {
+            toast.info("Hết hàng")
         }
 
         hideLoader()
@@ -294,7 +296,7 @@ export const ViewRawProductInformation = (props) => {
     return (
         <>
 
-            <div className={classes.pageViewInfomationContainer}>
+            < div className={classes.pageViewInfomationContainer}>
                 <Paper elevation={0} className={classes.pageViewInfomationWrapper}>
 
                     <Grid container spacing={4} className={classes.rootGrid}>
@@ -370,7 +372,7 @@ export const ViewRawProductInformation = (props) => {
                                             <Box>
                                                 <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
                                                 <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{totalQuantity}</Typography>
+                                                    <Typography variant={"body1"}>{totalQuantity <= 0 ? "Hết hàng" : totalQuantity}</Typography>
                                                 </Box>
 
                                             </Box>
@@ -413,7 +415,7 @@ export const ViewRawProductInformation = (props) => {
 
                                             <div className={classes.buttonWrapper}>
 
-                                                <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonAdd} onClick={addCartItem}>Thêm vào giỏ hàng</Button>
+                                                <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonAdd} onClick={addCartItem} >Thêm vào giỏ hàng</Button>
                                             </div>
 
                                         </Grid>
@@ -426,7 +428,8 @@ export const ViewRawProductInformation = (props) => {
 
                     </Grid>
                 </Paper>
-            </div >
+
+            </ div>
             <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
 
 

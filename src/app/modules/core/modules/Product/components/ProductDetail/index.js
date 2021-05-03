@@ -18,9 +18,8 @@ export const ProductDetail = (props) => {
     return (
         <>
             {
-                ready
-                    ? <ViewRawProductInformation record={record} />
-                    : <NotFound />
+                ready && <ViewRawProductInformation record={record} />
+
 
             }
         </>

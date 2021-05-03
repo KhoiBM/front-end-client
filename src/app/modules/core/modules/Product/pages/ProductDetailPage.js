@@ -82,7 +82,12 @@ const ProductDetailPage = () => {
             {<Loader loading={loading} />}
 
             <MainBar>
-                <ProductDetail record={record} />
+                {record && record != null && Object.keys(record).length > 0 ?
+                    <ProductDetail record={record} />
+                    :
+                    !loading.status && <NotFound />
+                }
+
             </MainBar>
 
         </>

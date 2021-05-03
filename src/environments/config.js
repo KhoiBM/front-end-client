@@ -22,7 +22,8 @@ const useApiPath = {
             getAllService: "homepage/get-list-service",
             getAllCategory: "homepage/get-list-category",
             getCategoryByService: "homepage/get-list-category-by-service",
-            getAllProduct: "homepage/get-list-product"
+            getAllProduct: "homepage/get-list-product",
+            getDetailProduct: "homepage/get-product-detail"
         },
         "manageProfile": {
             viewProfile: "manager/view-profile",
