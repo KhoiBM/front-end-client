@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
         transition: "all 0.2 ease -in -out",
         // border: "1px solid red",
         paddingTop: theme.spacing(5),
+        paddingBottom: theme.spacing(5),
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
@@ -44,7 +45,9 @@ const useStyles = makeStyles(theme => ({
         // minHeight: "700px",
         minHeight: "100%",
         height: "auto",
+        borderRadius: "10px",
         // border: "1px solid red",
+
 
         '& .MuiFormControl-root': {
             marginBottom: theme.spacing(3),
@@ -55,12 +58,17 @@ const useStyles = makeStyles(theme => ({
 
         // background: "blue",
         background: "#fff",
+        borderRadius: "10px",
+        height: "100%",
     },
     gridItemAction: {
         // background: "red",
         // background: "#fff",
         background: theme.palette.grey[50],
         width: "100%",
+        height: "auto",
+        minHeight: "100%",
+        borderRadius: "10px",
         // borderLeft: "1px solid rgba(0, 0, 0, 0.23)",
 
         '& .MuiFormControl-root': {

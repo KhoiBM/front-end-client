@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles, Grid, Button, FormHelperText, MenuItem, FormControl, InputLabel, Select, TextField, Paper } from '@material-ui/core'
-import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGetStateLocation, useScrollToTop } from 'src/app/utils'
+import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGetStateLocation, useScrollToTop, useDataUrlToFile } from 'src/app/utils'
 import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { ProductServices, CartServices } from 'src/app/services'
@@ -102,6 +102,7 @@ export const CreateCustomersRawProduct = (props) => {
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
 
     const [personalizeModal, setPersonalizeModal] = useState({ isOpen: false })
+
 
 
     useEffect(() => {
