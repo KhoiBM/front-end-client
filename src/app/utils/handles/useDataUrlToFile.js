@@ -1,6 +1,7 @@
 import React from 'react'
 
 export const useDataUrlToFile = () => {
+
     function dataURLtoFile(dataurl, filename) {
         var arr = dataurl.split(","),
             mime = arr[0].match(/:(.*?);/)[1],

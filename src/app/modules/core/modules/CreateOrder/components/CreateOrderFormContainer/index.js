@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Paper, makeStyles, Box, TextField, Grid, Button } from '@material-ui/core'
 import { PageHeader } from 'src/app/modules/core/components';
-import { useForm, useRefresh, useUploadPhoto, useScrollToTop, useDataUrlToFile } from 'src/app/utils';
+import { useForm, useRefresh, useUploadPhoto, useScrollToTop, useDataUrlToFile, useAsyncFunction } from 'src/app/utils';
 import { toast } from 'react-toastify';
 import config from 'src/environments/config';
 import { OrderServices, CartServices, ProductServices } from 'src/app/services';
@@ -188,6 +188,8 @@ export const CreateOrderFormContainer = (props) => {
 
     const { dataURLtoFile } = useDataUrlToFile()
 
+    const { asyncEvery } = useAsyncFunction()
+
     useEffect(() => {
         loadInit()
         // console.log("CreateOrderFormContainer")
@@ -241,12 +243,7 @@ export const CreateOrderFormContainer = (props) => {
 
     }
 
-    const asyncEvery = async (arr, predicate) => {
-        for (let val of arr) {
-            if (!await predicate(val)) return false;
-        }
-        return true;
-    };
+
 
     const createCustomersRawProduct = async (shoppingCartRecords) => {
 
@@ -332,9 +329,11 @@ export const CreateOrderFormContainer = (props) => {
 
                     // console.log("prefix:" + prefix)
 
-                    let uploadCustomersRawProductPhotoFlag = uploadPhoto(uploadInfo, customersRawProductPhotoList)
+                    let uploadCustomersRawProductPhotoFlag = await uploadPhoto(uploadInfo, customersRawProductPhotoList)
 
-                    if (!(await Boolean(uploadCustomersRawProductPhotoFlag))) throw new Error(config.useMessage.uploadPhotoFailure)
+                    console.log("uploadCustomersRawProductPhotoFlag:" + uploadCustomersRawProductPhotoFlag)
+
+                    if (!uploadCustomersRawProductPhotoFlag) throw new Error(config.useMessage.uploadPhotoFailure)
 
                 } else {
                     // toast.error(config.useMessage.resultFailure)
@@ -478,29 +477,39 @@ export const CreateOrderFormContainer = (props) => {
             const folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["ORDER"]
 
 
+
+
             const uploadInfoToPrintPhoto = {
                 bucketName,
-                prefix: `${folder} / ${orderCode} / ${orderDetailCode} / ToPrint`
+                prefix: `${folder}/${orderCode}/${orderDetailCode}/ToPrint`
             }
 
-            console.log("prefixUploadInfoToPrintPhoto:" + `${folder} / ${orderCode} / ${orderDetailCode} / ToPrint`)
+            console.log("prefixUploadInfoToPrintPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/ToPrint`)
             console.log("cartItem.toPrintPhotoList")
             console.log(cartItem.toPrintPhotoList)
 
-            await uploadPhoto(uploadInfoToPrintPhoto, cartItem.toPrintPhotoList.map((val) => val.acceptedFile))
+            let uploadToPrintPhotoFlag = await uploadPhoto(uploadInfoToPrintPhoto, cartItem.toPrintPhotoList.map((val) => val.acceptedFile))
+
+            if (!(await Boolean(uploadToPrintPhotoFlag))) throw new Error(config.useMessage.uploadPhotoFailure)
+
+
 
 
             const uploadInfoPreviewPhoto = {
                 bucketName,
-                prefix: `${folder} / ${orderCode} / ${orderDetailCode} / Preview`
+                prefix: `${folder}/${orderCode}/${orderDetailCode}/Preview`
             }
 
-            console.log("prefixUploadInfoPreviewPhoto:" + `${folder} / ${orderCode} / ${orderDetailCode} / Preview`)
+            console.log("prefixUploadInfoPreviewPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/Preview`)
 
-            await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val, index) => dataURLtoFile(val.dataURL, `preview.jpeg`)))
+            // let uploadPreviewPhotoFlag = await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val, index) => dataURLtoFile(val.dataURL, `preview.jpeg`)))
+            let uploadPreviewPhotoFlag = await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val, index) => dataURLtoFile(val.dataURL, `preview.${val.dataURL.split(",")[0].match(/:(.*?);/)[1].split("/")[1]}`)))
+
+            if (!(await Boolean(uploadPreviewPhotoFlag))) throw new Error(config.useMessage.uploadPhotoFailure)
+
 
         } catch (err) {
-            toast.error(`${config.useMessage.uploadFilePlease} + ${err}`)
+            toast.error(`${config.useMessage.uploadPhotoFailure} + ${err}`)
             return false
         }
 

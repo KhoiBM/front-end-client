@@ -73,7 +73,6 @@ const TrackOrderPage = (props) => {
     // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
 
-
     return (
         <>
             <CanActive isRole={config.useRoleName.customer} />

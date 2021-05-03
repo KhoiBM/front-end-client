@@ -233,8 +233,8 @@ export const MainStageBar = (props) => {
                         const uri = stageRef.current.toDataURL({
                             quality: 1,
                             pixelRatio: 2,
-                            mimeType: "image/jpeg",
-                            // mimeType: "image/png",
+                            // mimeType: "image/jpeg",
+                            mimeType: "image/png",
                             callback(uri) {
                                 console.log("setPhotoDataURLPreviews")
                                 setPhotoDataURLPreviews(prev => prev.concat({ photoPreviewID: uuid, dataURL: uri }))
