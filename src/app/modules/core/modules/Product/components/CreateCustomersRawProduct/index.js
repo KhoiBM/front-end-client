@@ -60,7 +60,6 @@ const useStyles = makeStyles(theme => ({
         // borderRadius: "4px",
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
-
     },
     categoryMenuItemWrapper: {
         display: "flex",
@@ -161,7 +160,7 @@ export const CreateCustomersRawProduct = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // console.log("formdata: " + JSON.stringify(formData))
+        console.log("formdata: " + JSON.stringify(formData))
         const enableSubmit = validation(formData)
 
         if (enableSubmit) {
@@ -331,6 +330,8 @@ export const CreateCustomersRawProduct = (props) => {
                                             name="categoryID"
                                             labelWidth={60}
                                             required
+                                            error={helperValid.categoryID ? true : false}
+
                                         >
                                             {
                                                 categoryRecords && categoryRecords != null && categoryRecords.length > 0 && categoryRecords.map(val =>

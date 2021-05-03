@@ -10,8 +10,8 @@ export const useUploadPhoto = () => {
         console.log("uploadFiles:" + JSON.stringify(uploadFiles))
         console.log(uploadFiles)
 
-        getPresignedURLToUpload(uploadInfo, uploadFiles, uploadPhotoWithPresignedURL)
-
+        let flag = await getPresignedURLToUpload(uploadInfo, uploadFiles, uploadPhotoWithPresignedURL)
+        return await Boolean(flag)
     }
 
     const getPresignedURLToUpload = async (uploadInfo, uploadFiles, uploadPhotoWithPresignedURL) => {
@@ -77,7 +77,7 @@ export const useUploadPhoto = () => {
             }
 
         })
-
+        return true
 
     }
 

@@ -93,7 +93,7 @@ const ProductListPage = () => {
 
 
     useEffect(() => {
-
+        showLoader()
         if (serviceCode && serviceCode != null) {
 
             setFilterHandleObject({
@@ -128,7 +128,7 @@ const ProductListPage = () => {
             })
 
         }
-
+        hideLoader()
 
         return () => {
             setRecords([])

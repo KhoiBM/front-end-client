@@ -153,9 +153,7 @@ const useStyles = makeStyles(theme => ({
             height: "200px !important",
             display: "flex",
             alignItems: "flex-start",
-
         }
-
     }
 }));
 const initialFValues = {
@@ -243,46 +241,73 @@ export const CreateOrderFormContainer = (props) => {
 
     }
 
+    const asyncEvery = async (arr, predicate) => {
+        for (let val of arr) {
+            if (!await predicate(val)) return false;
+        }
+        return true;
+    };
 
     const createCustomersRawProduct = async (shoppingCartRecords) => {
 
-        shoppingCartRecords.forEach(async (cartItem, index) => {
+        let flag = true
+        flag = await asyncEvery(shoppingCartRecords,
+            async (cartItem) => {
 
-            // console.log("cartItem: " + JSON.stringify(cartItem))
 
-            const { rawProductCode,
-                rawProductName,
-                size,
-                color,
-                description,
-                categoryID,
-                createdBy,
-                customersRawProductUploadFiles } = cartItem
+                console.log("cartItem: " + JSON.stringify(cartItem))
 
-            if (createdBy == config.useCreateBy.customer) {
-
-                const dataCustomersRawProduct = {
-                    rawProductCode,
+                const { rawProductCode,
                     rawProductName,
                     size,
                     color,
                     description,
                     categoryID,
-                    createdBy
+                    createdBy,
+                    customersRawProductUploadFiles } = cartItem
+
+                if (createdBy == config.useCreateBy.customer) {
+
+                    const dataCustomersRawProduct = {
+                        rawProductCode,
+                        rawProductName,
+                        size,
+                        color,
+                        description,
+                        categoryID,
+                        createdBy
+                    }
+
+                    console.log("dataCustomersRawProduct:" + JSON.stringify(dataCustomersRawProduct))
+
+                    let addCustomersRawProductFlag = true
+
+                    addCustomersRawProductFlag = await addCustomersRawProduct(dataCustomersRawProduct, customersRawProductUploadFiles, shoppingCartRecords)
+
+                    console.log("addCustomersRawProductFlag:" + Boolean(addCustomersRawProductFlag))
+
+                    return Boolean(addCustomersRawProductFlag)
+
+                } else {
+                    return true
+
                 }
 
-                // console.log("dataCustomersRawProduct:" + dataCustomersRawProduct)
-
-                await addCustomersRawProduct(dataCustomersRawProduct, customersRawProductUploadFiles)
             }
+        )
 
-        })
-        return true
+        console.log("flag:" + flag)
+
+        return flag
     }
 
-    const addCustomersRawProduct = async (data, customersRawProductPhotoList) => {
+
+
+
+    const addCustomersRawProduct = async (dataCustomersRawProduct, customersRawProductPhotoList, shoppingCartRecords) => {
+        console.log("addCustomersRawProduct")
         try {
-            const response = await (await ProductServices.createCustomersRawProduct(data)).data
+            const response = await (await ProductServices.createCustomersRawProduct(dataCustomersRawProduct)).data
 
             // console.log("response: " + JSON.stringify(response))
 
@@ -297,6 +322,7 @@ export const CreateOrderFormContainer = (props) => {
                     const categoryCode = record.categoryCode
                     const rawProductCode = record.rawProductCode
 
+                    shoppingCartRecords = shoppingCartRecords.map((cartItem) => cartItem.rawProductCode == dataCustomersRawProduct.rawProductCode ? { ...cartItem, rawProductCode } : { ...cartItem })
 
                     const uploadInfo = {
                         bucketName,
@@ -306,19 +332,21 @@ export const CreateOrderFormContainer = (props) => {
 
                     // console.log("prefix:" + prefix)
 
-                    uploadPhoto(uploadInfo, customersRawProductPhotoList)
+                    let uploadCustomersRawProductPhotoFlag = uploadPhoto(uploadInfo, customersRawProductPhotoList)
+
+                    if (!(await Boolean(uploadCustomersRawProductPhotoFlag))) throw new Error(config.useMessage.uploadPhotoFailure)
 
                 } else {
                     // toast.error(config.useMessage.resultFailure)
-                    return false
-
+                    // console.log("addCustomersRawProduct:" + false)
+                    throw new Error(config.useMessage.resultFailure)
                 }
             } else {
+                // throw new Error("Response is null or undefined")
                 throw new Error("Response is null or undefined")
             }
 
         } catch (err) {
-
             // toast.error(`${config.useMessage.fetchApiFailure} + ${err} `)
             return false
 
@@ -335,7 +363,7 @@ export const CreateOrderFormContainer = (props) => {
                 dataOrder,
                 shoppingCartRecords
             }
-            console.log("data: " + JSON.stringify(data))
+            console.log("dataCreateOrder: " + JSON.stringify(data))
 
             const response = await (await OrderServices.createNewOrder(dataOrder)).data
 
@@ -348,30 +376,49 @@ export const CreateOrderFormContainer = (props) => {
 
                     const orderCode = record.orderCode
 
-                    await shoppingCartRecords.forEach(async (cartItem) => {
+                    let orderFlag = true
+                    let count = 0
 
-                        createOrderDetail(orderCode, cartItem)
+                    orderFlag = await asyncEvery(shoppingCartRecords,
+                        async (cartItem) => {
 
-                    })
+                            let createOrderDetailFlag = true
 
-                    // dispatch(useShoppingCartAction().cleanCartItemSuccess())
-                    // toast.success("Đặt hàng thành công"); 
-                    // history.push("/core/home_page")
-                    scrollToTop()
+                            createOrderDetailFlag = await createOrderDetail(orderCode, cartItem)
+
+                            await count++
+
+                            console.log("createOrderDetailFlag:" + Boolean(createOrderDetailFlag))
+
+                            return Boolean(createOrderDetailFlag)
+
+                        }
+                    )
+
+
+                    console.log("count:" + count)
+                    console.log("orderFlag:" + await Boolean(orderFlag))
+
+                    if (await Boolean(orderFlag)) {
+                        // dispatch(useShoppingCartAction().cleanCartItemSuccess())
+                        toast.success("Đặt hàng thành công");
+                        // history.push("/core/home_page")
+                        scrollToTop()
+                    }
+
 
 
                 } else {
-                    toast.error(config.useMessage.resultFailure)
-                    throw new Error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
+                    throw new Error(`Tạo đơn hàng thất bại`)
                 }
             } else {
-                throw new Error("Response is null or undefined")
+                // throw new Error("Response is null or undefined")
+                throw new Error(`Tạo đơn hàng thất bại`)
             }
 
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
-            // throw err
-            return false
+            toast.error(`${config.useMessage.createOrderFailure}:${err}`);
         }
     }
 
@@ -404,20 +451,23 @@ export const CreateOrderFormContainer = (props) => {
 
                     const flag = await uploadPhotoPersonalize(orderCode, orderDetailCode, cartItem)
 
-                    if (!flag) throw new Error(config.useMessage.uploadFilePlease)
+                    if (!flag) throw new Error(config.useMessage.uploadPhotoFailure)
 
                 } else {
-                    toast.error(config.useMessage.resultFailure)
-                    throw new Error(config.useMessage.resultFailure)
+                    // toast.error(config.useMessage.resultFailure)
+                    // throw new Error(config.useMessage.resultFailure)
+                    throw new Error("Tạo mục trong giỏ hàng thất bại")
                 }
             } else {
-                throw new Error("Response is null or undefined")
+                // throw new Error("Response is null or undefined")
+                throw new Error("Tạo mục trong giỏ hàng thất bại")
             }
 
         } catch (err) {
-            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
-            throw err
+            toast.error(`${config.useMessage.createOrderFailure}:${err}`);
+            return false
         }
+        return true
     }
 
 
@@ -430,10 +480,10 @@ export const CreateOrderFormContainer = (props) => {
 
             const uploadInfoToPrintPhoto = {
                 bucketName,
-                prefix: `${folder}/${orderCode}/${orderDetailCode}/ToPrint`
+                prefix: `${folder} / ${orderCode} / ${orderDetailCode} / ToPrint`
             }
 
-            console.log("prefixUploadInfoToPrintPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/ToPrint`)
+            console.log("prefixUploadInfoToPrintPhoto:" + `${folder} / ${orderCode} / ${orderDetailCode} / ToPrint`)
             console.log("cartItem.toPrintPhotoList")
             console.log(cartItem.toPrintPhotoList)
 
@@ -442,10 +492,10 @@ export const CreateOrderFormContainer = (props) => {
 
             const uploadInfoPreviewPhoto = {
                 bucketName,
-                prefix: `${folder}/${orderCode}/${orderDetailCode}/Preview`
+                prefix: `${folder} / ${orderCode} / ${orderDetailCode} / Preview`
             }
 
-            console.log("prefixUploadInfoPreviewPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/Preview`)
+            console.log("prefixUploadInfoPreviewPhoto:" + `${folder} / ${orderCode} / ${orderDetailCode} / Preview`)
 
             await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val, index) => dataURLtoFile(val.dataURL, `preview.jpeg`)))
 
