@@ -24,7 +24,7 @@ export const useForm = (initialFValues, validOnChange = true) => {
             // console.log(Boolean(value))
             value = value == "female" ? true : false
         }
-        if (name == "isConfirm") {
+        if (name == "confirm") {
             // value = Boolean(value)
             // console.log(Boolean(value))
             value = value == "true" ? true : false

@@ -447,7 +447,7 @@ export const CreateOrderFormContainer = (props) => {
 
             console.log("prefixUploadInfoPreviewPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/Preview`)
 
-            await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val) => dataURLtoFile(val.dataURL, `preview.jpeg`)))
+            await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val, index) => dataURLtoFile(val.dataURL, `preview.jpeg`)))
 
         } catch (err) {
             toast.error(`${config.useMessage.uploadFilePlease} + ${err}`)

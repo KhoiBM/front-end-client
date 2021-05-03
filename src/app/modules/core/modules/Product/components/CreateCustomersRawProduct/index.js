@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, Grid, Button, FormHelperText, MenuItem, FormControl, InputLabel, Select, TextField, Paper } from '@material-ui/core'
-import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGetStateLocation, useScrollToTop, useDataUrlToFile } from 'src/app/utils'
+import { makeStyles, Grid, Button, FormHelperText, MenuItem, FormControl, InputLabel, Select, TextField, Paper, Typography, Box } from '@material-ui/core'
+import { useCustomStylesAddEditForm, useUploadPhoto, useForm, useRefresh, useGetStateLocation, useScrollToTop, useDataUrlToFile, useFormat } from 'src/app/utils'
 import { toast } from 'react-toastify'
 import config from 'src/environments/config'
 import { ProductServices, CartServices } from 'src/app/services'
@@ -52,6 +52,22 @@ const useStyles = makeStyles(theme => ({
         width: "100%",
         height: "50px",
 
+    },
+    categoryMenuItemContainer: {
+        width: "100%",
+        height: "auto",
+        // border: "1px solid red",
+        // borderRadius: "4px",
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+
+    },
+    categoryMenuItemWrapper: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "baseline",
+        width: "100%",
+        height: "auto",
     }
 }))
 
@@ -124,11 +140,11 @@ export const CreateCustomersRawProduct = (props) => {
 
                     if (dataOfService && dataOfService != null && Object.keys(dataOfService).length != 0) {
                         console.log("dataOfService:" + JSON.stringify(dataOfService))
-                        setFormData({ ...formData, categoryID: records[0].categoryID, rawProductCode: uuid, servicePrice: dataOfService.servicePrice });
+                        setFormData({ ...formData, categoryID: records[0].categoryID, rawProductCode: uuid, servicePrice: parseInt(dataOfService.servicePrice) + parseInt(records[0].servicePrice) });
                     } else {
-                        setFormData({ ...formData, categoryID: records[0].categoryID, rawProductCode: uuid });
-
+                        setFormData({ ...formData, categoryID: records[0].categoryID, rawProductCode: uuid, servicePrice: parseInt(records[0].servicePrice) });
                     }
+
 
                 } else {
                     // toast.error(config.useMessage.resultFailure)
@@ -145,13 +161,28 @@ export const CreateCustomersRawProduct = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("formdata: " + JSON.stringify(formData))
+        // console.log("formdata: " + JSON.stringify(formData))
         const enableSubmit = validation(formData)
 
         if (enableSubmit) {
             if (uploadFiles && uploadFiles != null && uploadFiles.length > 0) {
 
-                add(uploadFiles)
+
+                let servicePrice = parseInt(categoryRecords.find((val) => val.categoryID == formData.categoryID).servicePrice)
+
+                if (dataOfService && dataOfService != null && Object.keys(dataOfService).length != 0) {
+                    servicePrice += parseInt(dataOfService.servicePrice)
+                }
+
+                console.log("servicePrice:" + servicePrice)
+
+                const dataFormat = {
+                    ...formData,
+                    servicePrice
+                }
+                console.log("dataFormat: " + JSON.stringify(dataFormat))
+
+                add(dataFormat, uploadFiles)
 
             } else {
                 toast.info(config.useMessage.uploadFilePlease);
@@ -162,12 +193,12 @@ export const CreateCustomersRawProduct = (props) => {
         }
     }
 
-    const add = async () => {
+    const add = async (dataFormat, uploadFiles) => {
         try {
             const {
                 toPrintPhotoList,
                 createdPreviewPhotoList
-            } = formData
+            } = dataFormat
 
             if (toPrintPhotoList && toPrintPhotoList != null && toPrintPhotoList.length > 0 && createdPreviewPhotoList && createdPreviewPhotoList != null && createdPreviewPhotoList.length > 0) {
 
@@ -175,7 +206,7 @@ export const CreateCustomersRawProduct = (props) => {
 
                 const cartItemCode = uuidv4()
                 const dataToAdd = {
-                    ...formData,
+                    ...dataFormat,
                     quantity: 1,
                     cartItemCode,
                     customersRawProductUploadFiles: uploadFiles
@@ -283,6 +314,7 @@ export const CreateCustomersRawProduct = (props) => {
                                     helperText={helperValid.description}
                                     required
                                     multiline
+
                                 />
 
                                 <>
@@ -301,7 +333,20 @@ export const CreateCustomersRawProduct = (props) => {
                                             required
                                         >
                                             {
-                                                categoryRecords.map(val => <MenuItem value={val.categoryID} key={val.categoryID}>{val.categoryName}</MenuItem>)
+                                                categoryRecords && categoryRecords != null && categoryRecords.length > 0 && categoryRecords.map(val =>
+
+                                                    <MenuItem value={val.categoryID} key={val.categoryID}
+                                                        className={classes.categoryMenuItemContainer}
+                                                    >
+                                                        <Box
+                                                            className={classes.categoryMenuItemWrapper}
+                                                        >
+                                                            <Typography>{val.categoryName}</Typography>
+                                                            <Typography variant="body2" style={{ color: "#01bf71" }}>{`+${useFormat().formatMoney(val.servicePrice)} đ`}</Typography>
+                                                        </Box>
+                                                    </MenuItem>
+
+                                                )
                                             }
 
                                         </Select>

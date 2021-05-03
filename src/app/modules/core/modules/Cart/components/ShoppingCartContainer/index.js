@@ -215,19 +215,19 @@ export const ShoppingCartContainer = (props) => {
     const loadInit = async () => {
         console.log("loadInit")
 
-        if (shoppingCart && shoppingCart != null && shoppingCart.length > 0) {
+        // if (shoppingCart && shoppingCart != null && shoppingCart.length > 0) {
 
-            const analyzeObject = shoppingCart.reduce((acc, curr) => {
-                const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
-                const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
-                return { totalOrderPrices }
-            }, { totalOrderPrices: 0 })
+        const analyzeObject = shoppingCart.reduce((acc, curr) => {
+            const totalCartItemPrice = ((curr.unitPrice + curr.servicePrice) * curr.quantity)
+            const totalOrderPrices = acc.totalOrderPrices + totalCartItemPrice
+            return { totalOrderPrices }
+        }, { totalOrderPrices: 0 })
 
-            setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
+        setTotalOrderPrices(`${useFormat().formatMoney(analyzeObject.totalOrderPrices)} đ`)
 
-            setShoppingCartRecords(shoppingCart)
+        setShoppingCartRecords(shoppingCart)
 
-        }
+        // }
 
     }
 

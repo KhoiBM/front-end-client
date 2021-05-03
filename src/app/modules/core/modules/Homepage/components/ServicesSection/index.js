@@ -81,9 +81,8 @@ export const ServicesSection = () => {
                         <>
 
                             <ServicesCardLinkR key={index} to={{
-                                // pathname: `/core/product_list_page?serviceCode=${record.serviceCode}`,
                                 pathname: `/core/create_your_own_page`,
-                                search: `serviceCode=${record.serviceCode}&servicePrice=${record.servicePrice}`,
+                                // search: `serviceCode=${record.serviceCode}&servicePrice=${record.servicePrice}`,
                                 state: {
                                     data: {
                                         serviceCode: record.serviceCode,
