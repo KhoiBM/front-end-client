@@ -842,45 +842,38 @@ export class ProductServices {
             data: {
                 result: config.useResultStatus.SUCCESS,
                 info: {
+                    record: {
+                        rawProductID: 1,
+                        // rawProductCode: `productcode${uuid}`,
+                        rawProductCode: `productcode`,
+                        rawProductName: `Áo thun trắngproductcode${uuid}`,
+                        unitPrice: 100000,
+                        totalQuantity: 10,
+                        size: "M",
+                        color: "#4cbb3d",
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+                        categoryID: "1",
+                        categoryCode: "categoryCode",
+                        categoryName: "Áo",
+                        serviceCode: 1,
+                        serviceName: "abc",
+                        servicePrice: 1000000,
+                        // createdBy: "Khách hàng",
+                        createdBy: "Quản lý",
+                        createdAt: "03-03-2021",
+                        updatedAt: "03-03-2021"
+
+                    }
 
                 }
             }
         })
     }
 
-    static createCustomersRawProductByLocal = (data) => {
-        try {
-            console.log("data: " + JSON.stringify(data))
-            console.log("uploadFiles:" + JSON.stringify(data.customersRawProductPhotoList))
-            console.log(data.customersRawProductPhotoList)
 
-            localStorage.setItem("customersRawProduct", JSON.stringify(data))
 
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.SUCCESS,
-                    info: {
-                        record: {
 
-                        }
-                    }
-                }
-            })
-        } catch (err) {
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.FAILURE,
-                    info: {
-                        record: {
-
-                        }
-                    }
-                }
-            })
-        }
-    }
-
-    static createCustomersRawProductByServer = (data) => {
+    static createCustomersRawProduct = (data) => {
         // return useHttpModule().post(config.useApiPath.api., data)
         return Promise.resolve({
             data: {

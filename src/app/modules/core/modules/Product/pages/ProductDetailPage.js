@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { useGetStateLocation, useLoadingEffect } from 'src/app/utils'
 import { MainBar } from '../../../components'
 import { ProductDetail } from '../components'
-import { Loader } from 'src/app/components'
+import { Loader, NotFound } from 'src/app/components'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const ProductDetailPage = () => {

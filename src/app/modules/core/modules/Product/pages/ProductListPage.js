@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { ProductServices } from 'src/app/services'
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
-import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle, useLoadingEffect } from 'src/app/utils';
+import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle, useLoadingEffect, useScrollToTop } from 'src/app/utils';
 import { makeStyles, Paper } from '@material-ui/core';
 import { ProductList, FilterRawProductBar } from '../components';
 import { MainBar } from '../../../components';
@@ -68,6 +68,8 @@ const useStyles = makeStyles(theme => ({
 const ProductListPage = () => {
 
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
+
+    const { scrollToTop } = useScrollToTop()
 
     const classes = useStyles();
 
@@ -149,6 +151,7 @@ const ProductListPage = () => {
 
         if (!first) {
             loadInit()
+            scrollToTop()
             console.log("pageChange")
         }
 

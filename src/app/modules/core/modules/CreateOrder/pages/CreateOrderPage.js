@@ -8,18 +8,17 @@ import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 
 const CreateOrderPage = () => {
-    // const { loading, setLoading, showLoader, hideLoader } = useLoadingEffect()
     const { loading, setLoading, showLoader, hideLoader } = useLoaderHandle()
-
     return (
         <>
-            {/* <p>CreateOrderPage</p> */}
-            <CanActive isRole={config.useRoleName.customer} />
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer}>
 
+            </CanActive>
+            {<Loader loading={loading} />}
             <MainBar>
                 <CreateOrderFormContainer />
             </MainBar>
+
         </>
     )
 }

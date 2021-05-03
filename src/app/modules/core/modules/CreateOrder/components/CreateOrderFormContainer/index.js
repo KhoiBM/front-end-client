@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Paper, makeStyles, Box, TextField, Grid, Button } from '@material-ui/core'
 import { PageHeader } from 'src/app/modules/core/components';
-import { useForm, useRefresh, useUploadPhoto, useScrollToTop } from 'src/app/utils';
+import { useForm, useRefresh, useUploadPhoto, useScrollToTop, useDataUrlToFile } from 'src/app/utils';
 import { toast } from 'react-toastify';
 import config from 'src/environments/config';
 import { OrderServices, CartServices, ProductServices } from 'src/app/services';
@@ -188,20 +188,21 @@ export const CreateOrderFormContainer = (props) => {
 
     const history = useHistory()
 
+    const { dataURLtoFile } = useDataUrlToFile()
 
     useEffect(() => {
         loadInit()
-        console.log("CreateOrderFormContainer")
+        // console.log("CreateOrderFormContainer")
     }, [refresh])
 
     const loadInit = async () => {
-        console.log("loadInit")
+        // console.log("loadInit")
         setShoppingCartRecords(shoppingCart)
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log("formdata: " + JSON.stringify(formData))
+        // console.log("formdata: " + JSON.stringify(formData))
         const enableSubmit = validation(formData)
 
         if (enableSubmit) {
@@ -219,10 +220,15 @@ export const CreateOrderFormContainer = (props) => {
             console.log("shoppingCartRecords: ")
             console.table(shoppingCartRecords)
             try {
-                const flag = createCustomersRawProduct(shoppingCartRecords)
+                const createCustomersRawProductFlag = await createCustomersRawProduct(shoppingCartRecords)
 
-                if (flag) {
+                console.log("createCustomersRawProductFlag:" + createCustomersRawProductFlag)
+
+                if (createCustomersRawProductFlag) {
+
+                    console.log("createOrder")
                     createOrder(dataOrder, shoppingCartRecords)
+
                 } else {
                     throw new Error("Tạo sản phẩm của khách hàng thất bại")
                 }
@@ -242,7 +248,7 @@ export const CreateOrderFormContainer = (props) => {
 
         shoppingCartRecords.forEach(async (cartItem, index) => {
 
-            console.log("cartItem: " + JSON.stringify(cartItem))
+            // console.log("cartItem: " + JSON.stringify(cartItem))
 
             const { rawProductCode,
                 rawProductName,
@@ -265,7 +271,7 @@ export const CreateOrderFormContainer = (props) => {
                     createdBy
                 }
 
-                console.log("dataCustomersRawProduct:" + dataCustomersRawProduct)
+                // console.log("dataCustomersRawProduct:" + dataCustomersRawProduct)
 
                 await addCustomersRawProduct(dataCustomersRawProduct, customersRawProductUploadFiles)
             }
@@ -298,7 +304,7 @@ export const CreateOrderFormContainer = (props) => {
                     }
                     const prefix = `${folder}/${categoryCode}/${rawProductCode}`
 
-                    console.log("prefix:" + prefix)
+                    // console.log("prefix:" + prefix)
 
                     uploadPhoto(uploadInfo, customersRawProductPhotoList)
 
@@ -324,30 +330,81 @@ export const CreateOrderFormContainer = (props) => {
 
     const createOrder = async (dataOrder, shoppingCartRecords) => {
         try {
+
             const data = {
                 dataOrder,
-                shoppingCartRecords: shoppingCartRecords.map(({
-                    rawProductCode,
-                    unitPrice,
-                    servicePrice,
-                }) => ({
-                    // rawProductID,
-                    rawProductCode,
-                    unitPrice,
-                    servicePrice,
-                }))
+                shoppingCartRecords
             }
             console.log("data: " + JSON.stringify(data))
+
             const response = await (await OrderServices.createNewOrder(dataOrder)).data
+
             // console.log("response: " + JSON.stringify(response))
 
             if (response && response != null) {
                 if (response.result == config.useResultStatus.SUCCESS) {
 
-                    dispatch(useShoppingCartAction().cleanCartItemSuccess())
-                    toast.success("Đặt hàng thành công");
-                    history.push("/core/home_page")
+                    const record = response.info.record
+
+                    const orderCode = record.orderCode
+
+                    await shoppingCartRecords.forEach(async (cartItem) => {
+
+                        createOrderDetail(orderCode, cartItem)
+
+                    })
+
+                    // dispatch(useShoppingCartAction().cleanCartItemSuccess())
+                    // toast.success("Đặt hàng thành công"); 
+                    // history.push("/core/home_page")
                     scrollToTop()
+
+
+                } else {
+                    toast.error(config.useMessage.resultFailure)
+                    throw new Error(config.useMessage.resultFailure)
+                }
+            } else {
+                throw new Error("Response is null or undefined")
+            }
+
+        } catch (err) {
+            toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
+            // throw err
+            return false
+        }
+    }
+
+
+
+    const createOrderDetail = async (orderCode, cartItem) => {
+        try {
+
+            const data = {
+                orderCode,
+                rawProductCode: cartItem.rawProductCode,
+                quantity: cartItem.quantity,
+                unitPrice: cartItem.unitPrice,
+                servicePrice: cartItem.servicePrice,
+                note: cartItem.note
+
+            }
+            console.log("data: " + JSON.stringify(data))
+
+            const response = await (await OrderServices.createOrderDetail(data)).data
+
+            // console.log("response: " + JSON.stringify(response))
+
+            if (response && response != null) {
+                if (response.result == config.useResultStatus.SUCCESS) {
+
+                    const record = response.info.record
+
+                    const orderDetailCode = record.orderDetailCode
+
+                    const flag = await uploadPhotoPersonalize(orderCode, orderDetailCode, cartItem)
+
+                    if (!flag) throw new Error(config.useMessage.uploadFilePlease)
 
                 } else {
                     toast.error(config.useMessage.resultFailure)
@@ -364,6 +421,41 @@ export const CreateOrderFormContainer = (props) => {
     }
 
 
+    const uploadPhotoPersonalize = async (orderCode, orderDetailCode, cartItem) => {
+        try {
+            const bucketName = config.useConfigAWS.CUSTOMERBUCKET.BUCKETNAME
+
+            const folder = config.useConfigAWS.CUSTOMERBUCKET.FOLDER["ORDER"]
+
+
+            const uploadInfoToPrintPhoto = {
+                bucketName,
+                prefix: `${folder}/${orderCode}/${orderDetailCode}/ToPrint`
+            }
+
+            console.log("prefixUploadInfoToPrintPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/ToPrint`)
+            console.log("cartItem.toPrintPhotoList")
+            console.log(cartItem.toPrintPhotoList)
+
+            await uploadPhoto(uploadInfoToPrintPhoto, cartItem.toPrintPhotoList.map((val) => val.acceptedFile))
+
+
+            const uploadInfoPreviewPhoto = {
+                bucketName,
+                prefix: `${folder}/${orderCode}/${orderDetailCode}/Preview`
+            }
+
+            console.log("prefixUploadInfoPreviewPhoto:" + `${folder}/${orderCode}/${orderDetailCode}/Preview`)
+
+            await uploadPhoto(uploadInfoPreviewPhoto, cartItem.createdPreviewPhotoList.map((val) => dataURLtoFile(val.dataURL, `preview.jpeg`)))
+
+        } catch (err) {
+            toast.error(`${config.useMessage.uploadFilePlease} + ${err}`)
+            return false
+        }
+
+        return true
+    }
 
     return (
         <>
