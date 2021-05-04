@@ -97,7 +97,7 @@ export const AccountMenu = () => {
                                 state: {
                                     data: {
                                         locationObject: {
-                                            pathname: `/core/profile`,
+                                            pathname: `/core/profile_page`,
                                             search: ``,
                                             state: {
                                                 data: {}

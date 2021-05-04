@@ -75,26 +75,29 @@ const TrackOrderPage = (props) => {
 
     return (
         <>
-            <CanActive isRole={config.useRoleName.customer} />
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer}>
 
-            <MainBar>
-                <Paper elevation={0} className={classes.mainContainer}>
-                    <>
+                {<Loader loading={loading} />}
 
-                        <div className={classes.actionContainer}>
-                            <div className={classes.actionWrapper}>
-                                {/* <SearchBar keywords={keywords} setKeywords={setKeywords} searchAction={searchAction} setSearchAction={setSearchAction} clickSearch={clickSearch} setClickSearch={setClickSearch} handleKeywordsChange={handleKeywordsChange} /> */}
-                                <FilterChipBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
+                <MainBar>
+                    <Paper elevation={0} className={classes.mainContainer}>
+                        <>
+
+                            <div className={classes.actionContainer}>
+                                <div className={classes.actionWrapper}>
+                                    {/* <SearchBar keywords={keywords} setKeywords={setKeywords} searchAction={searchAction} setSearchAction={setSearchAction} clickSearch={clickSearch} setClickSearch={setClickSearch} handleKeywordsChange={handleKeywordsChange} /> */}
+                                    <FilterChipBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
+                                </div>
                             </div>
-                        </div>
 
-                        {filterList && filterList != null && filterList.length > 0 && <TrackOrderTable
-                            keywords={keywords} setSearchAction={setSearchAction} searchAction={searchAction} clickSearch={clickSearch} setClickSearch={setClickSearch} filterList={filterList} action={action} clickFilter={clickFilter} />
-                        }
-                    </>
-                </Paper>
-            </MainBar>
+                            {filterList && filterList != null && filterList.length > 0 && <TrackOrderTable
+                                keywords={keywords} setSearchAction={setSearchAction} searchAction={searchAction} clickSearch={clickSearch} setClickSearch={setClickSearch} filterList={filterList} action={action} clickFilter={clickFilter} />
+                            }
+                        </>
+                    </Paper>
+                </MainBar>
+
+            </CanActive>
         </>
     )
 }

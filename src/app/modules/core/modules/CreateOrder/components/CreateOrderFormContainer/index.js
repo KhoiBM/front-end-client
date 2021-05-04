@@ -145,12 +145,14 @@ const useStyles = makeStyles(theme => ({
     },
     areaTextField: {
         width: "95%",
-        height: "200px !important",
+        height: "auto",
+        minHeight: "200px !important",
         background: "red",
         // border: "1px solid red !important",
         '& .MuiInputBase-root': {
             width: "100%",
-            height: "200px !important",
+            minHeight: "200px !important",
+            height: "auto",
             display: "flex",
             alignItems: "flex-start",
         }

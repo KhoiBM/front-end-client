@@ -12,13 +12,11 @@ const CreateOrderPage = () => {
     return (
         <>
             <CanActive isRole={config.useRoleName.customer}>
-
+                {<Loader loading={loading} />}
+                <MainBar>
+                    <CreateOrderFormContainer />
+                </MainBar>
             </CanActive>
-            {<Loader loading={loading} />}
-            <MainBar>
-                <CreateOrderFormContainer />
-            </MainBar>
-
         </>
     )
 }

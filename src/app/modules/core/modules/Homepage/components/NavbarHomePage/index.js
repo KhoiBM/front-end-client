@@ -6,10 +6,15 @@ import { Switch, Route } from 'react-router-dom'
 import { IconContext } from 'react-icons/lib';
 import { animateScroll as scroll } from 'react-scroll';
 import { SearchBar, ShoppingCartMenu, NotificationBar, AccountMenu } from 'src/app/modules/core/components';
+import config from 'src/environments/config';
 
 export function NavbarHomePage({ toggle }) {
 
     const token = localStorage.getItem("pps-token");
+
+    const role = localStorage.getItem("role");
+
+    const useRoleName = config.useRoleName;
 
     const [scrollNav, setScrollNav] = useState(false);
 
@@ -101,16 +106,18 @@ export function NavbarHomePage({ toggle }) {
                                     Tất cả sản phẩm
                                 </NavRLinks>
                             </NavItem>
+                            <ShoppingCartMenu />
                             {
                                 token && token != null ?
                                     <>
-                                        <ShoppingCartMenu />
 
-                                        <NotificationBar />
-
-                                        <AccountMenu />
-
-
+                                        {
+                                            role == useRoleName.customer &&
+                                            <>
+                                                <NotificationBar />
+                                                <AccountMenu />
+                                            </>
+                                        }
                                     </>
                                     :
                                     <>
@@ -128,6 +135,7 @@ export function NavbarHomePage({ toggle }) {
                                         </NavBtn>
                                     </>
                             }
+
 
                         </NavMenu>
                     </NavbarContainer>
