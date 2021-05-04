@@ -12,6 +12,7 @@ import { CategoriesMenu } from '../CategoriesMenu';
 import { ServicesMenu } from '../ServicesMenu';
 import { SearchBar } from '../SearchBar';
 import { makeStyles } from '@material-ui/core';
+import config from 'src/environments/config';
 
 const useStyles = makeStyles((theme) => ({
     activeNavLink: {
@@ -34,6 +35,10 @@ export function Navbar({ toggle }) {
     const classes = useStyles();
 
     const token = localStorage.getItem("pps-token");
+
+    const role = localStorage.getItem("role");
+
+    const useRoleName = config.useRoleName;
 
     const [scrollNav, setScrollNav] = useState(false);
 
@@ -112,16 +117,18 @@ export function Navbar({ toggle }) {
                                     Tất cả sản phẩm
                                 </NavRLinks>
                             </NavItem>
+                            <ShoppingCartMenu />
                             {
                                 token && token != null ?
                                     <>
-                                        <ShoppingCartMenu />
 
-                                        <NotificationBar />
-
-                                        <AccountMenu />
-
-
+                                        {
+                                            role == useRoleName.customer &&
+                                            <>
+                                                <NotificationBar />
+                                                <AccountMenu />
+                                            </>
+                                        }
                                     </>
                                     :
                                     <>

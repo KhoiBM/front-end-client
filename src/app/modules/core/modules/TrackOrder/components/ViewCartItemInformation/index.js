@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
                 // background: 'var(--bg-secondary-color-main)',
                 borderColor: "none !important",
                 borderRadius: "4px",
-                minHeight: "30px !important",
+                // minHeight: "30px !important",
                 height: "auto",
                 background: "#fff",
                 "& .MuiInputBase-inputMultiline": {
@@ -324,14 +324,14 @@ export const ViewCartItemInformation = (props) => {
                                             variant='outlined'
                                             label="Ngày tạo"
                                             value={createdAt}
-                                            name='note'
+                                            name='createdAt'
 
                                         />
                                         <TextField
                                             variant='outlined'
                                             label="Ngày sửa đổi"
                                             value={updatedAt}
-                                            name='note'
+                                            name='updatedAt'
 
                                         /> */}
 
