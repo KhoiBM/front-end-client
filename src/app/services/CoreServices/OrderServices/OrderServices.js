@@ -1,4 +1,5 @@
 import config from '../../../../environments/config'
+import { useHttpModule } from '../../HttpServices'
 export class OrderServices {
     // static = (data) => {
     //     // return useHttpModule().post(config.useApiPath.api., data)
@@ -13,128 +14,128 @@ export class OrderServices {
     // }
 
     static createNewOrder = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    record: {
-                        orderCode: "orderCode"
-                    }
-
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.orderService.createOrder, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             record: {
+        //                 orderCode: "orderCode"
+        //             }
+        //
+        //         }
+        //     }
+        // })
     }
 
 
     static createOrderDetail = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    record: {
-                        orderDetailCode: "orderDetailCode"
-                    }
-
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.orderService.addOrderDetail, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             record: {
+        //                 orderDetailCode: "orderDetailCode"
+        //             }
+        //
+        //         }
+        //     }
+        // })
     }
     static viewOrder = (data) => {
         console.log("filterListViewOrder: " + data.filterBy)
-        // return useHttpModule().post(config.useApiPath.api., data)
-        if (data.page == 1) {
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.SUCCESS,
-                    info: {
-                        records: [
-
-                            {
-                                orderID: 1,
-                                orderCode: 1,
-                                customerID: 1,
-                                customerCode: 23334,
-                                customerName: "Bùi Minh Khôi",
-                                note: "cần giao sau 6h",
-                                statusOrder: "Đơn chờ duyệt",
-                                statusPayment: true,
-                                shipAt: "2021-02-27",
-                                phone: "0313823823",
-                                address: "Tân Hà, Tân Châu, Tây Ninh",
-                                createdAt: "20-02-2021",
-                                updatedAt: "20-02-2021"
-                            },
-
-                            {
-                                orderID: 2,
-                                orderCode: 2,
-                                customerID: 2,
-                                customerCode: 23334,
-                                customerName: "Bùi Minh Khôi",
-                                note: "cần giao sau 6h",
-                                statusOrder: "Đơn chờ duyệt",
-                                statusPayment: true,
-                                shipAt: "27-02-2021",
-                                phone: "0313823823",
-                                address: "Tân Hà, Tân Châu, Tây Ninh",
-                                createdAt: "20-02-2021",
-                                updatedAt: "20-02-2021"
-                            }
-                        ],
-                        totalPage: 20
-
-                    }
-                }
-            })
-        } else {
-            return Promise.resolve({
-                data: {
-                    result: config.useResultStatus.SUCCESS,
-                    info: {
-                        records: [
-
-                            {
-                                orderID: 1,
-                                orderCode: 1,
-                                customerID: 1,
-                                customerCode: 23334,
-                                customerName: "Bùi Minh Khôi",
-                                note: "cần giao sau 6h",
-                                statusOrder: "Đơn chờ duyệt",
-                                statusPayment: true,
-                                shipAt: "27-02-2021",
-                                phone: "0313823823",
-                                address: "Tân Hà, Tân Châu, Tây Ninh",
-                                createdAt: "20-02-2021",
-                                updatedAt: "20-02-2021"
-                            },
-
-                            {
-                                orderID: 2,
-                                orderCode: 2,
-                                customerID: 2,
-                                customerCode: 23334,
-                                customerName: "Bùi Minh Khôi",
-                                note: "cần giao sau 6h",
-                                statusOrder: "Đơn chờ duyệt",
-                                statusPayment: true,
-                                shipAt: "27-02-2021",
-                                phone: "0313823823",
-                                address: "Tân Hà, Tân Châu, Tây Ninh",
-                                createdAt: "20-02-2021",
-                                updatedAt: "20-02-2021"
-                            }
-
-                        ],
-                        totalPage: 20
-
-                    }
-                }
-            })
-        }
+        return useHttpModule().post(config.useApiPath.api.orderService.trackOrder, data)
+        // if (data.page == 1) {
+        //     return Promise.resolve({
+        //         data: {
+        //             result: config.useResultStatus.SUCCESS,
+        //             info: {
+        //                 records: [
+        //
+        //                     {
+        //                         orderID: 1,
+        //                         orderCode: 1,
+        //                         customerID: 1,
+        //                         customerCode: 23334,
+        //                         customerName: "Bùi Minh Khôi",
+        //                         note: "cần giao sau 6h",
+        //                         statusOrder: "Đơn chờ duyệt",
+        //                         statusPayment: true,
+        //                         shipAt: "2021-02-27",
+        //                         phone: "0313823823",
+        //                         address: "Tân Hà, Tân Châu, Tây Ninh",
+        //                         createdAt: "20-02-2021",
+        //                         updatedAt: "20-02-2021"
+        //                     },
+        //
+        //                     {
+        //                         orderID: 2,
+        //                         orderCode: 2,
+        //                         customerID: 2,
+        //                         customerCode: 23334,
+        //                         customerName: "Bùi Minh Khôi",
+        //                         note: "cần giao sau 6h",
+        //                         statusOrder: "Đơn chờ duyệt",
+        //                         statusPayment: true,
+        //                         shipAt: "27-02-2021",
+        //                         phone: "0313823823",
+        //                         address: "Tân Hà, Tân Châu, Tây Ninh",
+        //                         createdAt: "20-02-2021",
+        //                         updatedAt: "20-02-2021"
+        //                     }
+        //                 ],
+        //                 totalPage: 20
+        //
+        //             }
+        //         }
+        //     })
+        // } else {
+        //     return Promise.resolve({
+        //         data: {
+        //             result: config.useResultStatus.SUCCESS,
+        //             info: {
+        //                 records: [
+        //
+        //                     {
+        //                         orderID: 1,
+        //                         orderCode: 1,
+        //                         customerID: 1,
+        //                         customerCode: 23334,
+        //                         customerName: "Bùi Minh Khôi",
+        //                         note: "cần giao sau 6h",
+        //                         statusOrder: "Đơn chờ duyệt",
+        //                         statusPayment: true,
+        //                         shipAt: "27-02-2021",
+        //                         phone: "0313823823",
+        //                         address: "Tân Hà, Tân Châu, Tây Ninh",
+        //                         createdAt: "20-02-2021",
+        //                         updatedAt: "20-02-2021"
+        //                     },
+        //
+        //                     {
+        //                         orderID: 2,
+        //                         orderCode: 2,
+        //                         customerID: 2,
+        //                         customerCode: 23334,
+        //                         customerName: "Bùi Minh Khôi",
+        //                         note: "cần giao sau 6h",
+        //                         statusOrder: "Đơn chờ duyệt",
+        //                         statusPayment: true,
+        //                         shipAt: "27-02-2021",
+        //                         phone: "0313823823",
+        //                         address: "Tân Hà, Tân Châu, Tây Ninh",
+        //                         createdAt: "20-02-2021",
+        //                         updatedAt: "20-02-2021"
+        //                     }
+        //
+        //                 ],
+        //                 totalPage: 20
+        //
+        //             }
+        //         }
+        //     })
+        // }
 
     }
     static getOrderStatusToFilter = (data) => {

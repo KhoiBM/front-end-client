@@ -29,6 +29,15 @@ const useApiPath = {
             viewProfile: "manager/view-profile",
             editProfile: "manager/edit-profile"
         },
+        "notification": {
+            viewAndCountNoti: "notification/get-list-notification"
+        },
+        "orderService": {
+            addCusRawProduct: "order/add-customer-raw-product",
+            createOrder: "order/create-order",
+            addOrderDetail: "order/add-order-detail",
+            trackOrder: "order/get-list-order",
+        }
 
     }
 }
