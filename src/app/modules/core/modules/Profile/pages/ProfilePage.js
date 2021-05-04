@@ -13,12 +13,13 @@ const ProfilePage = () => {
     return (
         <>
             {/* <p>ProfilePage</p> */}
-            <CanActive isRole={config.useRoleName.customer} />
-            {<Loader loading={loading} />}
+            <CanActive isRole={config.useRoleName.customer}>
+                {<Loader loading={loading} />}
+                <MainBar>
+                    <Profile />
+                </MainBar>
+            </CanActive>
 
-            <MainBar>
-                <Profile />
-            </MainBar>
         </>
     )
 }

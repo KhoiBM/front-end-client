@@ -87,10 +87,6 @@ export const NotificationBar = () => {
 
     const [countNoti, setCountNoti] = useState(0)
 
-    const role = localStorage.getItem("role");
-
-    const useRoleName = config.useRoleName;
-
     const [recordsNoti, setRecordsNoti] = useState([])
 
     const [anchorElPopover, setAnchorElPopover] = useState(null);

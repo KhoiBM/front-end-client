@@ -40,6 +40,7 @@ const useStyles = makeStyles(theme => ({
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
         transition: "all 0.2 ease -in -out",
         position: "relative",
+        color: "#000",
 
         '&:hover': {
             transform: "scale(1.02)",
@@ -80,7 +81,7 @@ export const Loader = (props) => {
                             <IconClose />
                         </Box> */}
 
-                        <Typography variant={"subtitle1"}>Đang tải...</Typography>
+                        <Typography variant={"subtitle1"} color="primary">Đang tải...</Typography>
                         <Box>
                             <CircularProgress color="primary" />
                         </Box>

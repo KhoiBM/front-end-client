@@ -50,7 +50,7 @@ export const ShoppingCartMenu = () => {
 
     useEffect(() => {
         loadInit(shoppingCart)
-        console.log("shoppingCart:")
+        console.log("ShoppingCartMenushoppingCart:")
         console.table(shoppingCart)
     }, [refresh, shoppingCart])
 

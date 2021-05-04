@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
                 // background: 'var(--bg-secondary-color-main)',
                 borderColor: "none !important",
                 borderRadius: "4px",
-                height: "30px !important",
+                // height: "30px !important",
                 background: "#fff",
                 "& .MuiInputBase-inputMultiline": {
                     // background: "red",
@@ -158,6 +158,21 @@ const useStyles = makeStyles(theme => ({
         top: theme.spacing(3),
         right: theme.spacing(1.5),
 
+    },
+    areaTextField: {
+        width: "95%",
+        height: "auto",
+        minHeight: "200px !important",
+        background: "red",
+        // border: "1px solid red !important",
+        '& .MuiInputBase-root': {
+            width: "100%",
+            minHeight: "200px !important",
+            height: "auto",
+            display: "flex",
+            alignItems: "flex-start",
+            // border: "1px solid red !important",
+        }
     }
 }))
 
@@ -345,6 +360,8 @@ disabled
                                             // required
                                             // disabled
                                             multiline
+                                            className={classes.areaTextField}
+
                                         />
                                         <TextField
                                             variant='outlined'
