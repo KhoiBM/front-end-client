@@ -153,57 +153,57 @@ export class OrderServices {
         })
     }
     static cancelOrder = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.orderService.cancelOrder, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //
+        //         }
+        //     }
+        // })
     }
     static confirmDemoProduct = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.orderService.confirmDemo, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //
+        //         }
+        //     }
+        // })
     }
 
     static getOrderDetailList = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    records: [{
-                        orderDetailID: 1,
-                        orderDetailCode: "orderDetailCode",
-                        orderID: 1,
-                        orderCode: "orderCode",
-                        rawProductID: 1,
-                        rawProductCode: "productcode",
-                        // rawProductCode: "RP012345",
-                        rawProductName: "Lorem ipsum dolor sit amet",
-                        categoryCode: "categoryCode",
-                        createdBy: "Quản lý",
-                        size: 'M',
-                        color: "#000",
-                        unitPrice: 100000,
-                        servicePrice: 110000,
-                        quantity: 5,
-                        // note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-                        createdAt: "02-02-2021",
-                        updatedAt: "02-02-2021",
-                    }
-                    ]
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.orderService.viewOrderDetailList, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             records: [{
+        //                 orderDetailID: 1,
+        //                 orderDetailCode: "orderDetailCode",
+        //                 orderID: 1,
+        //                 orderCode: "orderCode",
+        //                 rawProductID: 1,
+        //                 rawProductCode: "productcode",
+        //                 // rawProductCode: "RP012345",
+        //                 rawProductName: "Lorem ipsum dolor sit amet",
+        //                 categoryCode: "categoryCode",
+        //                 createdBy: "Quản lý",
+        //                 size: 'M',
+        //                 color: "#000",
+        //                 unitPrice: 100000,
+        //                 servicePrice: 110000,
+        //                 quantity: 5,
+        //                 // note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        //                 createdAt: "02-02-2021",
+        //                 updatedAt: "02-02-2021",
+        //             }
+        //             ]
+        //         }
+        //     }
+        // })
     }
 }
