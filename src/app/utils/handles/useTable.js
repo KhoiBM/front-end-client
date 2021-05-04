@@ -27,11 +27,12 @@ const useStyles = makeStyles(theme => ({
         },
         '& tbody td': {
             fontWeight: "200",
+            height: "50px",
         },
         '& .MuiTableBody-root': {
             fontWeight: "200",
             width: "100%",
-            height: "500px !important"
+            maxHeight: "500px !important"
         },
         '& tbody tr:hover': {
             backgroundColor: "#fffbf2",

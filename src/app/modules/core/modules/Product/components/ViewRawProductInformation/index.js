@@ -20,12 +20,13 @@ const useStyles = makeStyles(theme => ({
         width: "100%",
         minHeight: "1100px",
         height: "auto",  //  làm mất goc paper ở dưới 
-        // background: "red",
+        background: "#fff",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         // position: "relative",
         // overflow: "scroll",
+        borderRadius: "10px",
 
 
     },
@@ -34,6 +35,7 @@ const useStyles = makeStyles(theme => ({
         // padding: theme.spacing(3),
         height: "auto",
         minHeight: "1000px",
+        background: "#fff",
         // background: "blue",
         // padding: "15px 15px",
         borderRadius: "10px",

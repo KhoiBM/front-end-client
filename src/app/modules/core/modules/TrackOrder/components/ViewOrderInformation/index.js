@@ -312,6 +312,7 @@ export const ViewOrderInformation = (props) => {
                                             // required
                                             // disabled
                                             multiline
+                                            className={classes.areaTextField}
                                         />
 
                                         <TextField
