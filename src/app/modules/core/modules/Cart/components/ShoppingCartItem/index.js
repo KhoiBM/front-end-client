@@ -6,10 +6,10 @@ import { RiInformationLine, RiCheckboxBlankCircleFill } from 'react-icons/ri';
 import { AiOutlineEdit, AiOutlineDelete, AiOutlineCloudUpload, AiOutlineBlock } from 'react-icons/ai';
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
-import { CartServices } from 'src/app/services';
+import { CartServices, ProductServices } from 'src/app/services';
 import { useRefresh, useLoadPhotoList, useFormat, useForm } from 'src/app/utils';
 import { ConfirmDialog } from 'src/app/modules/core/components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useShoppingCartAction } from 'src/app/stores/actions';
 import { Loader } from 'src/app/components';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
@@ -141,6 +141,10 @@ export const ShoppingCartItem = (props) => {
 
     const [shoppingCartItemRecords, setShoppingCartItemRecords] = useState([])
 
+    const { shoppingCart } = useSelector((state) => state.shoppingCartState)
+
+    const [shoppingCartRecords, setShoppingCartRecords] = useState([])
+
 
     useEffect(() => {
         loadInit()
@@ -150,6 +154,9 @@ export const ShoppingCartItem = (props) => {
         // console.log("refresh")
     }, [refresh])
 
+    useEffect(() => {
+        setShoppingCartRecords(shoppingCart)
+    }, [shoppingCart])
 
     const loadInit = async () => {
         if (shoppingCartItem && shoppingCartItem != null && Object.keys(shoppingCartItem).length > 0) {
@@ -258,6 +265,104 @@ export const ShoppingCartItem = (props) => {
 
     }
 
+    const checkConditionToEdit = async (shoppingCartRecords, shoppingCartItemRecords, data) => {
+        try {
+
+            const response = await (await ProductServices.viewRawProductDetail({ rawProductID: shoppingCartItemRecords.rawProductID })).data
+
+            if (response && response != null) {
+
+                if (response.result == config.useResultStatus.SUCCESS) {
+
+
+                    const record = response.info.record
+
+                    const rawProductTotalQuantity = record.totalQuantity
+
+                    console.log("shoppingCartRecords:")
+                    console.log(shoppingCartRecords)
+
+                    const totalQuantityOfRawProductInCart = shoppingCartRecords.reduce((acc, curr) => {
+
+                        console.log("acc:" + acc)
+
+                        console.log("curr:")
+                        console.log(curr)
+
+
+
+                        console.log("curr.rawProductCode:" + JSON.stringify(String(curr.rawProductCode)))
+
+                        console.log("shoppingCartItemRecords.rawProductCode:" + JSON.stringify(String(shoppingCartItemRecords.rawProductCode)))
+
+
+
+                        const checkRawProductCode = (String(curr.rawProductCode) == String(shoppingCartItemRecords.rawProductCode))
+
+                        const checkCartItemCode = (String(curr.cartItemCode) == String(data.cartItemCode))
+
+
+
+                        console.log("checkRawProductCode" + checkRawProductCode)
+
+                        console.log("checkCartItemCode" + checkCartItemCode)
+
+
+                        if (checkRawProductCode && !checkCartItemCode) {
+
+                            const resultAcc = (parseInt(acc) + parseInt(curr.quantity))
+
+                            console.log("resultAcc:" + resultAcc)
+
+                            return resultAcc
+                        }
+
+
+
+                        return acc
+
+                    }, 0)
+
+                    console.log("totalQuantityOfRawProductInCart:" + totalQuantityOfRawProductInCart)
+
+                    const totalQuantityToEdit = (parseInt(data.quantity) + parseInt(totalQuantityOfRawProductInCart))
+
+                    const checkValidationQuantity = totalQuantityToEdit <= parseInt(rawProductTotalQuantity)
+
+                    console.log("data.quantity :" + data.quantity)
+
+                    console.log("totalQuantityToEdit :" + totalQuantityToEdit)
+
+
+                    if (!checkValidationQuantity) {
+
+                        toast.error("Bạn không thể mua số lượng nhiều hơn số lượng hiện tại của sản phẩm")
+
+                        throw new Error("Bạn không thể mua số lượng nhiều hơn số lượng hiện tại của sản phẩm")
+
+                    } else {
+                        dispatch(useShoppingCartAction().editCartItemSuccess(data))
+                        toast.success("Thay đổi thành công")
+                    }
+
+                } else {
+
+                    // toast.error(config.useMessage.resultFailure)
+                    throw new Error(config.useMessage.resultFailure)
+                }
+            } else {
+
+                throw new Error("Response is null or undefined")
+
+            }
+
+        } catch (err) {
+            toast.error("Thay đổi thất bại")
+            setFormData({ ...formData, quantity: shoppingCartItemRecords.quantity })
+        }
+    }
+
+
     const onEditCartItem = async (formData, cartItemCode) => {
         showLoader()
         try {
@@ -268,9 +373,14 @@ export const ShoppingCartItem = (props) => {
             }
 
             console.log("dataEdit:" + JSON.stringify(data))
-            dispatch(useShoppingCartAction().editCartItemSuccess(data))
 
-            toast.success("Thay đổi thành công")
+            if (shoppingCartItemRecords.createdBy == config.useCreatedBy.manager) {
+                checkConditionToEdit(shoppingCartRecords, shoppingCartItemRecords, data)
+            } else {
+                dispatch(useShoppingCartAction().editCartItemSuccess(data))
+                toast.success("Thay đổi thành công")
+            }
+
 
             handleRefresh()
 
@@ -278,6 +388,7 @@ export const ShoppingCartItem = (props) => {
 
         } catch (err) {
             toast.error("Thay đổi thất bại")
+            setFormData({ ...formData, quantity: shoppingCartItemRecords.quantity })
         }
         hideLoader()
 

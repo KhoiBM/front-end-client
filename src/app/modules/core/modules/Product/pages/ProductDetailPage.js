@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { useGetStateLocation, useLoadingEffect } from 'src/app/utils'
 import { MainBar } from '../../../components'
 import { ProductDetail } from '../components'
-import { Loader, NotFound } from 'src/app/components'
+import { Loader } from 'src/app/components'
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle'
 
 const ProductDetailPage = () => {
@@ -21,8 +21,10 @@ const ProductDetailPage = () => {
 
     useEffect(() => {
         if (data && data != null) {
+
             loadInit(data)
             console.log("data: " + JSON.stringify(data))
+
         }
     }, [])
 
@@ -72,7 +74,7 @@ const ProductDetailPage = () => {
 
         if (record && record != null) {
 
-            setRecord(record)
+            await setRecord(record)
 
         }
     }
@@ -82,11 +84,8 @@ const ProductDetailPage = () => {
             {<Loader loading={loading} />}
 
             <MainBar>
-                {record && record != null && Object.keys(record).length > 0 ?
-                    <ProductDetail record={record} />
-                    :
-                    !loading.status && <NotFound />
-                }
+
+                <ProductDetail record={record} />
 
             </MainBar>
 

@@ -29,6 +29,15 @@ const useApiPath = {
             viewProfile: "manager/view-profile",
             editProfile: "manager/edit-profile"
         },
+        "notification": {
+            viewAndCountNoti: "notification/get-list-notification"
+        },
+        "orderService": {
+            addCusRawProduct: "order/add-customer-raw-product",
+            createOrder: "order/create-order",
+            addOrderDetail: "order/add-order-detail",
+            trackOrder: "order/get-list-order",
+        }
 
     }
 }
@@ -166,11 +175,11 @@ const usePersonalizeType = {
     "technicalCartItem": "3"
 }
 
-const useCreateBy = {
+const useCreatedBy = {
     customer: "Khách hàng",
     manager: "Quản lý"
 }
 
-const config = { useApiPath, useRoleName, useResultStatus, useRegex, useUserRole, useStyles, useMessage, useConfigAWS, useStatusOrder, useDataInfoSection, usePersonalizeType, useCreateBy }
+const config = { useApiPath, useRoleName, useResultStatus, useRegex, useUserRole, useStyles, useMessage, useConfigAWS, useStatusOrder, useDataInfoSection, usePersonalizeType, useCreatedBy }
 export default config
 

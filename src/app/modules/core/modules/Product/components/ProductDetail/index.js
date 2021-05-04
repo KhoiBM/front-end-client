@@ -19,8 +19,6 @@ export const ProductDetail = (props) => {
         <>
             {
                 ready && <ViewRawProductInformation record={record} />
-
-
             }
         </>
     )

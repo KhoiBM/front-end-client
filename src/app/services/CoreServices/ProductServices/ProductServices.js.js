@@ -795,18 +795,18 @@ export class ProductServices {
 
 
     static createCustomersRawProduct = (data) => {
-        // return useHttpModule().post(config.useApiPath.api., data)
-        return Promise.resolve({
-            data: {
-                result: config.useResultStatus.SUCCESS,
-                info: {
-                    record: {
-                        categoryCode: "categoryCode",
-                        rawProductCode: "rawProductCode",
-                    }
-                }
-            }
-        })
+        return useHttpModule().post(config.useApiPath.api.orderService.addCusRawProduct, data)
+        // return Promise.resolve({
+        //     data: {
+        //         result: config.useResultStatus.SUCCESS,
+        //         info: {
+        //             record: {
+        //                 categoryCode: "categoryCode",
+        //                 rawProductCode: "rawProductCode",
+        //             }
+        //         }
+        //     }
+        // })
 
     }
 
