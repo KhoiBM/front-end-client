@@ -265,7 +265,7 @@ export const CreateOrderFormContainer = (props) => {
                     createdBy,
                     customersRawProductUploadFiles } = cartItem
 
-                if (createdBy == config.useCreateBy.customer) {
+                if (createdBy == config.useCreatedBy.customer) {
 
                     const dataCustomersRawProduct = {
                         rawProductCode,
@@ -321,7 +321,7 @@ export const CreateOrderFormContainer = (props) => {
                     const categoryCode = record.categoryCode
                     const rawProductCode = record.rawProductCode
 
-                    shoppingCartRecords = shoppingCartRecords.map((cartItem) => cartItem.rawProductCode == dataCustomersRawProduct.rawProductCode ? { ...cartItem, rawProductCode } : { ...cartItem })
+                    setShoppingCartRecords(shoppingCartRecords.map((cartItem) => cartItem.rawProductCode == dataCustomersRawProduct.rawProductCode ? { ...cartItem, rawProductCode } : { ...cartItem }))
 
                     const uploadInfo = {
                         bucketName,
@@ -401,13 +401,11 @@ export const CreateOrderFormContainer = (props) => {
                     console.log("orderFlag:" + await Boolean(orderFlag))
 
                     if (await Boolean(orderFlag)) {
-                        // dispatch(useShoppingCartAction().cleanCartItemSuccess())
-                        toast.success("Đặt hàng thành công");
-                        // history.push("/core/home_page")
+                        dispatch(useShoppingCartAction().cleanCartItemSuccess())
+                        await toast.success("Đặt hàng thành công");
+                        history.push("/core/home_page")
                         scrollToTop()
                     }
-
-
 
                 } else {
                     // toast.error(config.useMessage.resultFailure)

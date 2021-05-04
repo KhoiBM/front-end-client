@@ -21,24 +21,45 @@ const useStyles = makeStyles(theme => ({
         width: "80%",
         height: "auto",
         // background: "blue",
-        color: "#fff",
         '& .MuiInputBase-root': {
             border: "1px solid #fff",
-            color: "#fff",
-            height: "40px",
+            borderRadius: "4px",
+            background: "#000 !important",
             '& .MuiInputBase-input': {
-                '&:focus': {
+                // border: "1px solid #fff",
+                borderRadius: "4px",
+                height: "5px !important",
+                background: "#000 !important",
+                color: "#fff !important",
+                textDecoration: "none",
 
-                    // outline: "none",
-                    // border: "none",
+                '&:focus': {
+                    outline: "none",
+                    border: "none",
+                    textDecoration: "none",
                 },
 
+            },
+            "& .MuiOutlinedInput-input": {
+                // border: "1px solid red",
+                // // borderRadius: "4px",
+                // color: "red !important",
+                // background: "#000 !important",
             }
 
         },
         '& .Mui-focused': {
             outline: "none",
             border: "none",
+        },
+        "& .MuiOutlinedInput-root": {
+
+            "& .MuiOutlinedInput-notchedOutline": {
+
+                // background: "#000 !important",
+                // color: "#fff !important",
+
+            }
         }
 
     },

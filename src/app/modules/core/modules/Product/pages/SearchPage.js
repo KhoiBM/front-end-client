@@ -166,19 +166,15 @@ const SearchPage = () => {
             <MainBar>
 
                 <Paper elevation={0} className={classes.mainContainer}>
-                    <>
-                        {records && records != null && records.length > 0 ?
-                            <>
+                    {records && records != null && records.length > 0 ?
+                        <>
 
-                                <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
+                            <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
 
-                            </>
+                        </>
+                        : !loading.status && <NotFound />
+                    }
 
-                            : <NotFound />
-                        }
-
-
-                    </>
                 </Paper>
 
             </MainBar>

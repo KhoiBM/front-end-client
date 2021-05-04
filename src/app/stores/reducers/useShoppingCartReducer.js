@@ -3,6 +3,11 @@
 
 import { ShoppingCartState } from "../states/ShoppingCartState";
 import { SHOPPINGCART_TYPE } from '../types/SHOPPINGCART_TYPE'
+import config from "src/environments/config";
+import { ProductServices } from "src/app/services";
+import { toast } from "react-toastify";
+
+
 
 
 export const useShoppingCartReducer = (state = new ShoppingCartState({
@@ -62,9 +67,14 @@ export const useShoppingCartReducer = (state = new ShoppingCartState({
             if (isExist) {
                 editedShoppingCart = editedShoppingCart.map((cartItem, index) => {
                     if (cartItem.cartItemCode == action.payload.data.cartItemCode) {
+
                         return { ...cartItem, ...action.payload.data }
+
+
                     }
+
                     return cartItem
+
                 })
             }
 

@@ -178,11 +178,11 @@ const usePersonalizeType = {
     "technicalCartItem": "3"
 }
 
-const useCreateBy = {
+const useCreatedBy = {
     customer: "Khách hàng",
     manager: "Quản lý"
 }
 
-const config = { useApiPath, useRoleName, useResultStatus, useRegex, useUserRole, useStyles, useMessage, useConfigAWS, useStatusOrder, useDataInfoSection, usePersonalizeType, useCreateBy }
+const config = { useApiPath, useRoleName, useResultStatus, useRegex, useUserRole, useStyles, useMessage, useConfigAWS, useStatusOrder, useDataInfoSection, usePersonalizeType, useCreatedBy }
 export default config
 

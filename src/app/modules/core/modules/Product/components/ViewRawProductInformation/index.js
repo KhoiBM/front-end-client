@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
         borderRadius: "10px",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
         transition: "all 0.2 ease -in -out",
+        position: "relative",
 
         '&:hover': {
             // transform: "scale(1.02)",
@@ -298,138 +299,145 @@ export const ViewRawProductInformation = (props) => {
 
             < div className={classes.pageViewInfomationContainer}>
                 <Paper elevation={0} className={classes.pageViewInfomationWrapper}>
-
-                    <Grid container spacing={4} className={classes.rootGrid}>
-
-                        <Grid item xs={6} sm={6} md={6} className={classes.gridItem1}>
-                            {photoList && photoList != null && <GridPhotoList photoList={photoList} />}
-                        </Grid>
+                    {recordRawProduct && recordRawProduct != null && Object.keys(recordRawProduct).length > 0 ?
 
 
-                        <Grid item xs={6} sm={6} md={6} className={classes.gridItem2}>
-                            <Grid container>
-                                <Grid item xs={12} sm={12} md={12} >
-                                    {/* <Box className={classes.categoryContainer}>
+                        <Grid container spacing={4} className={classes.rootGrid}>
+
+                            <Grid item xs={6} sm={6} md={6} className={classes.gridItem1}>
+                                {photoList && photoList != null && <GridPhotoList photoList={photoList} />}
+                            </Grid>
+
+
+                            <Grid item xs={6} sm={6} md={6} className={classes.gridItem2}>
+                                <Grid container>
+                                    <Grid item xs={12} sm={12} md={12} >
+                                        {/* <Box className={classes.categoryContainer}>
                                         <Typography variant={"subtitle1"} color={"textSecondary"}>Mã Code: {rawProductCode}</Typography>
                                     </Box> */}
-                                    <Box className={classes.titleContainer}>
-                                        <Typography variant={"h3"}>{rawProductName}</Typography>
-                                    </Box>
+                                        <Box className={classes.titleContainer}>
+                                            <Typography variant={"h3"}>{rawProductName}</Typography>
+                                        </Box>
 
-                                </Grid >
+                                    </Grid >
 
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <Box className={classes.descriptionContainer}>
-                                        <Typography variant={"body1"}>{description}</Typography>
-                                    </Box>
-
-                                </Grid>
-
-                                <Grid item xs={12} sm={12} md={12}>
-                                    <Grid container>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box >
-                                                <Typography variant={"h5"} color={"textSecondary"}>Giá sản phẩm</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"} >{useFormat().formatMoney(unitPrice)} đ</Typography>
-                                                </Box>
-
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box >
-                                                <Typography variant={"h5"} color={"textSecondary"}>Giá dịch vụ</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"} >{useFormat().formatMoney(servicePrice)} đ</Typography>
-                                                </Box>
-
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Kích thước</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{size}</Typography>
-                                                </Box>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Màu sắc </Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <RiCheckboxBlankCircleFill style={{ color: `${color}` }} />
-
-                                                </Box>
-                                            </Box>
-                                        </Grid>
-                                    </Grid>
-
-                                    <Grid container>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{totalQuantity <= 0 ? "Hết hàng" : totalQuantity}</Typography>
-                                                </Box>
-
-                                            </Box>
-
-                                        </Grid>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
-                                            <Box>
-                                                <Typography variant={"h5"} color={"textSecondary"}>Thể loại:</Typography>
-                                                <Box className={classes.contentWrapper}>
-                                                    <Typography variant={"body1"}>{categoryName}</Typography>
-                                                </Box>
-                                            </Box>
-                                        </Grid>
+                                    <Grid item xs={12} sm={12} md={12}>
+                                        <Box className={classes.descriptionContainer}>
+                                            <Typography variant={"body1"}>{description}</Typography>
+                                        </Box>
 
                                     </Grid>
 
-                                    <Grid container>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemButtonContainer}>
-                                            <div className={classes.buttonWrapper}>
-                                                <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonPersonalize} onClick={(event) => {
-                                                    event.stopPropagation()
-                                                    showLoader()
-                                                    const data = {
-                                                        categoryCode,
-                                                        rawProductCode,
-                                                        createdBy,
-                                                        personalizeType: config.usePersonalizeType.studioRawProductDetail
-                                                    }
-                                                    setPersonalizeModal({
-                                                        isOpen: true,
-                                                        recordForPersonalize: data,
-                                                        setRecordRawProduct,
-                                                        handleCloseModal
-                                                    })
-                                                    hideLoader()
-                                                }}>Cá nhân hoá</Button>
-                                            </div>
+                                    <Grid item xs={12} sm={12} md={12}>
+                                        <Grid container>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                                <Box >
+                                                    <Typography variant={"h5"} color={"textSecondary"}>Giá sản phẩm</Typography>
+                                                    <Box className={classes.contentWrapper}>
+                                                        <Typography variant={"body1"} >{useFormat().formatMoney(unitPrice)} đ</Typography>
+                                                    </Box>
+
+                                                </Box>
+                                            </Grid>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                                <Box >
+                                                    <Typography variant={"h5"} color={"textSecondary"}>Giá dịch vụ</Typography>
+                                                    <Box className={classes.contentWrapper}>
+                                                        <Typography variant={"body1"} >{useFormat().formatMoney(servicePrice)} đ</Typography>
+                                                    </Box>
+
+                                                </Box>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={12} sm={12} md={6} className={classes.gridItemButtonContainer}>
 
-                                            <div className={classes.buttonWrapper}>
+                                        <Grid container>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                                <Box>
+                                                    <Typography variant={"h5"} color={"textSecondary"}>Kích thước</Typography>
+                                                    <Box className={classes.contentWrapper}>
+                                                        <Typography variant={"body1"}>{size}</Typography>
+                                                    </Box>
+                                                </Box>
+                                            </Grid>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                                <Box>
+                                                    <Typography variant={"h5"} color={"textSecondary"}>Màu sắc </Typography>
+                                                    <Box className={classes.contentWrapper}>
+                                                        <RiCheckboxBlankCircleFill style={{ color: `${color}` }} />
 
-                                                <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonAdd} onClick={addCartItem} >Thêm vào giỏ hàng</Button>
-                                            </div>
+                                                    </Box>
+                                                </Box>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid container>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                                <Box>
+                                                    <Typography variant={"h5"} color={"textSecondary"}>Tổng số lượng</Typography>
+                                                    <Box className={classes.contentWrapper}>
+                                                        <Typography variant={"body1"}>{totalQuantity <= 0 ? "Hết hàng" : totalQuantity}</Typography>
+                                                    </Box>
+
+                                                </Box>
+
+                                            </Grid>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemContent}>
+                                                <Box>
+                                                    <Typography variant={"h5"} color={"textSecondary"}>Thể loại:</Typography>
+                                                    <Box className={classes.contentWrapper}>
+                                                        <Typography variant={"body1"}>{categoryName}</Typography>
+                                                    </Box>
+                                                </Box>
+                                            </Grid>
+
+                                        </Grid>
+
+                                        <Grid container>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemButtonContainer}>
+                                                <div className={classes.buttonWrapper}>
+                                                    <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonPersonalize} onClick={(event) => {
+                                                        event.stopPropagation()
+                                                        showLoader()
+                                                        const data = {
+                                                            categoryCode,
+                                                            rawProductCode,
+                                                            createdBy,
+                                                            personalizeType: config.usePersonalizeType.studioRawProductDetail
+                                                        }
+                                                        setPersonalizeModal({
+                                                            isOpen: true,
+                                                            recordForPersonalize: data,
+                                                            setRecordRawProduct,
+                                                            handleCloseModal
+                                                        })
+                                                        hideLoader()
+                                                    }}>Cá nhân hoá</Button>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={12} sm={12} md={6} className={classes.gridItemButtonContainer}>
+
+                                                <div className={classes.buttonWrapper}>
+
+                                                    <Button type="submit" variant="outlined" color="primary" size="large" className={classes.buttonAdd} onClick={addCartItem} >Thêm vào giỏ hàng</Button>
+                                                </div>
+
+                                            </Grid>
 
                                         </Grid>
 
                                     </Grid>
-
                                 </Grid>
                             </Grid>
-                        </Grid>
 
-                    </Grid>
+                        </Grid>
+                        :
+                        !loading.status && <NotFound />
+                    }
+
                 </Paper>
 
             </ div>
+
             <Personalize personalizeModal={personalizeModal} setPersonalizeModal={setPersonalizeModal} />
 
 

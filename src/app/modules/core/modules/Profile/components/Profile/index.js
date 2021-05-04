@@ -224,7 +224,7 @@ export const Profile = () => {
                     toast.error(config.useMessage.resultFailure)
                 }
             } catch (err) {
-                // toast.error(config.useMessage.fetchApiFailure)
+                toast.error(config.useMessage.fetchApiFailure)
             }
             hideLoader()
         } else {

@@ -6,7 +6,7 @@ import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilte
 import { makeStyles, Paper } from '@material-ui/core';
 import { ProductList, FilterRawProductBar } from '../components';
 import { MainBar } from '../../../components';
-import { Loader } from 'src/app/components';
+import { Loader, NotFound } from 'src/app/components';
 import { useLoaderHandle } from 'src/app/utils/handles/useLoaderHandle';
 
 const useStyles = makeStyles(theme => ({
@@ -233,24 +233,24 @@ const ProductListPage = () => {
 
     return (
         <>
-            {/* <p>ProductListPage</p>
-             */}
             {< Loader loading={loading} />}
 
             <MainBar>
 
                 <Paper elevation={0} className={classes.mainContainer}>
-                    <>
 
-                        <div className={classes.actionContainer}>
-                            <div className={classes.actionWrapper}>
-                                <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
+                    {records && records != null && records.length > 0 ?
+                        <>
+                            <div className={classes.actionContainer}>
+                                <div className={classes.actionWrapper}>
+                                    <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
+                                </div>
                             </div>
-                        </div>
+                            <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
+                        </>
+                        : !loading.status && <NotFound />
+                    }
 
-                        <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
-
-                    </>
                 </Paper>
 
             </MainBar>

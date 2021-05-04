@@ -183,7 +183,7 @@ export const TrackOrderTable = (props) => {
                             <StyledTableCell >{row.statusOrder}</StyledTableCell>
 
                             <StyledTableCell>
-                                {row.statusPayment ? "Đã thanh toán" : "Chưa thanh toán"}
+                                {new Boolean(row.statusPayment) ? "Đã thanh toán" : "Chưa thanh toán"}
                             </StyledTableCell>
 
                             {/* <StyledTableCell >{row.shipAt}</StyledTableCell> */}

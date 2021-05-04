@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import config from 'src/environments/config';
 import { Tooltip, Zoom, IconButton, Badge, makeStyles, Popover, Typography, Card, Paper, Box } from '@material-ui/core';
-import { RiNotification2Line } from 'react-icons/ri';
+import { RiNotification2Line, RiNotificationOffLine } from 'react-icons/ri';
 import { NotificationServices } from 'src/app/services';
 import { toast } from 'react-toastify';
 import differenceInMinutes from 'date-fns/differenceInMinutes'
@@ -36,7 +36,9 @@ const useStyles = makeStyles((theme) => ({
         position: "relative",
         zIndex: "1101 !important",
         // background: "red",
+
         "& .MuiPaper-root": {
+            minWidth: theme.spacing(70),
             height: theme.spacing(70),
             minHeight: "theme.spacing(70)!important",
         }
@@ -76,6 +78,24 @@ const useStyles = makeStyles((theme) => ({
         width: "33rem",
         height: "30px",
         marginBottom: theme.spacing(2)
+    },
+    emptyNotificationContainer: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+
+    },
+    emptyNotificationWrapper: {
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: theme.spacing(5)
+
     }
 }));
 
@@ -115,22 +135,16 @@ export const NotificationBar = () => {
 
 
 
-    useEffect(() => {
-        loadInit()
-        // console.log("loadNotiInit")
-
-    }, [])
+    // console.log("recordsNoti:" + JSON.stringify(recordsNoti))
 
     useEffect(() => {
         loadInit()
         // console.log("loadNotiInitRefresh")
-    }, [refresh])
+    }, [])
 
     const loadInit = async () => {
-        loadData()
-        loadCountNoti()
-
-
+        await loadData()
+        await loadCountNoti()
     }
 
     const loadCountNoti = async () => {
@@ -163,19 +177,31 @@ export const NotificationBar = () => {
     const loadData = async () => {
 
         try {
-            const response = await (await NotificationServices.viewNotification()).data
 
-            // console.log("response: " + response)
+            const response = await (await NotificationServices.viewNotification()).data
 
             if (response && response != null) {
 
                 if (response.result == config.useResultStatus.SUCCESS) {
 
-                    // console.log("records: " + JSON.stringify(response.info.records))
-
                     const records = response.info.records
 
-                    setRecordsNoti(records && records != null && records.length > 0 ? records : [])
+                    setRecordsNoti(records && records != null && records.length > 0 ? records.map((notiRecord) => {
+                        const parseCreatedAt = parse(notiRecord.createdAt.split('.')[0], 'yyyy-MM-dd HH:mm:ss', new Date())
+
+                        console.log("parseCreatedAt: " + parseCreatedAt)
+
+                        const formatCreatedAt = format(parseCreatedAt, "dd-MM-yyyy HH:mm:ss")
+
+                        console.log("formatCreatedAt: " + formatCreatedAt)
+
+                        return {
+                            ...notiRecord,
+                            createdAt: formatCreatedAt
+                        }
+
+                    }
+                    ) : [])
 
                 } else {
                     // toast.error(config.useMessage.resultFailure)
@@ -195,26 +221,15 @@ export const NotificationBar = () => {
 
     }
 
-    // console.log("isView:" + notificationDialog.isView)
-    const onIsView = async (isView) => {
+    const onIsView = async (notificationID, isView) => {
+
         setNotificationDialog({ ...notificationDialog, isOpen: false, isView: true })
-
-        // console.log("passisView" + isView)
         try {
-            const response = await (await NotificationServices.isView(isView)).data
+            const data = { notificationID, view: isView }
 
-            // console.log("response: " + response)
+            console.log(data)
 
-            if (response && response != null) {
-                if (response.result == config.useResultStatus.SUCCESS) {
-                    // toast.success("Thành công")
-                } else {
-                    // toast.error(config.useMessage.resultFailure)
-                }
-            } else {
-                // throw new Error("Response is null or undefined")
-            }
-
+            const response = await (await NotificationServices.isView(data)).data
         } catch (err) {
             // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`)
         }
@@ -257,72 +272,86 @@ export const NotificationBar = () => {
                             anchorPosition={{ top: 70, left: 1400 }}
                             anchorReference='anchorPosition'
                         >{
-                                recordsNoti && recordsNoti != null && recordsNoti.length > 0 && recordsNoti.map((noti, index) => {
+                                recordsNoti && recordsNoti != null && recordsNoti.length > 0 ?
+                                    recordsNoti.map((noti, index) => {
 
-                                    // console.log("diff: " + differenceInMinutes(new Date(), noti.createdAt))
-                                    // console.log(noti.createdAt)
-                                    // console.log(parse("22-03-2021 16:40:00", "dd-MM-yyyy HH:mm:ss", new Date()))
+                                        // console.log("diff: " + differenceInMinutes(new Date(), noti.createdAt))
+                                        // console.log(noti.createdAt)
+                                        // console.log(parse("22-03-2021 16:40:00", "dd-MM-yyyy HH:mm:ss", new Date()))
 
-                                    // console.log(parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
-                                    // console.log(format(parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date())))
+                                        // console.log(parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
+                                        // console.log(format(parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date())))
 
-                                    // console.log(format(noti.createdAt, "dd-MM-yyyy HH:mm:ss"))
+                                        // console.log(format(noti.createdAt, "dd-MM-yyyy HH:mm:ss"))
 
-                                    const diffMinutes = differenceInMinutes(new Date(), parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
-                                    const diffHours = differenceInHours(new Date(), parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
-                                    const diffDays = differenceInDays(new Date(), parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
+                                        const diffMinutes = differenceInMinutes(new Date(), parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
+                                        const diffHours = differenceInHours(new Date(), parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
+                                        const diffDays = differenceInDays(new Date(), parse(noti.createdAt, "dd-MM-yyyy HH:mm:ss", new Date()))
 
-                                    return (
+                                        return (
 
-                                        <Paper className={classes.rootCard} key={index} elevation={0}
+                                            <Paper className={classes.rootCard} key={index} elevation={0}
 
-                                            onClick={(event) => {
+                                                onClick={(event) => {
 
-                                                event.stopPropagation();
+                                                    event.stopPropagation();
 
-                                                setNotificationDialog((prev) => (
-                                                    {
-                                                        isOpen: true,
-                                                        title: noti.title,
-                                                        content: noti.content,
-                                                        actionLink: noti.actionLink,
-                                                        type: noti.type,
-                                                        isView: noti.isView,
-                                                        // createdAt: "22-03-2021 17:13:00",
-                                                        createdAt: noti.createdAt,
-                                                        onIsView: (isView) => { onIsView(isView) }
-                                                    }
-                                                )
-                                                )
-
-                                            }}
-
-                                        >
-                                            <Box className={classes.notiWrapper}>
-                                                <Box className={classes.titleWrapper}>
-                                                    <Typography variant={"h6"} className={classes.contentTitle}>{noti.title}</Typography>
-                                                    <Typography className={classes.dateAgo} color={"textSecondary"}>
+                                                    setNotificationDialog((prev) => (
                                                         {
-                                                            `${diffMinutes <= 60
-                                                                ? diffMinutes + " phút"
-                                                                : diffHours <= 24
-                                                                    ? diffHours + " giờ"
-                                                                    : diffDays + " ngày"}  cách đây
-                                                                    `
+                                                            isOpen: true,
+                                                            title: noti.title,
+                                                            content: noti.content,
+                                                            actionLink: noti.actionLink,
+                                                            type: noti.type,
+                                                            isView: noti.view,
+                                                            createdAt: noti.createdAt,
+                                                            onIsView: (isView) => { onIsView(noti.notificationID, isView) }
                                                         }
+                                                    )
+                                                    )
+
+                                                }}
+
+                                            >
+                                                <Box className={classes.notiWrapper}>
+                                                    <Box className={classes.titleWrapper}>
+                                                        <Typography variant={"h6"} className={classes.contentTitle}>{noti.title}</Typography>
+                                                        <Typography className={classes.dateAgo} color={"textSecondary"}>
+                                                            {
+                                                                `${diffMinutes <= 60
+                                                                    ? diffMinutes + " phút"
+                                                                    : diffHours <= 24
+                                                                        ? diffHours + " giờ"
+                                                                        : diffDays + " ngày"}  cách đây
+                                                                    `
+                                                            }
+                                                        </Typography>
+
+                                                    </Box>
+
+                                                    <Typography className={classes.contentNoti} variant={"body2"} >
+                                                        {noti.content}
                                                     </Typography>
-
                                                 </Box>
+                                            </Paper>
 
-                                                <Typography className={classes.contentNoti} variant={"body2"} >
-                                                    {noti.content}
+                                        )
+                                    }
+                                    )
+                                    :
+                                    <>
+                                        <Box className={classes.emptyNotificationContainer}>
+                                            <Box className={classes.emptyNotificationWrapper}>
+                                                <RiNotificationOffLine style={{ fontSize: "200px", color: "var(--primary-color-main)" }} />
+                                                <Typography
+                                                    variant={"subtitle1"}
+                                                    color={"textSecondary"}
+                                                >
+                                                    Không có thông báo
                                                 </Typography>
                                             </Box>
-                                        </Paper>
-
-                                    )
-                                }
-                                )
+                                        </Box>
+                                    </>
                             }
 
                         </Popover>
@@ -341,49 +370,3 @@ export const NotificationBar = () => {
 
 
 
-// const intervalID = setInterval(() => {
-
-//     // console.log("setInterval")
-
-//     // loadInit()
-//     setRefresh(!refresh)
-// }, 1000)
-
-// return () => clearInterval(intervalID);
-{/* <Menu
-                                id="noti-appbar"
-                                anchorEl={anchorElMenuNoti}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                keepMounted
-                                open={openMenuNoti}
-                                onClose={handleCloseMenuNoti}
-                            >
-                                <MenuList>
-                                    <MenuItem onClick={() => {
-                                        handleCloseMenuNoti();
-                                    }}>
-
-                                    </MenuItem>
-
-                                    <MenuItem onClick={() => {
-                                        handleCloseMenuNoti();
-                                    }}>
-
-                                    </MenuItem>
-                                </MenuList>
-
-                            </Menu> */}
-
-
-
-// const handleMenuNoti = (event) => {
-//     setAnchorElMenuNoti(event.currentTarget);
-// };
-// const handleCloseMenuNoti = (event) => {
-//     setAnchorElMenuNoti(null);
-// };
-// const [anchorElMenuNoti, setAnchorElMenuNoti] = useState(null);
-// const openMenuNoti = Boolean(anchorElMenuNoti);
