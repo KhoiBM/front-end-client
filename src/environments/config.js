@@ -37,6 +37,9 @@ const useApiPath = {
             createOrder: "order/create-order",
             addOrderDetail: "order/add-order-detail",
             trackOrder: "order/get-list-order",
+            viewOrderDetailList: "order/get-list-order-detail",
+            confirmDemo: "order/confirm-demo-product",
+            cancelOrder: "order/cancel-order"
         }
 
     }
