@@ -239,15 +239,17 @@ const ProductListPage = () => {
 
                 <Paper elevation={0} className={classes.mainContainer}>
 
-                    {records && records != null && records.length > 0 ?
-                        <>
-                            <div className={classes.actionContainer}>
-                                <div className={classes.actionWrapper}>
-                                    <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
-                                </div>
+
+                    <>
+                        <div className={classes.actionContainer}>
+                            <div className={classes.actionWrapper}>
+                                <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
                             </div>
-                            <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
-                        </>
+                        </div>
+
+                    </>
+                    {records && records != null && records.length > 0 ?
+                        <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
                         : !loading.status && <NotFound />
                     }
 
