@@ -3,7 +3,7 @@ import { ProductServices } from 'src/app/services'
 import config from 'src/environments/config';
 import { toast } from 'react-toastify';
 import { useGetStateLocation, useQueryURL, useRefresh, useFilterHandle, useFilterRawProductHandle, useLoadingEffect, useScrollToTop } from 'src/app/utils';
-import { makeStyles, Paper } from '@material-ui/core';
+import { makeStyles, Paper, Box } from '@material-ui/core';
 import { ProductList, FilterRawProductBar } from '../components';
 import { MainBar } from '../../../components';
 import { Loader, NotFound } from 'src/app/components';
@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
         paddingRight: theme.spacing(2),
         // background: 'red',
         // border: "1px solid red",
+        width: "100%",
+        height: "100px",
+        zIndex: "100"
     },
     actionWrapper: {
         display: "flex",
@@ -240,18 +243,19 @@ const ProductListPage = () => {
                 <Paper elevation={0} className={classes.mainContainer}>
 
 
-                    <>
-                        <div className={classes.actionContainer}>
-                            <div className={classes.actionWrapper}>
-                                <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
-                            </div>
+                    <div className={classes.actionContainer}>
+                        <div className={classes.actionWrapper}>
+                            <FilterRawProductBar inputLabel={"Bộ lọc"} recordsSelect={recordsSelect} setRecordsSelect={setRecordsSelect} filterList={filterList} setFilterList={setFilterList} setAction={setAction} setClickFilter={setClickFilter} />
                         </div>
+                    </div>
 
-                    </>
-                    {records && records != null && records.length > 0 ?
-                        <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
-                        : !loading.status && <NotFound />
-                    }
+                    <Box>
+                        {records && records != null && records.length > 0 ?
+                            <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
+                            : !loading.status && <NotFound />
+                        }
+
+                    </Box>
 
                 </Paper>
 

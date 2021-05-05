@@ -183,7 +183,7 @@ export const TrackOrderTable = (props) => {
                             <StyledTableCell >{row.statusOrder}</StyledTableCell>
 
                             <StyledTableCell>
-                                {new Boolean(row.statusPayment) ? "Đã thanh toán" : "Chưa thanh toán"}
+                                {row.statusPayment ? "Đã thanh toán" : "Chưa thanh toán"}
                             </StyledTableCell>
 
                             {/* <StyledTableCell >{row.shipAt}</StyledTableCell> */}
@@ -211,7 +211,7 @@ export const TrackOrderTable = (props) => {
 
                                 </ Tooltip>
                                 {
-                                    // row.statusOrder == "Chờ xác nhận mẫu" &&
+                                    row.statusOrder == config.useStatusOrder.CUSTOMER.FILTER[5] &&
                                     < Tooltip TransitionComponent={Zoom} placement="top" title="Xác nhận sản phẩm mẫu" >
 
                                         <Button onClick={(event) => {
@@ -240,7 +240,7 @@ export const TrackOrderTable = (props) => {
 
 
                                 {
-                                    // row.statusOrder == "Đơn chờ duyệt" &&
+                                    row.statusOrder == config.useStatusOrder.CUSTOMER.FILTER[0] &&
                                     <Tooltip TransitionComponent={Zoom} placement="top" title="Huỷ đơn hàng" >
 
                                         <Button onClick={(event) => {

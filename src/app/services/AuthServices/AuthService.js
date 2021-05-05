@@ -54,10 +54,12 @@ export class AuthService {
         // })
     }
 
-    static signOut = () => {
-        useHttpModule().get(config.useApiPath.api.auth.SignOut)
+    static signOut = async () => {
+        const ppsToken = localStorage.getItem("pps-token")
         localStorage.removeItem("pps-token")
         localStorage.removeItem("role")
+        // return
+        // useHttpModule().post(config.useApiPath.api.auth.SignOut)
     }
 
 }

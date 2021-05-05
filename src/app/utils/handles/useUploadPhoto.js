@@ -116,18 +116,18 @@ export const useUploadPhoto = () => {
         if (responseUploadPhotoWithPresignedURL && responseUploadPhotoWithPresignedURL != null) {
             if (responseStatus == 200) {
 
-                toast.success(`Tải lên ảnh ${uploadFile.name} thành công`)
+                // toast.success(`Tải lên ảnh ${uploadFile.name} thành công`)
 
             } else {
                 // toast.error(`uploadPhotoWithPresignedURL:${config.useMessage.resultFailure}`)
-                toast.error(`Tải lên ảnh ${uploadFile.name} thất bại`)
+                // toast.error(`Tải lên ảnh ${uploadFile.name} thất bại`)
                 // throw new Error(`${ config.useMessage.resultFailure } `)
                 return false
             }
         } else {
             // throw new Error("responseUploadPhotoWithPresignedURL is null or undefined")
             // toast.error(`uploadPhotoWithPresignedURL: responseUploadPhotoWithPresignedURL is null or undefined`)
-            toast.error(`Tải lên ảnh ${uploadFile.name} thất bại`)
+            // toast.error(`Tải lên ảnh ${uploadFile.name} thất bại`)
             return false
         }
 

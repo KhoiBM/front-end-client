@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
         right: 0,
         top: 0,
         color: theme.palette.primary.main,
-        // border: "1px solid red"
+        // border: "1px solid red",
+        zIndex: "1"
     }
 }));
 export const NotFound = (props) => {

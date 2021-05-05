@@ -71,10 +71,12 @@ const URLImage = ({
     onDelete,
     onDragEnd,
     onChange,
-    handleRefresh
+    handleRefresh,
+    layerRef
 }) => {
 
     // console.log("isSelected:" + JSON.stringify(isSelected))
+    const { refresh, setRefresh, first, setFirst, handleRefresh: handleRefreshURLImage } = useRefresh()
 
     const shapeRef = useRef();
     const groupRef = useRef();
@@ -107,7 +109,7 @@ const URLImage = ({
 
     useEffect(() => {
         if (img && img != null) {
-            console.table(JSON.stringify(img))
+            // console.table(img)
             // console.log("width:" + JSON.stringify(img.width))
             // console.log("height:" + JSON.stringify(img.height))
             const data = getScaledImageCoordinates(700, 600, img.width, img.height)
@@ -128,6 +130,10 @@ const URLImage = ({
 
         }
     }, [isSelected]);
+
+    useEffect(() => {
+        console.log("refreshURLImage")
+    }, [refresh]);
 
 
     function getScaledImageCoordinates(
@@ -161,11 +167,24 @@ const URLImage = ({
 
                     onClick={async (e) => {
 
+                        // layerRef.current.getStage().batchDraw()
+
                         selectShape(null)
 
-                        await onDelete()
+                        await onDelete(image.id)
+                        // setScaledImage(prev => ({
+                        //     ...prev,
+                        //     newWidth: 0,
+                        //     newHeight: 0,
+                        // }));
 
+                        // setDeleteButton(prev => ({
+                        //     ...prev,
+                        //     newWidth: 0,
+                        //     newHeight: 0,
+                        // }))
                         handleRefresh()
+                        handleRefreshURLImage()
 
                     }}
 
@@ -228,18 +247,19 @@ const URLImage = ({
 
                 }}
                 onDragEnd={e => {
-                    setScaledImage(prev => ({
-                        ...prev,
-                        isDragging: false,
-                        x: e.target.x() + 130,
-                        y: e.target.y() + 60
-                    }));
+
                     onChange({
                         ...scaledImage,
                         isDragging: false,
                         x: e.target.x() + 130,
                         y: e.target.y() + 60
                     })
+                    setScaledImage(prev => ({
+                        ...prev,
+                        isDragging: false,
+                        x: e.target.x() + 130,
+                        y: e.target.y() + 60
+                    }));
                     setDeleteButton(prev => ({
                         ...prev,
                         isDragging: false,
@@ -406,13 +426,18 @@ export const StageKonvaContainer = (props) => {
 
     // }
 
-
+    const layerRef = useRef();
 
     const [selectedId, selectShape] = useState(null);
 
     const [bgStage, setBgStage] = useState(null)
 
     const { refresh, setRefresh, first, setFirst, handleRefresh } = useRefresh()
+
+
+    useEffect(() => {
+
+    }, [refresh])
 
 
     // console.log("bgStage")
@@ -473,7 +498,8 @@ export const StageKonvaContainer = (props) => {
 
     useEffect(() => {
         console.log("refresh")
-        console.log("toPrintInStageImages:" + JSON.stringify(toPrintInStageImages))
+        console.log("toPrintInStageImages:")
+        console.table(toPrintInStageImages)
     }, [dragUrl, toPrintInStageImages, refresh])
 
     useEffect(() => {
@@ -555,7 +581,7 @@ export const StageKonvaContainer = (props) => {
                     onTouchStart={checkDeselect}
 
                 >
-                    <Layer className={classes.layerContainer}>
+                    <Layer className={classes.layerContainer} ref={layerRef}>
                         {bgStage && bgStage != null &&
                             <URLBGImage image={bgStage}
                             />
@@ -568,13 +594,15 @@ export const StageKonvaContainer = (props) => {
                                     console.log("changeSelectedIdStage")
                                     setSeletedPhotoID(image.id)
                                 }}
+                                layerRef={layerRef}
                                 selectShape={selectShape}
-                                onDelete={async () => {
-                                    const newImages = await toPrintInStageImages.filter((val, index) => `${val.id}` !== `${image.id}`);
+                                onDelete={async (deleteID) => {
+                                    const newImages = await toPrintInStageImages.filter((val, index) => val.id != deleteID);
 
                                     // console.log("deletedImages:" + JSON.stringify(newImages))
                                     await setToPrintInStageImages(newImages);
                                     // console.log("onDelete:")
+
                                     handleRefresh()
 
                                 }}
@@ -598,135 +626,3 @@ export const StageKonvaContainer = (props) => {
         </>
     )
 }
-
-{/* <Group
-    draggable
-
-    strokeWidth={2}
-    stroke={"blue"}
-
-    x={image.x}
-    y={image.y}
-
-    width={scaledImage ? scaledImage.newWidth + 50 : 0}
-    height={scaledImage ? scaledImage.newHeight + 50 : 0}
-
-    onDragStart={(e) => {
-        // setIsDragging(true)
-        // const container = e.target.getStage().container();
-        // // container.style.cursor = "pointer";
-        // container.style.border = "1px solid red";
-    }
-    }
-
-    onDragEnd={(e) => {
-
-        // setIsDragging(false);
-
-        // setScaledImage(prev => ({
-        //     ...prev,
-        //     isDragging: false,
-        //     x: e.target.x() + 130,
-        //     y: e.target.y() + 60
-        // }));
-
-        // onChange({
-        //     ...scaledImage,
-        //     isDragging: false,
-        //     x: e.target.x() + 130,
-        //     y: e.target.y() + 60
-        // })
-
-    }}
-> */}
-
-
-
-
-
-// const LionImage = (classes) => {
-//     // const [image] = useImage("https://photo-upload-album-1.s3-ap-southeast-1.amazonaws.com/Studio'sRawProduct/categoryCode/productcode/61895338-2d60-50a8-aa53-5768dbe89724aaaa.png");
-//     // const [img] = useImage("https://photo-upload-album-1.s3-ap-southeast-1.amazonaws.com/Studio'sRawProduct/categoryCode/productcode/03ea3cd4-ef98-52f2-bc44-a854e167a8aaScreen%20Shot%202021-03-21%20at%2021.59.47.png");
-//     const [img] = useImage("https://photo-upload-album-1.s3-ap-southeast-1.amazonaws.com/Studio'sRawProduct/categoryCode/productcode/03ea3cd4-ef98-52f2-bc44-a854e167a8aaScreen%20Shot%202021-03-21%20at%2021.59.47.png");
-//     useEffect(() => {
-//         if (img && img != null) {
-//             console.table(JSON.stringify(img))
-//             console.log("width:" + JSON.stringify(img.width))
-//             console.log("height:" + JSON.stringify(img.height))
-//         }
-
-//     }, [img])
-
-//     // function getScaledImageCoordinates(
-//     //     containerWidth,
-//     //     containerHeight,
-//     //     width,
-//     //     height,
-//     // ) {
-//     //     let widthRatio = (containerWidth) / width,
-//     //         heightRatio = (containerHeight) / height
-//     //     let bestRatio = Math.min(widthRatio, heightRatio)
-//     //     let newWidth = width * bestRatio,
-//     //         newHeight = height * bestRatio
-//     //     return { newWidth, newHeight }
-//     // }
-
-//     return (
-//         < Image
-//             image={img}
-//             x={250}
-
-
-//             strokeWidth={2}
-//             stroke={"red"}
-
-//             width={img ? img.width * (700 / img.width) : 0}
-//             height={img ? img.height * (600 / img.height) : 0}
-
-//             // scale={{
-//             //     x: 0.4,
-//             //     y: 0.4
-//             // }}
-
-//             offsetX={img ? (img.width / 10) : 0}
-//             offsetY={img ? -(img.height / 10) : 0}
-
-
-//         // style={{
-//         //     objectFit: "contain",
-//         //     maxWidth: "20px !important",
-//         //     maxHeight: "30%",
-//         //     width: 'auto',
-//         //     height: 'auto',
-//         //     // border: "1px solid blue",
-
-//         // }}
-//         />
-//     )
-
-
-
-
-// };
-
-
-
-// const [img] = useImage("https://photo-upload-album-1.s3-ap-southeast-1.amazonaws.com/Studio'sRawProduct/categoryCode/productcode/61895338-2d60-50a8-aa53-5768dbe89724aaaa.png");
-// const [img] = useImage(`${ bgPhoto }`);
-{/* <URLBGImage image={{ src: bgPhoto }} /> */ }
-{/* <img
-                style={{ height: "100px" }}
-                src={img && img != null ? img.src : ""}
-                onClick={() => {
-
-                }}
-            /> */}
-            // <Stage
-
-            // >
-            //     <Layer
-            //     >
-            //         <LionImage classes={classes} />
-            //     </Layer>
-            // </Stage>
-    // const [image] = useImage("https://photo-upload-album-1.s3-ap-southeast-1.amazonaws.com/Studio'sRawProduct/categoryCode/productcode/03ea3cd4-ef98-52f2-bc44-a854e167a8aaScreen%20Shot%202021-03-21%20at%2021.59.47.png");

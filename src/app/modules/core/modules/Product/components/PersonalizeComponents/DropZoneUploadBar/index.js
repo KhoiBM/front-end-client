@@ -316,7 +316,8 @@ export const DropZoneUploadBar = (props) => {
                                             src: e.target.src
 
                                         }
-                                        console.log("dragUrl: " + dragUrl.current)
+                                        console.log("dragUrl: ")
+                                        console.log(dragUrl.current)
                                     }}
                                 />
                             </Tooltip>

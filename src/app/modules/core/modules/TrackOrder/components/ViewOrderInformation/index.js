@@ -276,7 +276,7 @@ export const ViewOrderInformation = (props) => {
                                             variant='outlined'
                                             label="Mã Code đơn hàng"
                                             value={recordOrder.orderCode}
-                                            name='orderID'
+                                            name='orderCode'
                                         // required
                                         // disabled
                                         />
@@ -340,7 +340,7 @@ disabled
                                             variant='outlined'
                                             label="Trạng thái thanh toán"
                                             value={recordOrder.statusPayment ? "Đã thanh toán" : "Chưa thanh toán"}
-                                            name='statusOrder'
+                                            name='statusPayment'
                                         // required
                                         // disabled
                                         />

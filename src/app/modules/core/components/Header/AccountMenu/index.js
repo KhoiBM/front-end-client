@@ -134,9 +134,9 @@ export const AccountMenu = () => {
    Theo dõi đơn hàng
     </MenuItem>
 
-                    <MenuItem onClick={() => {
+                    <MenuItem onClick={async () => {
                         handleCloseMenuAccount();
-                        AuthService.signOut()
+                        await AuthService.signOut()
                         toast.success("Đăng xuất thành công")
                         history.push({
                             pathname: `/navigation`,

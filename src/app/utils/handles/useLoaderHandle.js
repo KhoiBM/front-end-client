@@ -14,7 +14,7 @@ export const useLoaderHandle = () => {
 
     const hideLoader = async () => {
 
-        await wait(1000)
+        await wait(2000)
 
         await dispatch(useLoadingAction().hideLoading())
 
