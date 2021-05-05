@@ -155,18 +155,26 @@ export const GridPhotoList = (props) => {
 
     const [photoToShow, setPhotoToShow] = useState()
 
-
+    const [photoListMap, setPhotoListMap] = useState([])
     useEffect(() => {
         loadInit()
 
     }, [photoList])
 
+    useEffect(() => {
+        setPhotoToShow(photoListMap[0])
+    }, [photoListMap])
+
+
 
     const loadInit = () => {
         // console.log("GridPhotoList:" + JSON.stringify(photoList))
-        if (photoList && photoList != null) setPhotoToShow(photoList[0])
+        if (photoList && photoList != null) {
+            setPhotoListMap(photoList.map((url) => `${url}?timestamp=${new Date().getTime()}`))
+        }
 
     }
+
 
 
     return (
