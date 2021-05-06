@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services';
 import { toast } from 'react-toastify';
 import { AiOutlineProfile, AiOutlineLogout, AiOutlineFileSearch } from 'react-icons/ai';
 import { animateScroll as scroll } from 'react-scroll';
+import config from 'src/environments/config';
 
 const useStyles = makeStyles((theme) => ({
 
@@ -136,23 +137,42 @@ export const AccountMenu = () => {
 
                     <MenuItem onClick={async () => {
                         handleCloseMenuAccount();
-                        await AuthService.signOut()
-                        toast.success("Đăng xuất thành công")
-                        history.push({
-                            pathname: `/navigation`,
-                            search: ``,
-                            state: {
-                                data: {
-                                    locationObject: {
-                                        pathname: `/auth/signin`,
+                        try {
+                            const response = await (await AuthService.signOut()).data
+                            // console.log("response: " + JSON.stringify(response))
+                            if (response && response != null) {
+                                if (response.result == config.useResultStatus.SUCCESS) {
+
+                                    localStorage.removeItem("pps-token")
+                                    localStorage.removeItem("role")
+                                    toast.success("Đăng xuất thành công")
+                                    history.push({
+                                        pathname: `/navigation`,
                                         search: ``,
                                         state: {
-                                            data: {}
+                                            data: {
+                                                locationObject: {
+                                                    pathname: `/auth/signin`,
+                                                    search: ``,
+                                                    state: {
+                                                        data: {}
+                                                    }
+                                                }
+                                            }
                                         }
-                                    }
+                                    })
+
+                                } else {
+                                    // toast.error(`${config.useMessage.resultFailure} + ${response.errorInfo}`)
                                 }
+                            } else {
+                                throw new Error("Response is null or undefined")
                             }
-                        })
+
+                        } catch (err) {
+                            // toast.error(`${config.useMessage.fetchApiFailure} + ${err}`,)
+                        }
+
                         scrollToTop()
                     }}>
                         <span style={{ marginRight: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}><AiOutlineLogout />

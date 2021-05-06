@@ -16,7 +16,7 @@ export const useHttpModule = (headers = {}, authorization = true, baseURL = `${c
             return Promise.resolve(value);
         }, (error) => {
             console.log("error in request axios:" + error)
-            toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
             // return Promise.reject(error);
             throw error
         }
@@ -28,7 +28,7 @@ export const useHttpModule = (headers = {}, authorization = true, baseURL = `${c
             return Promise.resolve(value);
         }, (error) => {
             console.log("error in response axios: " + error)
-            toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
             // return Promise.reject(error);
             throw error
         }
@@ -50,7 +50,7 @@ export const useHttpModuleAWS = (headers = {}) => {
             return Promise.resolve(value);
         }, (error) => {
             console.log("error in request AWS axios:" + error)
-            toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
             // return Promise.reject(error);
             throw error
         }
@@ -62,7 +62,7 @@ export const useHttpModuleAWS = (headers = {}) => {
             return Promise.resolve(value);
         }, (error) => {
             console.log("error in response AWS axios: " + error)
-            toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
+            // toast.error(`${config.useMessage.fetchApiFailure} - ${error}`)
             // return Promise.reject(error);
             throw error
         }
