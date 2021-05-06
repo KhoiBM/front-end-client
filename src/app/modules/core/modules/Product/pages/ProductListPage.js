@@ -61,6 +61,7 @@ const useStyles = makeStyles(theme => ({
         // background: '#B6E2F3',
 
         width: "65%",
+        zIndex: "100"
         // border: "1px solid red",
 
     }
@@ -249,10 +250,14 @@ const ProductListPage = () => {
                         </div>
                     </div>
 
-                    <Box>
+                    <Box
+                    // className={}
+                    >
                         {records && records != null && records.length > 0 ?
                             <ProductList records={records} totalPage={totalPage} page={page} setPage={setPage} />
-                            : !loading.status && <NotFound />
+                            :
+                            !loading.status &&
+                            <NotFound />
                         }
 
                     </Box>

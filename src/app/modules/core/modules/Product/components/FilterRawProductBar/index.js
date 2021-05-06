@@ -11,7 +11,8 @@ const useStyles = makeStyles(theme => ({
         // width: props => props.length ? `${(props.length * 2) + 15}vmax` : "15vmax",
         width: "15vmax",
         maxWidth: "15vmax",
-        minWidth: "250px"
+        minWidth: "250px",
+        zIndex: "100"
 
     },
     chips: {
