@@ -12,7 +12,8 @@ const useApiPath = {
             "signUp": "user/signup",
             "confirmCode": "user/confirm-email",
             "forgotPassword": "user/forgot-password",
-            "confirmForgotPassword": "user/confirm-forgot-password"
+            "confirmForgotPassword": "user/confirm-forgot-password",
+            SignOut: "user/logout"
         },
         "photoServices": {
             getPresignedURLToUpload: "manage/upload-photo",
@@ -30,7 +31,8 @@ const useApiPath = {
             editProfile: "manager/edit-profile"
         },
         "notification": {
-            viewAndCountNoti: "notification/get-list-notification"
+            viewAndCountNoti: "notification/get-list-notification",
+            viewedNoti: "notification/view"
         },
         "orderService": {
             addCusRawProduct: "order/add-customer-raw-product",
